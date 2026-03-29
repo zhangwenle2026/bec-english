@@ -11770,6 +11770,11 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
 </div>
 
 <script>
+// ====== localStorage helpers (must be first) ======
+var BEC_KEY = 'bec_v1';
+function lsLoad(key, def) { try { var v = localStorage.getItem(BEC_KEY + '_' + key); return v ? JSON.parse(v) : def; } catch(e) { return def; } }
+function lsSave(key, val) { try { localStorage.setItem(BEC_KEY + '_' + key, JSON.stringify(val)); } catch(e) {} }
+
 // ====== Text-to-Speech ======
 function speak(text, btn) {
   if (!window.speechSynthesis) return;
@@ -11902,11 +11907,6 @@ function toggleReverse(section) {
 }
 
 // ====== Tag System ======
-// Load from localStorage on init
-var BEC_KEY = 'bec_v1';
-function lsLoad(key, def) { try { var v = localStorage.getItem(BEC_KEY + '_' + key); return v ? JSON.parse(v) : def; } catch(e) { return def; } }
-function lsSave(key, val) { try { localStorage.setItem(BEC_KEY + '_' + key, JSON.stringify(val)); } catch(e) {} }
-
 var cardTags = lsLoad('tags', {});
 
 function tagCard(btn, type) {
