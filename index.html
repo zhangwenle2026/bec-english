@@ -109,7 +109,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
   box-shadow:0 2px 12px rgba(46,111,186,.08);
   cursor:pointer;transition:all .25s;
   border:1.5px solid #e0eef8;position:relative;overflow:hidden;
-  min-height:160px;display:flex;flex-direction:column;
+  min-height:180px;display:flex;flex-direction:column;justify-content:space-between;
 }
 .vocab-card::before{
   content:'';position:absolute;top:0;left:0;
@@ -254,7 +254,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
 .speak-btn:hover{opacity:1;background:#d6eaf8}
 
 /* ===== Tag System ===== */
-.card-tags{display:flex;gap:6px;margin-top:8px;justify-content:flex-end;position:relative;z-index:10}
+.card-tags{display:flex;gap:6px;margin-top:8px;justify-content:flex-end;position:relative;z-index:10;min-height:28px;align-items:center}
 .card-tag{
   border:none;border-radius:50%;width:28px;height:28px;font-size:14px;
   cursor:pointer;opacity:.35;transition:opacity .2s,transform .15s;
