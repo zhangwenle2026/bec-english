@@ -12548,31 +12548,6 @@ var learnedVocab = new Set();
 var clickCounts = lsLoad('clickCounts', {});
 var todayLearned = new Set(lsLoad('todayLearned', []));
 
-function toggleVocab(el, idx) {
-  el.classList.toggle('flipped');
-  var id = el.id || ('vc-' + idx);
-  if (el.classList.contains('flipped')) {
-    learnedVocab.add(idx);
-    var hint = el.querySelector('.vocab-hint');
-    var icon = el.querySelector('.flip-icon');
-    if (hint) hint.textContent = '点击隐藏';
-    if (icon) icon.textContent = '✅';
-  } else {
-    var hint = el.querySelector('.vocab-hint');
-    var icon = el.querySelector('.flip-icon');
-    if (hint) hint.textContent = '点击查看释义';
-    if (icon) icon.textContent = '👁';
-  }
-  // Today tracking: 2 clicks = learned
-  clickCounts[id] = (clickCounts[id] || 0) + 1;
-  if (clickCounts[id] >= 2) {
-    todayLearned.add(id);
-    el.style.boxShadow = '0 0 0 2px #2e7d32';
-    lsSave('todayLearned', Array.from(todayLearned));
-  }
-  lsSave('clickCounts', clickCounts);
-  updateDashboard('vocab');
-}
 
 function flipAllVocab(open) {
   document.querySelectorAll('.vocab-card').forEach(function(el, i) {
@@ -12601,9 +12576,6 @@ function searchVocab(q) {
 }
 
 // ====== Sentence ======
-function toggleSentence(el) {
-  el.classList.toggle('flipped');
-}
 
 function flipAllSentence(open) {
   document.querySelectorAll('.sentence-card').forEach(function(el) {
@@ -12621,9 +12593,6 @@ function searchSentence(q) {
 }
 
 // ====== Paragraph ======
-function togglePara(el) {
-  el.classList.toggle('flipped');
-}
 
 function flipAllPara(open) {
   document.querySelectorAll('.para-card').forEach(function(el) {
@@ -12632,9 +12601,6 @@ function flipAllPara(open) {
 }
 
 // ====== Q&A ======
-function toggleQA(el) {
-  el.classList.toggle('open');
-}
 
 function openAllQA() {
   document.querySelectorAll('.qa-card').forEach(function(el) { el.classList.add('open'); });
@@ -12676,53 +12642,6 @@ function updateTimelineStyle(el, pct) {
 function formatTime(sec) {
   var m = Math.floor(sec/60); var s = sec%60;
   return m + ':' + (s<10?'0':'') + s;
-}
-function seekSpeech(timelineEl, text, btn) {
-  var pct = parseFloat(timelineEl.value) / 100;
-  updateTimelineStyle(timelineEl, parseFloat(timelineEl.value));
-  if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  if (_timelineInterval) { clearInterval(_timelineInterval); _timelineInterval = null; }
-  var words = text.split(' ');
-  var startIdx = Math.floor(pct * words.length);
-  var partialText = words.slice(startIdx).join(' ');
-  if (!partialText.trim()) return;
-  speakWithTimeline(partialText, btn, timelineEl);
-}
-function speakWithTimeline(text, btn, timelineEl) {
-  if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  if (_timelineInterval) { clearInterval(_timelineInterval); _timelineInterval = null; }
-  var u = new SpeechSynthesisUtterance(text);
-  u.lang = 'en-US'; u.rate = 0.9;
-  _currentTimeline = timelineEl || null;
-  var wordCount = text.split(/\s+/).length;
-  _speechDuration = (wordCount / 130) * 60 * 1000;
-  if (btn) { btn.style.transform='scale(1.3)'; setTimeout(function(){btn.style.transform='';},400); }
-  u.onstart = function() {
-    _speechStart = Date.now();
-    if (_currentTimeline) {
-      _currentTimeline.value = 0;
-      updateTimelineStyle(_currentTimeline, 0);
-      _timelineInterval = setInterval(function() {
-        var elapsed = Date.now() - _speechStart;
-        var pct = Math.min(100, (elapsed / _speechDuration) * 100);
-        _currentTimeline.value = pct;
-        updateTimelineStyle(_currentTimeline, pct);
-        var timeEl = _currentTimeline.parentElement && _currentTimeline.parentElement.querySelector('.audio-time-label');
-        if (timeEl) {
-          var elSec = Math.floor(elapsed/1000);
-          var totalSec = Math.floor(_speechDuration/1000);
-          timeEl.textContent = formatTime(elSec) + ' / ' + formatTime(totalSec);
-        }
-      }, 200);
-    }
-  };
-  u.onend = function() {
-    if (_timelineInterval) { clearInterval(_timelineInterval); _timelineInterval = null; }
-    if (_currentTimeline) { _currentTimeline.value = 100; updateTimelineStyle(_currentTimeline, 100); }
-  };
-  window.speechSynthesis.speak(u);
 }
 
 // ====== Tag System ======
