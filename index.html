@@ -12034,34 +12034,27 @@ function _stopSpeech() {
   if (_currentPauseBtn) { _currentPauseBtn.textContent = '⏸'; _currentPauseBtn.title = '暂停'; }
 }
 
+// 暂停时记录进度百分比，继续时从该位置重新朗读（避免 Chrome pause() bug）
 function togglePause(btn) {
   if (!window.speechSynthesis) return;
-  if (!_isSpeaking && !_isPaused) return;
   if (_isPaused) {
-    window.speechSynthesis.resume();
+    // 继续：从暂停位置重新朗读
     _isPaused = false;
-    _speechStart = Date.now() - (_speechDuration * (parseFloat(_currentTimeline ? _currentTimeline.value : 0) / 100));
     btn.textContent = '⏸';
     btn.title = '暂停';
-    // restart interval
-    if (_currentTimeline) {
-      _timelineInterval = setInterval(function() {
-        var elapsed = Date.now() - _speechStart;
-        var pct = Math.min(100, (elapsed / _speechDuration) * 100);
-        _currentTimeline.value = pct;
-        updateTimelineStyle(_currentTimeline, pct);
-        var timeEl = _currentTimeline.parentElement && _currentTimeline.parentElement.querySelector('.audio-time-label');
-        if (timeEl) {
-          var elSec = Math.floor(elapsed/1000);
-          var totalSec = Math.floor(_speechDuration/1000);
-          timeEl.textContent = formatTime(elSec) + ' / ' + formatTime(totalSec);
-        }
-      }, 200);
+    var pausedPct = _currentTimeline ? parseFloat(_currentTimeline.value) / 100 : 0;
+    var words = _currentFullText.split(' ');
+    var startIdx = Math.floor(pausedPct * words.length);
+    var partialText = words.slice(startIdx).join(' ');
+    if (partialText.trim()) {
+      _playSegment(partialText, pausedPct, btn);
     }
-  } else {
-    window.speechSynthesis.pause();
-    _isPaused = true;
+  } else if (_isSpeaking) {
+    // 暂停：cancel + 冻结进度条
+    window.speechSynthesis.cancel();
     if (_timelineInterval) { clearInterval(_timelineInterval); _timelineInterval = null; }
+    _isSpeaking = false;
+    _isPaused = true;
     btn.textContent = '▶';
     btn.title = '继续';
   }
@@ -12069,46 +12062,40 @@ function togglePause(btn) {
 
 function seekSpeech(timelineEl, text, btn) {
   var pct = parseFloat(timelineEl.value) / 100;
-  updateTimelineStyle(timelineEl, parseFloat(timelineEl.value));
-  if (!window.speechSynthesis) return;
-  _stopSpeech();
-  var words = text.split(' ');
-  var startIdx = Math.floor(pct * words.length);
-  _currentStartWordIdx = startIdx;
-  var partialText = words.slice(startIdx).join(' ');
-  if (!partialText.trim()) return;
-  // 找 pause btn
-  var pauseBtn = timelineEl.parentElement && timelineEl.parentElement.querySelector('.pause-btn');
-  speakWithTimeline(partialText, btn, timelineEl, pauseBtn, pct);
-}
-
-function speakWithTimeline(text, btn, timelineEl, pauseBtn, startPct) {
+  updateTimelineStyle(timelineEl, pct * 100);
   if (!window.speechSynthesis) return;
   _stopSpeech();
   _currentFullText = text;
-  _currentTimeline = timelineEl || null;
-  _currentPauseBtn = pauseBtn || null;
-  var offsetPct = startPct || 0;
+  _currentTimeline = timelineEl;
+  _currentPauseBtn = timelineEl.parentElement && timelineEl.parentElement.querySelector('.pause-btn');
+  var words = text.split(' ');
+  var startIdx = Math.floor(pct * words.length);
+  var partialText = words.slice(startIdx).join(' ');
+  if (!partialText.trim()) return;
+  _playSegment(partialText, pct, btn);
+}
 
-  var u = new SpeechSynthesisUtterance(text);
+// _playSegment: 内部函数，朗读 segment，进度从 offsetPct 开始显示
+function _playSegment(segment, offsetPct, speakBtn) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  if (_timelineInterval) { clearInterval(_timelineInterval); _timelineInterval = null; }
+  var u = new SpeechSynthesisUtterance(segment);
   u.lang = 'en-US'; u.rate = 0.9;
   _currentUtterance = u;
-
-  var wordCount = text.split(/\s+/).length;
-  // 估算总时长（按完整 text，但进度从 offsetPct 开始）
-  var totalWords = _currentFullText.split(/\s+/).length;
+  var totalWords = (_currentFullText || segment).split(/\s+/).length;
+  var segWords = segment.split(/\s+/).length;
   _speechDuration = (totalWords / 130) * 60 * 1000;
-  // 当前片段对应的时长
-  var segDuration = (wordCount / 130) * 60 * 1000;
-
-  if (btn) { btn.style.transform='scale(1.3)'; setTimeout(function(){btn.style.transform='';},400); }
+  var segDuration = (segWords / 130) * 60 * 1000;
+  if (speakBtn) { speakBtn.style.transform='scale(1.3)'; setTimeout(function(){speakBtn.style.transform='';},400); }
   if (_currentPauseBtn) { _currentPauseBtn.textContent = '⏸'; _currentPauseBtn.title = '暂停'; }
-
   u.onstart = function() {
     _isSpeaking = true;
+    _isPaused = false;
     _speechStart = Date.now();
     if (_currentTimeline) {
-      if (!startPct) { _currentTimeline.value = 0; updateTimelineStyle(_currentTimeline, 0); }
+      _currentTimeline.value = offsetPct * 100;
+      updateTimelineStyle(_currentTimeline, offsetPct * 100);
       _timelineInterval = setInterval(function() {
         var elapsed = Date.now() - _speechStart;
         var segPct = Math.min(1, elapsed / segDuration);
@@ -12131,6 +12118,15 @@ function speakWithTimeline(text, btn, timelineEl, pauseBtn, startPct) {
     if (_currentPauseBtn) { _currentPauseBtn.textContent = '⏸'; _currentPauseBtn.title = '暂停'; }
   };
   window.speechSynthesis.speak(u);
+}
+
+function speakWithTimeline(text, btn, timelineEl, pauseBtn) {
+  if (!window.speechSynthesis) return;
+  _stopSpeech();
+  _currentFullText = text;
+  _currentTimeline = timelineEl || null;
+  _currentPauseBtn = pauseBtn || null;
+  _playSegment(text, 0, btn);
 }
 
 // ====== Tag System ======
