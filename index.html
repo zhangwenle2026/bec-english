@@ -109,7 +109,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
   box-shadow:0 2px 12px rgba(46,111,186,.08);
   cursor:pointer;transition:all .25s;
   border:1.5px solid #e0eef8;position:relative;overflow:hidden;
-  min-height:180px;display:flex;flex-direction:column;justify-content:space-between;
+  height:200px;display:flex;flex-direction:column;justify-content:space-between;
 }
 .vocab-card::before{
   content:'';position:absolute;top:0;left:0;
@@ -126,7 +126,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
 .vocab-ipa{font-size:12px;color:#8aa8c8;font-family:'Montserrat',sans-serif;margin-bottom:12px;display:none}
 .vocab-hint{font-size:12px;color:#aac4d8;font-style:italic}
 .vocab-reveal{display:none;margin-top:14px;padding-top:14px;border-top:1px dashed #c8dff0}
-.vocab-card.flipped .vocab-reveal{display:block}
+.vocab-card.flipped .vocab-reveal{display:block;overflow:hidden}
 .vocab-card.flipped .vocab-ipa{display:block}
 .vocab-cn{font-size:16px;font-weight:700;color:#1a2e4a;margin-bottom:6px}
 .vocab-phonetic{
@@ -225,7 +225,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
   .nav{padding:0 8px;overflow-x:auto}.nav-tab{padding:12px 14px;font-size:13px}
   .content{padding:20px 8px;overflow-x:hidden}
   .vocab-grid{grid-template-columns:1fr 1fr!important;gap:8px!important}
-  .vocab-card{padding:12px!important;min-height:160px!important}
+  .vocab-card{padding:12px!important;height:180px!important}
   .vocab-en{font-size:14px!important}
   .card-tags{gap:4px!important}
   .card-tag{width:22px!important;height:22px!important;font-size:11px!important}
