@@ -23,7 +23,7 @@
    --text-light:  #8aa8c8
 */
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color:#1a2e4a;min-height:100vh}
+body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color:#1a2e4a;min-height:100vh;overflow-x:hidden}
 
 /* ===== Header ===== */
 .header{
@@ -223,7 +223,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
 @media(max-width:640px){
   .header{padding:20px;min-height:140px}.header-title{font-size:18px}
   .nav{padding:0 8px;overflow-x:auto}.nav-tab{padding:12px 14px;font-size:13px}
-  .content{padding:20px 14px}
+  .content{padding:20px 8px;overflow-x:hidden}
   .vocab-grid{grid-template-columns:1fr 1fr!important;gap:8px!important}
   .vocab-card{padding:12px!important;min-height:160px!important}
   .vocab-en{font-size:15px!important}
