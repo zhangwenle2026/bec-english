@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-  <meta name="version" content="20260528-0529">
+  <meta name="version" content="20260528-0627">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BEC Improvement Plan · 文乐商务英语</title>
 <link rel="manifest" href="manifest.json">
@@ -107,6 +107,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
 
 /* ===== Vocabulary Cards ===== */
 .vocab-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
 .vocab-card{
   background:#fff;border-radius:16px;padding:20px;
@@ -228,15 +229,46 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
 /* ===== Responsive ===== */
 @media(max-width:640px){
   .header{padding:20px;min-height:140px}.header-title{font-size:18px}
-  .nav{padding:0 8px;overflow-x:auto}.nav-tab{padding:12px 14px;font-size:13px}
+  .nav{padding:0 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
+  .nav-tab{padding:12px 14px;font-size:13px;white-space:nowrap;flex-shrink:0}
   .content{padding:20px 8px;overflow-x:hidden}
-  .vocab-grid{grid-template-columns:1fr 1fr!important;gap:8px!important}
+  .vocab-grid{grid-template-columns:1fr!important;gap:8px!important}
+  .sentence-grid{grid-template-columns:1fr!important}
+  .para-grid{grid-template-columns:1fr!important}
+  .qa-grid{grid-template-columns:1fr!important}
+  .cards-grid{grid-template-columns:1fr!important;gap:8px!important}
   .vocab-card{padding:12px!important}
   .vocab-en{font-size:14px!important}
   .card-tags{gap:4px!important}
   .card-tag{width:22px!important;height:22px!important;font-size:11px!important}
   .controls{gap:8px}
+  .stats-bar{flex-direction:column;gap:8px}
+  .stat-card{min-width:unset}
+  .toolbar{flex-wrap:wrap;gap:6px}
+  .search-box{width:100%!important;min-width:unset!important}
+  .interview-toc{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .toc-pills{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px}
+  .section-header{font-size:14px!important}
 }
+@media(max-width:420px){
+  .vocab-grid{grid-template-columns:1fr!important}
+  .header-title{font-size:16px}
+  .nav-tab{padding:10px 10px;font-size:12px}
+  .stat-num{font-size:22px}
+}
+
+
+/* ===== Review Mode ===== */
+.review-mode .vocab-card:not(:has(.tag-star.active)){display:none!important}
+.review-mode .vocab-card:has(.tag-check.active){display:none!important}
+.review-mode .sentence-card:not(:has(.tag-star.active)){display:none!important}
+.review-mode .sentence-card:has(.tag-check.active){display:none!important}
+.review-mode .para-card:not(:has(.tag-star.active)){display:none!important}
+.review-mode .para-card:has(.tag-check.active){display:none!important}
+.review-mode .qa-card:not(:has(.tag-star.active)){display:none!important}
+.review-mode .qa-card:has(.tag-check.active){display:none!important}
+.review-btn.active{background:#ff6b35!important;color:#fff!important;box-shadow:0 2px 8px rgba(255,107,53,.3)}
 
 /* ===== Stats Bar ===== */
 .stats-bar{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:28px}
@@ -476,6 +508,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
     <button class="btn btn-outline" onclick="flipAllVocab(true)">全部展开</button>
           <button class="reverse-btn" id="reverse-vocab-btn" onclick="toggleReverse('vocab')">🔄 反转</button>
           <button class="listen-btn" id="listen-vocab-btn" onclick="toggleListen('vocab')">🎧 听力</button>
+          <button class="listen-btn review-btn" id="review-vocab-btn" onclick="toggleReview('vocab')">⭐ 复习</button>
     <button class="btn btn-gold" onclick="shuffleVocab()">🔀 随机打乱</button>
     <div style="flex:1"></div>
     <input class="search-input" style="max-width:200px" placeholder="搜索单词…" oninput="searchVocab(this.value)" id="vocab-search">
@@ -8123,6 +8156,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
     <button class="btn btn-outline" onclick="flipAllSentence(true)">全部展开</button>
           <button class="reverse-btn" id="reverse-sentence-btn" onclick="toggleReverse('sentence')">🔄 反转</button>
           <button class="listen-btn" id="listen-sentence-btn" onclick="toggleListen('sentence')">🎧 听力</button>
+          <button class="listen-btn review-btn" id="review-sentence-btn" onclick="toggleReview('sentence')">⭐ 复习</button>
     <input class="search-input" style="max-width:220px" placeholder="搜索句型…" oninput="searchSentence(this.value)">
   </div>
   <div class="bulk-bar">
@@ -9365,6 +9399,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
     <button class="btn btn-outline" onclick="flipAllPara(true)">全部展开</button>
           <button class="reverse-btn" id="reverse-para-btn" onclick="toggleReverse('para')">🔄 反转</button>
           <button class="listen-btn" id="listen-para-btn" onclick="toggleListen('para')">🎧 听力</button>
+          <button class="listen-btn review-btn" id="review-para-btn" onclick="toggleReview('para')">⭐ 复习</button>
   </div>
   <div class="bulk-bar">
     <button class="bulk-btn bulk-btn-delete" onclick="bulkDeleteCards()">🗑 删除标记卡片</button>
@@ -10006,6 +10041,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
     <button class="btn btn-primary" onclick="closeAllQA()">全部收起</button>
           <button class="reverse-btn" id="reverse-qa-btn" onclick="toggleReverse('qa')">🔄 反转</button>
           <button class="listen-btn" id="listen-qa-btn" onclick="toggleListen('qa')">🎧 听力</button>
+          <button class="listen-btn review-btn" id="review-qa-btn" onclick="toggleReview('qa')">⭐ 复习</button>
     <button class="btn btn-outline" onclick="openAllQA()">全部展开</button>
     <input class="search-input" style="max-width:220px" placeholder="搜索问题…" oninput="searchQA(this.value)">
   </div>
@@ -10270,6 +10306,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
   <div class="toolbar">
     <button class="tool-btn" id="reverse-interview-btn" onclick="toggleReverse('interview')">🔄 反转</button>
     <button class="tool-btn listen-btn" id="listen-interview-btn" onclick="toggleListen('interview')">🎧 听力</button>
+    <button class="tool-btn review-btn" id="review-interview-btn" onclick="toggleReview('interview')">⭐ 复习</button>
     <input class="search-box" type="text" placeholder="🔍 搜索面试题..." oninput="filterCards('interview',this.value)">
   </div>
   <div class="interview-toc" id="interview-toc">
@@ -12361,6 +12398,16 @@ function toggleListen(section) {
   var btn = document.getElementById('listen-' + section + '-btn');
   if (btn) btn.classList.toggle('active', !!listenModes[section]);
 }
+
+function toggleReview(section) {
+  var panel = document.getElementById('panel-' + section);
+  if (!panel) return;
+  var btn = document.getElementById('review-' + section + '-btn');
+  panel.classList.toggle('review-mode');
+  if (btn) btn.classList.toggle('active');
+}
+
+
 // ====== Audio Timeline helpers ======
 var _currentUtterance = null;
 var _currentTimeline = null;
@@ -12537,7 +12584,7 @@ function filterByTag(type) {
 
 // ====== Dashboard ======
 function updateDashboard(section) {
-  var cardClass = {vocab:'vocab-card', sentence:'sentence-card', para:'para-card', qa:'qa-card'}[section];
+  var cardClass = {vocab:'vocab-card', sentence:'sentence-card', para:'para-card', qa:'qa-card', interview:'vocab-card'}[section];
   var cards = document.querySelectorAll('.' + cardClass);
   var total = cards.length;
   var mastered = 0;
@@ -12565,7 +12612,7 @@ function updateDashboard(section) {
 }
 
 function updateAllDashboards() {
-  ['vocab','sentence','para','qa'].forEach(updateDashboard);
+  ['vocab','sentence','para','qa','interview'].forEach(updateDashboard);
 }
 
 function restoreState() {
@@ -12656,6 +12703,7 @@ function toggleInterview(el, idx) {
     return;
   }
   el.classList.toggle('flipped');
+  updateDashboard('interview');
 }
 
 // ====== Interview filter ======
