@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-  <meta name="version" content="20260330-0710">
+  <meta name="version" content="20260528-0514">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BEC Improvement Plan · 文乐商务英语</title>
 <link rel="manifest" href="manifest.json">
@@ -385,6 +385,23 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
 .progress-bar-wrap{background:#d6eaf8;border-radius:99px;height:8px;margin:6px 0 0;overflow:hidden}
 .progress-bar-fill{height:100%;background:linear-gradient(90deg,#2e6fba,#4a90d4);border-radius:99px;transition:width .4s}
 .today-bar-fill{background:linear-gradient(90deg,#e8935a,#f2a7b3)}
+
+/* Interview tab styles */
+#panel-interview .interview-tag{font-size:11px;color:#1565c0;font-weight:600;margin-top:4px}
+#panel-interview h3{user-select:none}
+#panel-interview h4{user-select:none}
+#panel-interview .listen-mode .vocab-card .vocab-en,
+#panel-interview .listen-mode .vocab-card .vocab-hint,
+#panel-interview .listen-mode .vocab-card .vocab-reveal,
+#panel-interview .listen-mode .vocab-card .card-tags,
+#panel-interview .listen-mode .vocab-card .flip-icon{display:none !important}
+#panel-interview .listen-mode .vocab-card.listen-reveal-en .vocab-en{display:block !important}
+#panel-interview .listen-mode .vocab-card.listen-reveal-all .vocab-en,
+#panel-interview .listen-mode .vocab-card.listen-reveal-all .vocab-reveal{display:block !important}
+#panel-interview .reverse-mode .vocab-card:not(.flipped) .vocab-en{display:none}
+#panel-interview .reverse-mode .vocab-card:not(.flipped) .vocab-cn{display:block}
+#panel-interview .reverse-mode .vocab-card:not(.flipped) .vocab-hint{content:'点击查看英文'}
+
 </style>
 </head>
 <body>
@@ -411,6 +428,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
   <div class="nav-tab" onclick="switchTab('sentence',this)">💬 句型 <span class="tab-count" id="cnt-sentence">100</span></div>
   <div class="nav-tab" onclick="switchTab('para',this)">📝 段落 <span class="tab-count" id="cnt-para">50</span></div>
   <div class="nav-tab" onclick="switchTab('qa',this)">🎯 问答 <span class="tab-count" id="cnt-qa">10</span></div>
+  <div class="nav-tab" onclick="switchTab('interview',this)">🎤 面试 <span class="tab-count" id="cnt-interview">113</span></div>
 </nav>
 
 <div class="content">
@@ -10190,6 +10208,1896 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
     </div>
 </div>
 </div>
+<div id="panel-interview" class="tab-panel">
+  <div class="stats-dashboard" id="dash-interview">
+    <div class="stat-box">
+      <div class="stat-num" id="mastered-interview">0</div>
+      <div class="stat-label">累计掌握</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num stat-pct" id="mastered-pct-interview" style="font-size:20px">0%</div>
+      <div class="stat-label">累计掌握率</div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="mastered-bar-interview" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="toolbar">
+    <button class="tool-btn" id="reverse-interview-btn" onclick="toggleReverse('interview')">🔄 反转</button>
+    <button class="tool-btn listen-btn" id="listen-interview-btn" onclick="toggleListen('interview')">🎧 听力</button>
+    <input class="search-box" type="text" placeholder="🔍 搜索面试题..." oninput="filterCards('interview',this.value)">
+  </div>
+  <h3 style="color:#1565c0;margin:20px 0 8px;font-size:16px;border-bottom:2px solid #e3f2fd;padding-bottom:6px;">📋 Part 1: BD 面试问题（33题）</h3>
+  <p style="color:#888;font-size:12px;margin:0 0 12px;">适用岗位：BD（外卖平台地推销售）</p>
+  <h4 style="color:#555;margin:12px 0 8px;font-size:13px;">1.1 地推意愿与执行力</h4>
+  <div class="cards-grid">
+    <div class="vocab-card" id="iv-0" onclick="toggleInterview(this,0)" data-en="Are you comfortable visiting 15 to 20 merchants per day outdoors?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Are you comfortable visiting 15 to 20 merchants per day outdoors?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你能接受每天在外面跑15-20家商户吗？</div>
+        <div class="vocab-phonetic">🗣️ 阿 又 康佛特伯 维吉挺 非夫挺 兔 团提 莫陈次 泼 得 奥特多尔斯？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 地推意愿</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Are you comfortable visiting 15 to 20 merchants per day outdoors?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-1" onclick="toggleInterview(this,1)" data-en="Describe a typical day of your field work.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Describe a typical day of your field work.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">描述你典型的一天是怎么跑客户的。</div>
+        <div class="vocab-phonetic">🗣️ 迪斯快布 额 提匹扣 得 奥夫 约 非尔的 沃克。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 工作节奏</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Describe a typical day of your field work.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-2" onclick="toggleInterview(this,2)" data-en="How many stores do you visit per day? How many do you convert?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">How many stores do you visit per day? How many do you convert?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你一般每天跑多少家店？转化几家？</div>
+        <div class="vocab-phonetic">🗣️ 好 美你 斯多尔斯 度 又 维吉特 泼 得？好 美你 度 又 肯沃特？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 量化产出</div>
+      </div>
+      <button class="speak-btn" onclick="speak('How many stores do you visit per day? How many do you convert?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-3" onclick="toggleInterview(this,3)" data-en="What do you do on rainy or extremely hot days? Do you reduce your visits?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">What do you do on rainy or extremely hot days? Do you reduce your visits?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">下雨天或者特别热的时候你怎么办？</div>
+        <div class="vocab-phonetic">🗣️ 沃特 度 又 度 昂 瑞你 奥 益斯锤姆里 哈特 得斯？度 又 瑞丢斯 约 维吉次？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 抗压/韧性</div>
+      </div>
+      <button class="speak-btn" onclick="speak('What do you do on rainy or extremely hot days? Do you reduce your visits?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-4" onclick="toggleInterview(this,4)" data-en="If you get rejected by merchants every day for a whole week, how do you keep going?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">If you get rejected by merchants every day for a whole week, how do you keep going?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">如果你连续一周都被商户拒绝，你怎么调整心态？</div>
+        <div class="vocab-phonetic">🗣️ 衣服 又 盖特 瑞杰克特的 拜 莫陈次 爱弗瑞 得 佛 额 厚 维克，好 度 又 kip 勾英？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 抗压韧性</div>
+      </div>
+      <button class="speak-btn" onclick="speak('If you get rejected by merchants every day for a whole week, how do you keep going?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-5" onclick="toggleInterview(this,5)" data-en="Have you ever opened up a new territory on your own? How did you do it?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Have you ever opened up a new territory on your own? How did you do it?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你有没有主动开拓过新区域？怎么做的？</div>
+        <div class="vocab-phonetic">🗣️ 嗨屋 又 爱沃 欧喷的 阿普 额 纽 太瑞特瑞 昂 约 欧恩？好 迪的 又 度 伊特？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 主动性</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Have you ever opened up a new territory on your own? How did you do it?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+  </div>
+  <h4 style="color:#555;margin:12px 0 8px;font-size:13px;">1.2 销售能力与业绩</h4>
+  <div class="cards-grid">
+    <div class="vocab-card" id="iv-6" onclick="toggleInterview(this,6)" data-en="What is your greatest strength as a salesperson? Please give me at least 3 points.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">What is your greatest strength as a salesperson? Please give me at least 3 points.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">作为销售，你最大的优点是什么？请至少说3点。</div>
+        <div class="vocab-phonetic">🗣️ 沃特 伊斯 约 格瑞提斯特 斯锤恩斯 艾斯 额 赛尔斯泼森？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 自我认知</div>
+      </div>
+      <button class="speak-btn" onclick="speak('What is your greatest strength as a salesperson? Please give me at least 3 points.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-7" onclick="toggleInterview(this,7)" data-en="Can you give me an example that proves you are hardworking?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Can you give me an example that proves you are hardworking?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">有什么案例可以证明你勤奋？</div>
+        <div class="vocab-phonetic">🗣️ 肯 又 给屋 密 安 一个杂姆泼 代特 普鲁屋斯 又 阿 哈的沃king？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 勤奋度</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Can you give me an example that proves you are hardworking?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-8" onclick="toggleInterview(this,8)" data-en="Can you give me an example that proves you are a fast learner?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Can you give me an example that proves you are a fast learner?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">有什么案例可以证明你学习能力强？</div>
+        <div class="vocab-phonetic">🗣️ 肯 又 给屋 密 安 一个杂姆泼 代特 普鲁屋斯 又 阿 额 发斯特 乐呢？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 学习能力</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Can you give me an example that proves you are a fast learner?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-9" onclick="toggleInterview(this,9)" data-en="Tell me about the toughest client you ever closed. What made it difficult?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Tell me about the toughest client you ever closed. What made it difficult?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">讲一个你拿下最难客户的故事。</div>
+        <div class="vocab-phonetic">🗣️ 太尔 密 额饱特 得 塔费斯特 克来恩特 又 爱沃 克楼斯的。沃特 美的 伊特 地费扣特？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 攻坚能力</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Tell me about the toughest client you ever closed. What made it difficult?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-10" onclick="toggleInterview(this,10)" data-en="What was your average monthly performance in your last job? How did you rank?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">What was your average monthly performance in your last job? How did you rank?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你上份工作的月均业绩是多少？排名怎样？</div>
+        <div class="vocab-phonetic">🗣️ 沃特 瓦斯 约 艾弗瑞吉 蒙斯里 泼佛门斯 印 约 拉斯特 乔布？好 迪的 又 瑞恩克？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 业绩水平</div>
+      </div>
+      <button class="speak-btn" onclick="speak('What was your average monthly performance in your last job? How did you rank?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-11" onclick="toggleInterview(this,11)" data-en="How do you follow up with hesitant clients?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">How do you follow up with hesitant clients?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你是怎么跟进犹豫不决的客户的？</div>
+        <div class="vocab-phonetic">🗣️ 好 度 又 法楼 阿普 位斯 嗨吉疼特 克来恩次？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 跟进技巧</div>
+      </div>
+      <button class="speak-btn" onclick="speak('How do you follow up with hesitant clients?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+  </div>
+  <h4 style="color:#555;margin:12px 0 8px;font-size:13px;">1.3 行业适配与竞对应变</h4>
+  <div class="cards-grid">
+    <div class="vocab-card" id="iv-12" onclick="toggleInterview(this,12)" data-en="What is your previous industry experience? How much do you know about food delivery?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">What is your previous industry experience? How much do you know about food delivery?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你之前的行业经验是什么？对餐饮和外卖了解多少？</div>
+        <div class="vocab-phonetic">🗣️ 沃次 约 普瑞维额斯 印达斯锤 益斯匹瑞恩斯？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 行业认知</div>
+      </div>
+      <button class="speak-btn" onclick="speak('What is your previous industry experience? How much do you know about food delivery?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-13" onclick="toggleInterview(this,13)" data-en="If a merchant says I already use iFood, how would you handle it?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">If a merchant says I already use iFood, how would you handle it?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">如果商户说已经用iFood了，你怎么应对？</div>
+        <div class="vocab-phonetic">🗣️ 衣服 额 莫陈特 塞斯...好 乌的 又 罕头 伊特？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 竞对应变</div>
+      </div>
+      <button class="speak-btn" onclick="speak('If a merchant says I already use iFood, how would you handle it?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-14" onclick="toggleInterview(this,14)" data-en="What do you think is the biggest value a delivery platform brings to small merchants?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">What do you think is the biggest value a delivery platform brings to small merchants?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你觉得外卖平台对小商户最大的价值是什么？</div>
+        <div class="vocab-phonetic">🗣️ 沃特 度 又 think 伊斯 得 比格斯特 拜柳...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 商业理解</div>
+      </div>
+      <button class="speak-btn" onclick="speak('What do you think is the biggest value a delivery platform brings to small merchants?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-15" onclick="toggleInterview(this,15)" data-en="Do you know about Keeta? Why do you want to join us?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Do you know about Keeta? Why do you want to join us?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你了解Keeta吗？为什么想加入我们？</div>
+        <div class="vocab-phonetic">🗣️ 度 又 no 额饱特 kita？外 度 又 旺特 兔 乔因 阿斯？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 求职动机</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Do you know about Keeta? Why do you want to join us?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-16" onclick="toggleInterview(this,16)" data-en="Compared to what you sold before, how is a delivery platform different?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Compared to what you sold before, how is a delivery platform different?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">跟你之前卖的产品比，外卖平台有什么不同？</div>
+        <div class="vocab-phonetic">🗣️ 肯配尔的 兔 沃特 又 搜的 逼佛...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 适应力</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Compared to what you sold before, how is a delivery platform different?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+  </div>
+  <h4 style="color:#555;margin:12px 0 8px;font-size:13px;">1.4 稳定性与职业规划</h4>
+  <div class="cards-grid">
+    <div class="vocab-card" id="iv-17" onclick="toggleInterview(this,17)" data-en="How long were you at your last job? Why did you leave?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">How long were you at your last job? Why did you leave?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你在上份工作待了多久？为什么离开？</div>
+        <div class="vocab-phonetic">🗣️ 好 龙 沃 又 艾特 约 拉斯特 乔布？外 迪的 又 里屋？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 稳定性</div>
+      </div>
+      <button class="speak-btn" onclick="speak('How long were you at your last job? Why did you leave?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-18" onclick="toggleInterview(this,18)" data-en="Why are you looking for a change now?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Why are you looking for a change now?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你现在为什么想换工作？</div>
+        <div class="vocab-phonetic">🗣️ 外 阿 又 路king 佛 额 前吉 闹？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 离职动机</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Why are you looking for a change now?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-19" onclick="toggleInterview(this,19)" data-en="Where do you see yourself in 3 years? Still a BD or aiming higher?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Where do you see yourself in 3 years? Still a BD or aiming higher?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你3年后想做什么？还是BD还是想往上走？</div>
+        <div class="vocab-phonetic">🗣️ 外尔 度 又 C 约赛尔夫 印 思瑞 依尔斯？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 职业规划</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Where do you see yourself in 3 years? Still a BD or aiming higher?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-20" onclick="toggleInterview(this,20)" data-en="Can you commit to staying here for at least two years?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Can you commit to staying here for at least two years?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你能承诺至少在这里待两年吗？</div>
+        <div class="vocab-phonetic">🗣️ 肯 又 克米特 兔 斯忒英 黑尔 佛 艾特 里斯特 兔 依尔斯？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 稳定性</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Can you commit to staying here for at least two years?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-21" onclick="toggleInterview(this,21)" data-en="Does your family support you doing field sales?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Does your family support you doing field sales?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你家人支持你做地推销售吗？</div>
+        <div class="vocab-phonetic">🗣️ 达斯 约 法妹里 色泼特 又 嘟英 非尔的 赛尔斯？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 家庭支持</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Does your family support you doing field sales?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+  </div>
+  <h4 style="color:#555;margin:12px 0 8px;font-size:13px;">1.5 学习能力与适应力</h4>
+  <div class="cards-grid">
+    <div class="vocab-card" id="iv-22" onclick="toggleInterview(this,22)" data-en="Give me an example of something new you learned quickly.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Give me an example of something new you learned quickly.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">讲一个你快速学会新东西的经历。</div>
+        <div class="vocab-phonetic">🗣️ 给屋 密 安 一个杂姆泼 奥夫 桑sing 纽 又 乐恩的 快克里。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 学习速度</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Give me an example of something new you learned quickly.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-23" onclick="toggleInterview(this,23)" data-en="If on your first week I assign you a brand new area, what is your first step?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">If on your first week I assign you a brand new area, what is your first step?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">如果入职第一周给你一个陌生区域，你第一步做什么？</div>
+        <div class="vocab-phonetic">🗣️ 衣服 昂 约 佛斯特 维克...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 破冰策略</div>
+      </div>
+      <button class="speak-btn" onclick="speak('If on your first week I assign you a brand new area, what is your first step?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-24" onclick="toggleInterview(this,24)" data-en="How do you go about understanding a new industry?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">How do you go about understanding a new industry?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你怎么了解一个新行业？</div>
+        <div class="vocab-phonetic">🗣️ 好 度 又 勾 额饱特 安得斯坦丁 额 纽 印达斯锤？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 学习方法</div>
+      </div>
+      <button class="speak-btn" onclick="speak('How do you go about understanding a new industry?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-25" onclick="toggleInterview(this,25)" data-en="Have you used a CRM system before? How quickly can you pick up new tools?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Have you used a CRM system before? How quickly can you pick up new tools?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你用过CRM系统吗？多快能上手新工具？</div>
+        <div class="vocab-phonetic">🗣️ 嗨屋 又 尤斯的 额 CRM 西斯特母 逼佛？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 工具适应</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Have you used a CRM system before? How quickly can you pick up new tools?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-26" onclick="toggleInterview(this,26)" data-en="Moving from payments to food delivery, what do you think is the biggest challenge?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Moving from payments to food delivery, what do you think is the biggest challenge?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">从支付行业转到外卖，你觉得最大挑战是什么？</div>
+        <div class="vocab-phonetic">🗣️ 木ving 从 配门次 兔 夫的 得里弗瑞...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 自我认知</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Moving from payments to food delivery, what do you think is the biggest challenge?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+  </div>
+  <h4 style="color:#555;margin:12px 0 8px;font-size:13px;">1.6 综合素质与潜力</h4>
+  <div class="cards-grid">
+    <div class="vocab-card" id="iv-27" onclick="toggleInterview(this,27)" data-en="What are the top 3 qualities of a great BD?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">What are the top 3 qualities of a great BD?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你觉得一个优秀BD最重要的三个特质是什么？</div>
+        <div class="vocab-phonetic">🗣️ 沃特 阿 得 套普 思瑞 夸乐提斯 奥夫 额 格瑞特 BD？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 价值观</div>
+      </div>
+      <button class="speak-btn" onclick="speak('What are the top 3 qualities of a great BD?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-28" onclick="toggleInterview(this,28)" data-en="Have you ever taken initiative to do something beyond your job description?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Have you ever taken initiative to do something beyond your job description?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你有没有主动做过超出岗位职责的事？</div>
+        <div class="vocab-phonetic">🗣️ 嗨屋 又 爱沃 忒肯 伊你歇提屋...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 主动担当</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Have you ever taken initiative to do something beyond your job description?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-29" onclick="toggleInterview(this,29)" data-en="If I asked you to train a new hire, how would you teach them?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">If I asked you to train a new hire, how would you teach them?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">如果让你带一个新人，你会怎么教？</div>
+        <div class="vocab-phonetic">🗣️ 衣服 爱 阿斯克的 又 兔 锤恩 额 纽 嗨尔...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 领导潜质</div>
+      </div>
+      <button class="speak-btn" onclick="speak('If I asked you to train a new hire, how would you teach them?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-30" onclick="toggleInterview(this,30)" data-en="What is your expected salary? Are you okay with base plus commission?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">What is your expected salary? Are you okay with base plus commission?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你期望的薪资是多少？能接受底薪加提成吗？</div>
+        <div class="vocab-phonetic">🗣️ 沃次 约 益斯派克特的 赛勒瑞？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 薪资预期</div>
+      </div>
+      <button class="speak-btn" onclick="speak('What is your expected salary? Are you okay with base plus commission?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-31" onclick="toggleInterview(this,31)" data-en="Where do you live? Are you fine commuting to our territory?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Where do you live? Are you fine commuting to our territory?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你住哪里？能接受通勤到我们的区域吗？</div>
+        <div class="vocab-phonetic">🗣️ 外尔 度 又 里屋？阿 又 fai恩 克谬挺 兔 奥尔 太瑞特瑞？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 通勤意愿</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Where do you live? Are you fine commuting to our territory?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-32" onclick="toggleInterview(this,32)" data-en="Do you have any questions for us?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Do you have any questions for us?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">最后你有什么想问我们的？</div>
+        <div class="vocab-phonetic">🗣️ 度 又 嗨屋 爱你 快身斯 佛 阿斯？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 好奇心</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Do you have any questions for us?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+  </div>
+  <h3 style="color:#1565c0;margin:20px 0 8px;font-size:16px;border-bottom:2px solid #e3f2fd;padding-bottom:6px;">📋 Part 2: BDM 面试问题（35题）</h3>
+  <p style="color:#888;font-size:12px;margin:0 0 12px;">适用岗位：BDM（管理 BD 团队的经理，带 5-10 人）</p>
+  <h4 style="color:#555;margin:12px 0 8px;font-size:13px;">2.1 团队管理与带人能力</h4>
+  <div class="cards-grid">
+    <div class="vocab-card" id="iv-33" onclick="toggleInterview(this,33)" data-en="How many people have you managed before? What was the team structure?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">How many people have you managed before? What was the team structure?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你之前管过多少人？团队结构是怎样的？</div>
+        <div class="vocab-phonetic">🗣️ 好 美你 匹泼 嗨屋 又 美你吉的 逼佛？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 管理经验</div>
+      </div>
+      <button class="speak-btn" onclick="speak('How many people have you managed before? What was the team structure?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-34" onclick="toggleInterview(this,34)" data-en="How do you set targets for your team? How do you track progress?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">How do you set targets for your team? How do you track progress?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你怎么给团队成员设目标？怎么追过程？</div>
+        <div class="vocab-phonetic">🗣️ 好 度 又 赛特 塔给次 佛 约 踢母？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 目标管理</div>
+      </div>
+      <button class="speak-btn" onclick="speak('How do you set targets for your team? How do you track progress?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-35" onclick="toggleInterview(this,35)" data-en="Give me an example of a low performer you turned around.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Give me an example of a low performer you turned around.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">讲一个你把差员工带起来的例子。</div>
+        <div class="vocab-phonetic">🗣️ 给屋 密 安 一个杂姆泼 奥夫 额 楼 泼佛默 又 特恩的 额润的。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 培养能力</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Give me an example of a low performer you turned around.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-36" onclick="toggleInterview(this,36)" data-en="If a BD misses target for two weeks in a row, how do you handle it?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">If a BD misses target for two weeks in a row, how do you handle it?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">如果有个BD连续两周不达标，你怎么处理？</div>
+        <div class="vocab-phonetic">🗣️ 衣服 额 BD 米色斯 塔给特 佛 兔 维克斯...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 绩效管理</div>
+      </div>
+      <button class="speak-btn" onclick="speak('If a BD misses target for two weeks in a row, how do you handle it?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-37" onclick="toggleInterview(this,37)" data-en="How do you motivate your team, especially during high-pressure periods?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">How do you motivate your team, especially during high-pressure periods?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你怎么激励团队士气？</div>
+        <div class="vocab-phonetic">🗣️ 好 度 又 莫提vei特 约 踢母...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 激励能力</div>
+      </div>
+      <button class="speak-btn" onclick="speak('How do you motivate your team, especially during high-pressure periods?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-38" onclick="toggleInterview(this,38)" data-en="What is your approach to morning meetings or daily wrap-ups?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">What is your approach to morning meetings or daily wrap-ups?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你用什么方法做早会/夕会？</div>
+        <div class="vocab-phonetic">🗣️ 沃次 约 额普肉吃 兔 莫宁 米挺斯...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 管理工具</div>
+      </div>
+      <button class="speak-btn" onclick="speak('What is your approach to morning meetings or daily wrap-ups?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-39" onclick="toggleInterview(this,39)" data-en="Have you hired people before? What do you value most when selecting a BD?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Have you hired people before? What do you value most when selecting a BD?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你招过人吗？你选BD最看重什么？</div>
+        <div class="vocab-phonetic">🗣️ 嗨屋 又 嗨尔的 匹泼 逼佛？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 识人能力</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Have you hired people before? What do you value most when selecting a BD?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+  </div>
+  <h4 style="color:#555;margin:12px 0 8px;font-size:13px;">2.2 业绩目标管理与数据驱动</h4>
+  <div class="cards-grid">
+    <div class="vocab-card" id="iv-40" onclick="toggleInterview(this,40)" data-en="What were your team&#39;s core KPIs? How did you break them down to individuals?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">What were your team's core KPIs? How did you break them down to individuals?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你之前团队的核心KPI是什么？你怎么拆解到人？</div>
+        <div class="vocab-phonetic">🗣️ 沃特 沃 约 踢母斯 扣 KPI斯？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 KPI拆解</div>
+      </div>
+      <button class="speak-btn" onclick="speak('What were your team\'s core KPIs? How did you break them down to individuals?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-41" onclick="toggleInterview(this,41)" data-en="What data do you use to identify where problems are in your team?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">What data do you use to identify where problems are in your team?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你用什么数据来判断团队哪里有问题？</div>
+        <div class="vocab-phonetic">🗣️ 沃特 得他 度 又 尤斯...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 数据思维</div>
+      </div>
+      <button class="speak-btn" onclick="speak('What data do you use to identify where problems are in your team?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-42" onclick="toggleInterview(this,42)" data-en="If halfway through the month you are 30 percent behind, what do you do?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">If halfway through the month you are 30 percent behind, what do you do?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">如果月中发现进度落后30%，你会怎么追？</div>
+        <div class="vocab-phonetic">🗣️ 衣服 嗨夫外 思入 得 蒙斯...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 追进度</div>
+      </div>
+      <button class="speak-btn" onclick="speak('If halfway through the month you are 30 percent behind, what do you do?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-43" onclick="toggleInterview(this,43)" data-en="How do you do weekly or daily reports? What do you report to your boss?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">How do you do weekly or daily reports? What do you report to your boss?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你怎么做周报或日报？给老板汇报什么？</div>
+        <div class="vocab-phonetic">🗣️ 好 度 又 度 维克里 奥 得里 瑞泡次？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 汇报能力</div>
+      </div>
+      <button class="speak-btn" onclick="speak('How do you do weekly or daily reports? What do you report to your boss?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-44" onclick="toggleInterview(this,44)" data-en="Have you ever used data analysis to find a problem and improve results?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Have you ever used data analysis to find a problem and improve results?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你有没有通过数据分析发现问题然后改善业绩？</div>
+        <div class="vocab-phonetic">🗣️ 嗨屋 又 爱沃 尤斯的 得他 额奈乐西斯...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 分析改善</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Have you ever used data analysis to find a problem and improve results?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+  </div>
+  <h4 style="color:#555;margin:12px 0 8px;font-size:13px;">2.3 区域策略与市场开拓</h4>
+  <div class="cards-grid">
+    <div class="vocab-card" id="iv-45" onclick="toggleInterview(this,45)" data-en="How do you plan the strategy for a new territory?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">How do you plan the strategy for a new territory?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你怎么规划一个新区域的打法？</div>
+        <div class="vocab-phonetic">🗣️ 好 度 又 普兰 得 斯锤特吉 佛 额 纽 太瑞特瑞？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 策略思维</div>
+      </div>
+      <button class="speak-btn" onclick="speak('How do you plan the strategy for a new territory?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-46" onclick="toggleInterview(this,46)" data-en="How would you allocate limited resources across different areas or BDs?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">How would you allocate limited resources across different areas or BDs?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你会怎么把有限资源分配到不同区域？</div>
+        <div class="vocab-phonetic">🗣️ 好 乌的 又 额楼K特 里米特的 瑞搜色斯...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 资源分配</div>
+      </div>
+      <button class="speak-btn" onclick="speak('How would you allocate limited resources across different areas or BDs?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-47" onclick="toggleInterview(this,47)" data-en="How large was the territory you managed? How many merchants?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">How large was the territory you managed? How many merchants?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你之前负责的区域有多大？多少商户？</div>
+        <div class="vocab-phonetic">🗣️ 好 拉吉 瓦斯 得 太瑞特瑞 又 美你吉的？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 管理规模</div>
+      </div>
+      <button class="speak-btn" onclick="speak('How large was the territory you managed? How many merchants?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-48" onclick="toggleInterview(this,48)" data-en="If you find that a competitor is very strong in an area, how do you compete?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">If you find that a competitor is very strong in an area, how do you compete?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">如果你发现某个区域竞对非常强，你怎么打？</div>
+        <div class="vocab-phonetic">🗣️ 衣服 又 fai的 代特 额 肯配特特...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 竞争策略</div>
+      </div>
+      <button class="speak-btn" onclick="speak('If you find that a competitor is very strong in an area, how do you compete?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-49" onclick="toggleInterview(this,49)" data-en="How do you prioritize areas? Which ones do you attack first?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">How do you prioritize areas? Which ones do you attack first?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你怎么判断一个区域的优先级？</div>
+        <div class="vocab-phonetic">🗣️ 好 度 又 普赖欧瑞太斯 艾瑞额斯？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 优先级判断</div>
+      </div>
+      <button class="speak-btn" onclick="speak('How do you prioritize areas? Which ones do you attack first?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+  </div>
+  <h4 style="color:#555;margin:12px 0 8px;font-size:13px;">2.4 跨部门协作与向上管理</h4>
+  <div class="cards-grid">
+    <div class="vocab-card" id="iv-50" onclick="toggleInterview(this,50)" data-en="How do you collaborate with the operations team?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">How do you collaborate with the operations team?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你怎么跟运营团队配合？</div>
+        <div class="vocab-phonetic">🗣️ 好 度 又 克拉伯瑞特 位斯 得 奥泼瑞身斯 踢母？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 跨部门</div>
+      </div>
+      <button class="speak-btn" onclick="speak('How do you collaborate with the operations team?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-51" onclick="toggleInterview(this,51)" data-en="How do you deliver bad news to your manager?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">How do you deliver bad news to your manager?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你怎么向上级汇报坏消息？</div>
+        <div class="vocab-phonetic">🗣️ 好 度 又 得里沃 拜的 纽斯 兔 约 美你哲？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 向上管理</div>
+      </div>
+      <button class="speak-btn" onclick="speak('How do you deliver bad news to your manager?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-52" onclick="toggleInterview(this,52)" data-en="If your boss gives you a target you think is unreasonable, how do you handle it?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">If your boss gives you a target you think is unreasonable, how do you handle it?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">如果老板给你一个不合理的目标，你怎么处理？</div>
+        <div class="vocab-phonetic">🗣️ 衣服 约 波斯 给屋斯 又 额 塔给特...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 向上沟通</div>
+      </div>
+      <button class="speak-btn" onclick="speak('If your boss gives you a target you think is unreasonable, how do you handle it?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-53" onclick="toggleInterview(this,53)" data-en="Give me an example of a cross-team collaboration you drove successfully.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Give me an example of a cross-team collaboration you drove successfully.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">讲一个你推动跨部门合作成功的案例。</div>
+        <div class="vocab-phonetic">🗣️ 给屋 密 安 一个杂姆泼 奥夫 额 夸斯-踢母...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 协作力</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Give me an example of a cross-team collaboration you drove successfully.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+  </div>
+  <h4 style="color:#555;margin:12px 0 8px;font-size:13px;">2.5 行业理解与竞争分析</h4>
+  <div class="cards-grid">
+    <div class="vocab-card" id="iv-54" onclick="toggleInterview(this,54)" data-en="What is your view on the food delivery market in Brazil?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">What is your view on the food delivery market in Brazil?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你对巴西外卖市场怎么看？</div>
+        <div class="vocab-phonetic">🗣️ 沃次 约 尤 昂 得 夫的 得里弗瑞 马켓 印 布拉吉尔？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 市场理解</div>
+      </div>
+      <button class="speak-btn" onclick="speak('What is your view on the food delivery market in Brazil?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-55" onclick="toggleInterview(this,55)" data-en="How do you gather competitive intelligence?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">How do you gather competitive intelligence?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你怎么收集竞对信息？</div>
+        <div class="vocab-phonetic">🗣️ 好 度 又 盖得 肯配特提屋 印太里坚斯？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 信息收集</div>
+      </div>
+      <button class="speak-btn" onclick="speak('How do you gather competitive intelligence?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-56" onclick="toggleInterview(this,56)" data-en="What do you think is the most critical factor for a delivery platform&#39;s success?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">What do you think is the most critical factor for a delivery platform's success?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你觉得外卖平台成功最关键的因素是什么？</div>
+        <div class="vocab-phonetic">🗣️ 沃特 度 又 think 伊斯 得 莫斯特 克瑞提扣 法克特...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 商业洞察</div>
+      </div>
+      <button class="speak-btn" onclick="speak('What do you think is the most critical factor for a delivery platform\'s success?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-57" onclick="toggleInterview(this,57)" data-en="If merchant retention drops, what is the first thing you investigate?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">If merchant retention drops, what is the first thing you investigate?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">商户留存率下降，你第一反应查什么？</div>
+        <div class="vocab-phonetic">🗣️ 衣服 莫陈特 瑞疼身 捉破斯...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 问题诊断</div>
+      </div>
+      <button class="speak-btn" onclick="speak('If merchant retention drops, what is the first thing you investigate?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+  </div>
+  <h4 style="color:#555;margin:12px 0 8px;font-size:13px;">2.6 抗压与问题解决</h4>
+  <div class="cards-grid">
+    <div class="vocab-card" id="iv-58" onclick="toggleInterview(this,58)" data-en="What is the biggest business crisis you have faced? How did you solve it?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">What is the biggest business crisis you have faced? How did you solve it?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你经历过最大的业务危机是什么？</div>
+        <div class="vocab-phonetic">🗣️ 沃次 得 比格斯特 逼斯尼斯 克赖色斯...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 危机处理</div>
+      </div>
+      <button class="speak-btn" onclick="speak('What is the biggest business crisis you have faced? How did you solve it?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-59" onclick="toggleInterview(this,59)" data-en="If two people suddenly quit your team, how do you manage the pressure?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">If two people suddenly quit your team, how do you manage the pressure?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你团队突然走了两个人，你怎么顶住压力？</div>
+        <div class="vocab-phonetic">🗣️ 衣服 兔 匹泼 萨登里 快特 约 踢母...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 抗压能力</div>
+      </div>
+      <button class="speak-btn" onclick="speak('If two people suddenly quit your team, how do you manage the pressure?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-60" onclick="toggleInterview(this,60)" data-en="What is the biggest management mistake you have made? What did you learn?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">What is the biggest management mistake you have made? What did you learn?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你犯过最大的管理错误是什么？学到了什么？</div>
+        <div class="vocab-phonetic">🗣️ 沃次 得 比格斯特 美你吉门特 米斯忒克...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 反思能力</div>
+      </div>
+      <button class="speak-btn" onclick="speak('What is the biggest management mistake you have made? What did you learn?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-61" onclick="toggleInterview(this,61)" data-en="How do you handle conflicts within your team?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">How do you handle conflicts within your team?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">面对团队内部冲突，你怎么处理？</div>
+        <div class="vocab-phonetic">🗣️ 好 度 又 罕头 肯弗里克次 位新 约 踢母？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 冲突管理</div>
+      </div>
+      <button class="speak-btn" onclick="speak('How do you handle conflicts within your team?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+  </div>
+  <h4 style="color:#555;margin:12px 0 8px;font-size:13px;">2.7 领导力与文化适配</h4>
+  <div class="cards-grid">
+    <div class="vocab-card" id="iv-62" onclick="toggleInterview(this,62)" data-en="What is your management style? How would your team members describe you?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">What is your management style? How would your team members describe you?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你的管理风格是什么？</div>
+        <div class="vocab-phonetic">🗣️ 沃次 约 美你吉门特 斯太尔？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 管理风格</div>
+      </div>
+      <button class="speak-btn" onclick="speak('What is your management style? How would your team members describe you?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-63" onclick="toggleInterview(this,63)" data-en="How do you understand leading by example?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">How do you understand leading by example?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你怎么理解以身作则？</div>
+        <div class="vocab-phonetic">🗣️ 好 度 又 安得斯坦的 里丁 拜 一个杂姆泼？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 身先士卒</div>
+      </div>
+      <button class="speak-btn" onclick="speak('How do you understand leading by example?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-64" onclick="toggleInterview(this,64)" data-en="Are you willing to go to the field and visit merchants together with your BDs?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Are you willing to go to the field and visit merchants together with your BDs?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你能接受一起上前线扫街吗？</div>
+        <div class="vocab-phonetic">🗣️ 阿 又 威灵 兔 勾 兔 得 非尔的...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 接地气</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Are you willing to go to the field and visit merchants together with your BDs?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-65" onclick="toggleInterview(this,65)" data-en="How do you build team culture?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">How do you build team culture?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你怎么建设团队文化？</div>
+        <div class="vocab-phonetic">🗣️ 好 度 又 逼尔的 踢母 卡尔切？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 文化建设</div>
+      </div>
+      <button class="speak-btn" onclick="speak('How do you build team culture?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-66" onclick="toggleInterview(this,66)" data-en="What are your salary and level expectations?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">What are your salary and level expectations?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你期望的薪资和职级是什么？</div>
+        <div class="vocab-phonetic">🗣️ 沃特 阿 约 赛勒瑞 安的 来瘦 益斯派克忒身斯？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 薪资预期</div>
+      </div>
+      <button class="speak-btn" onclick="speak('What are your salary and level expectations?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-67" onclick="toggleInterview(this,67)" data-en="Do you have any questions for me?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Do you have any questions for me?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">最后你有什么想问我的？</div>
+        <div class="vocab-phonetic">🗣️ 度 又 嗨屋 爱你 快身斯 佛 密？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 好奇心</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Do you have any questions for me?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+  </div>
+  <h3 style="color:#1565c0;margin:20px 0 8px;font-size:16px;border-bottom:2px solid #e3f2fd;padding-bottom:6px;">📋 Part 3: 面试官交流口语（45句）</h3>
+  <p style="color:#888;font-size:12px;margin:0 0 12px;">场景：面试后面试官之间讨论候选人</p>
+  <h4 style="color:#555;margin:12px 0 8px;font-size:13px;">3.1 开场讨论</h4>
+  <div class="cards-grid">
+    <div class="vocab-card" id="iv-68" onclick="toggleInterview(this,68)" data-en="Alright, let&#39;s discuss this candidate.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Alright, let's discuss this candidate.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">好，我们来聊聊刚才这个候选人。</div>
+        <div class="vocab-phonetic">🗣️ 奥赖特，来次 迪斯卡斯 地斯 坎地dei特。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 开场</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Alright, let\'s discuss this candidate.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-69" onclick="toggleInterview(this,69)" data-en="What&#39;s your first impression of him or her?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">What's your first impression of him or her?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你对他/她的第一印象怎么样？</div>
+        <div class="vocab-phonetic">🗣️ 沃次 约 佛斯特 英普瑞身 奥夫 him/her？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 开场</div>
+      </div>
+      <button class="speak-btn" onclick="speak('What\'s your first impression of him or her?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-70" onclick="toggleInterview(this,70)" data-en="Let&#39;s start with strengths, then move to concerns.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Let's start with strengths, then move to concerns.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">我们先说优点再说风险，好吗？</div>
+        <div class="vocab-phonetic">🗣️ 来次 斯塔特 位斯 斯锤恩斯，扔 木屋 兔 肯色恩斯。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 开场</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Let\'s start with strengths, then move to concerns.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-71" onclick="toggleInterview(this,71)" data-en="Overall, what do you think?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Overall, what do you think?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">总体来说你觉得怎么样？</div>
+        <div class="vocab-phonetic">🗣️ 欧沃奥，沃特 度 又 think？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 开场</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Overall, what do you think?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+  </div>
+  <h4 style="color:#555;margin:12px 0 8px;font-size:13px;">3.2 评价优点</h4>
+  <div class="cards-grid">
+    <div class="vocab-card" id="iv-72" onclick="toggleInterview(this,72)" data-en="I think his/her sales experience is very solid.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">I think his/her sales experience is very solid.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">我觉得他/她的销售经验很扎实。</div>
+        <div class="vocab-phonetic">🗣️ 爱 think his/her 赛尔斯 益斯匹瑞恩斯 伊斯 V瑞 搜里的。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 评价优点</div>
+      </div>
+      <button class="speak-btn" onclick="speak('I think his/her sales experience is very solid.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-73" onclick="toggleInterview(this,73)" data-en="Great communication skills, very articulate.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Great communication skills, very articulate.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">沟通能力很强，表达很清晰。</div>
+        <div class="vocab-phonetic">🗣️ 格瑞特 克谬尼K身 斯ki尔斯，V瑞 阿踢Q来特。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 评价优点</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Great communication skills, very articulate.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-74" onclick="toggleInterview(this,74)" data-en="He/She shows strong willingness to do field work.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">He/She shows strong willingness to do field work.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">他/她有很强的地推意愿。</div>
+        <div class="vocab-phonetic">🗣️ He/She 秀斯 斯重 威灵尼斯 兔 度 非尔的 沃克。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 评价优点</div>
+      </div>
+      <button class="speak-btn" onclick="speak('He/She shows strong willingness to do field work.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-75" onclick="toggleInterview(this,75)" data-en="The performance numbers are impressive, backed by data.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">The performance numbers are impressive, backed by data.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">业绩数据很漂亮，能用数字说话。</div>
+        <div class="vocab-phonetic">🗣️ 得 泼佛门斯 囊伯斯 阿 英普瑞色屋，拜克特 拜 得他。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 评价优点</div>
+      </div>
+      <button class="speak-btn" onclick="speak('The performance numbers are impressive, backed by data.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-76" onclick="toggleInterview(this,76)" data-en="Seems like a fast learner.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Seems like a fast learner.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">学习能力看起来不错。</div>
+        <div class="vocab-phonetic">🗣️ 西母斯 来克 额 发斯特 乐呢。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 评价优点</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Seems like a fast learner.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-77" onclick="toggleInterview(this,77)" data-en="Very positive attitude, shows drive.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Very positive attitude, shows drive.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">态度很积极，有冲劲。</div>
+        <div class="vocab-phonetic">🗣️ V瑞 泡色提屋 艾提丢的，秀斯 捉爱屋。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 评价优点</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Very positive attitude, shows drive.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-78" onclick="toggleInterview(this,78)" data-en="Has potential to lead a team.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Has potential to lead a team.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">有带团队的潜质。</div>
+        <div class="vocab-phonetic">🗣️ 嗨斯 泼疼歇 兔 里的 额 踢母。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 评价优点</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Has potential to lead a team.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-79" onclick="toggleInterview(this,79)" data-en="His/Her previous industry aligns well with ours.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">His/Her previous industry aligns well with ours.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">他/她之前的行业跟我们很匹配。</div>
+        <div class="vocab-phonetic">🗣️ His/Her 普瑞维额斯 印达斯锤 额赖恩斯 韦尔 位斯 奥尔斯。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 评价优点</div>
+      </div>
+      <button class="speak-btn" onclick="speak('His/Her previous industry aligns well with ours.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+  </div>
+  <h4 style="color:#555;margin:12px 0 8px;font-size:13px;">3.3 指出风险/缺点</h4>
+  <div class="cards-grid">
+    <div class="vocab-card" id="iv-80" onclick="toggleInterview(this,80)" data-en="I have one concern.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">I have one concern.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">我有一个顾虑……</div>
+        <div class="vocab-phonetic">🗣️ 爱 嗨屋 万 肯色恩。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 指出风险</div>
+      </div>
+      <button class="speak-btn" onclick="speak('I have one concern.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-81" onclick="toggleInterview(this,81)" data-en="Stability is the biggest red flag.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Stability is the biggest red flag.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">稳定性是最大的红旗。</div>
+        <div class="vocab-phonetic">🗣️ 斯特逼里提 伊斯 得 比格斯特 瑞的 弗赖格。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 指出风险</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Stability is the biggest red flag.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-82" onclick="toggleInterview(this,82)" data-en="Too many job hops, I am a bit worried.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Too many job hops, I am a bit worried.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">跳槽太频繁了，我有点担心。</div>
+        <div class="vocab-phonetic">🗣️ 兔 美你 乔布 哈普斯，爱母 额 逼特 沃瑞的。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 指出风险</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Too many job hops, I am a bit worried.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-83" onclick="toggleInterview(this,83)" data-en="No industry experience, would need a longer ramp-up time.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">No industry experience, would need a longer ramp-up time.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">没有行业经验，需要较长时间适应。</div>
+        <div class="vocab-phonetic">🗣️ No 印达斯锤 益斯匹瑞恩斯，乌的 尼的 额 龙格 瑞姆普-阿普 太母。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 指出风险</div>
+      </div>
+      <button class="speak-btn" onclick="speak('No industry experience, would need a longer ramp-up time.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-84" onclick="toggleInterview(this,84)" data-en="The lack of English might affect internal communication.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">The lack of English might affect internal communication.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">英语不行可能会影响内部沟通。</div>
+        <div class="vocab-phonetic">🗣️ 得 赖克 奥夫 英格里许 买特 额飞克特 印特呢 克谬尼K身。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 指出风险</div>
+      </div>
+      <button class="speak-btn" onclick="speak('The lack of English might affect internal communication.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-85" onclick="toggleInterview(this,85)" data-en="I feel the answers were a bit vague, lacking specific examples.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">I feel the answers were a bit vague, lacking specific examples.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">我感觉回答比较空，缺少具体案例。</div>
+        <div class="vocab-phonetic">🗣️ 爱 非尔 得 安色斯 沃 额 逼特 vei格...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 指出风险</div>
+      </div>
+      <button class="speak-btn" onclick="speak('I feel the answers were a bit vague, lacking specific examples.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-86" onclick="toggleInterview(this,86)" data-en="Not enough management experience, might struggle with a larger team.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Not enough management experience, might struggle with a larger team.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">管理经验不够，可能带不了大团队。</div>
+        <div class="vocab-phonetic">🗣️ 闹特 伊纳夫 美你吉门特 益斯匹瑞恩斯...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 指出风险</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Not enough management experience, might struggle with a larger team.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-87" onclick="toggleInterview(this,87)" data-en="He/She knows very little about competitors.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">He/She knows very little about competitors.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">他/她对竞对了解太少了。</div>
+        <div class="vocab-phonetic">🗣️ He/She no斯 V瑞 里投 额饱特 肯配特特斯。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 指出风险</div>
+      </div>
+      <button class="speak-btn" onclick="speak('He/She knows very little about competitors.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+  </div>
+  <h4 style="color:#555;margin:12px 0 8px;font-size:13px;">3.4 是否录用讨论</h4>
+  <div class="cards-grid">
+    <div class="vocab-card" id="iv-88" onclick="toggleInterview(this,88)" data-en="Do you think we should hire this person?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Do you think we should hire this person?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你觉得我们应该要这个人吗？</div>
+        <div class="vocab-phonetic">🗣️ 度 又 think 位 舒的 嗨尔 地斯 泼森？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 录用讨论</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Do you think we should hire this person?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-89" onclick="toggleInterview(this,89)" data-en="I am leaning towards giving an offer.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">I am leaning towards giving an offer.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">我倾向于给 offer。</div>
+        <div class="vocab-phonetic">🗣️ 爱母 里宁 特沃兹 给ving 安 奥佛。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 录用讨论</div>
+      </div>
+      <button class="speak-btn" onclick="speak('I am leaning towards giving an offer.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-90" onclick="toggleInterview(this,90)" data-en="I am still on the fence, not fully sure.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">I am still on the fence, not fully sure.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">我还是有犹豫，不太确定。</div>
+        <div class="vocab-phonetic">🗣️ 爱母 斯提尔 昂 得 粉斯，闹特 佛里 秀尔。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 录用讨论</div>
+      </div>
+      <button class="speak-btn" onclick="speak('I am still on the fence, not fully sure.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-91" onclick="toggleInterview(this,91)" data-en="I think we can move to the next round.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">I think we can move to the next round.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">我觉得可以进入下一轮。</div>
+        <div class="vocab-phonetic">🗣️ 爱 think 位 肯 木屋 兔 得 奈斯特 润的。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 录用讨论</div>
+      </div>
+      <button class="speak-btn" onclick="speak('I think we can move to the next round.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-92" onclick="toggleInterview(this,92)" data-en="I don&#39;t think this person is a good fit.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">I don't think this person is a good fit.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">这个人我觉得不太合适。</div>
+        <div class="vocab-phonetic">🗣️ 爱 东特 think 地斯 泼森 伊斯 额 古的 非特。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 录用讨论</div>
+      </div>
+      <button class="speak-btn" onclick="speak('I don\'t think this person is a good fit.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-93" onclick="toggleInterview(this,93)" data-en="Let&#39;s give it a shot. Let&#39;s give him/her a chance.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Let's give it a shot. Let's give him/her a chance.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">我们试试吧，给个机会。</div>
+        <div class="vocab-phonetic">🗣️ 来次 给屋 伊特 额 啥特。来次 给屋 him/her 额 前斯。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 录用讨论</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Let\'s give it a shot. Let\'s give him/her a chance.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-94" onclick="toggleInterview(this,94)" data-en="If the explanation for the job hops makes sense, I am okay with it.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">If the explanation for the job hops makes sense, I am okay with it.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">如果稳定性的解释合理，我OK。</div>
+        <div class="vocab-phonetic">🗣️ 衣服 得 诶克斯普勒内身 佛 得 乔布 哈普斯 美克斯 森斯...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 录用讨论</div>
+      </div>
+      <button class="speak-btn" onclick="speak('If the explanation for the job hops makes sense, I am okay with it.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-95" onclick="toggleInterview(this,95)" data-en="I suggest one more round, let others on the team also meet them.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">I suggest one more round, let others on the team also meet them.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">我建议再面一轮。</div>
+        <div class="vocab-phonetic">🗣️ 爱 色杰斯特 万 莫 润的...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 录用讨论</div>
+      </div>
+      <button class="speak-btn" onclick="speak('I suggest one more round, let others on the team also meet them.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-96" onclick="toggleInterview(this,96)" data-en="Which territory would be the best fit for this person?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Which territory would be the best fit for this person?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">这个人放到哪个区域比较合适？</div>
+        <div class="vocab-phonetic">🗣️ 维吃 太瑞特瑞 乌的 逼 得 拜斯特 非特 佛 地斯 泼森？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 录用讨论</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Which territory would be the best fit for this person?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-97" onclick="toggleInterview(this,97)" data-en="Overall, the pros outweigh the risks. Let&#39;s hire.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Overall, the pros outweigh the risks. Let's hire.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">综合来看，优点大于风险，我们要吧。</div>
+        <div class="vocab-phonetic">🗣️ 欧沃奥，得 普罗斯 奥特wei 得 瑞斯克斯。来次 嗨尔。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 录用讨论</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Overall, the pros outweigh the risks. Let\'s hire.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+  </div>
+  <h4 style="color:#555;margin:12px 0 8px;font-size:13px;">3.5 定薪定级讨论</h4>
+  <div class="cards-grid">
+    <div class="vocab-card" id="iv-98" onclick="toggleInterview(this,98)" data-en="What level do you think is appropriate?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">What level do you think is appropriate?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你觉得给什么级别合适？</div>
+        <div class="vocab-phonetic">🗣️ 沃特 来瘦 度 又 think 伊斯 额普肉普瑞额特？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 定薪定级</div>
+      </div>
+      <button class="speak-btn" onclick="speak('What level do you think is appropriate?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-99" onclick="toggleInterview(this,99)" data-en="Based on the experience, what salary range should we offer?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Based on the experience, what salary range should we offer?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">他/她的经验应该定在什么薪资范围？</div>
+        <div class="vocab-phonetic">🗣️ 北斯特 昂 得 益斯匹瑞恩斯...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 定薪定级</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Based on the experience, what salary range should we offer?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-100" onclick="toggleInterview(this,100)" data-en="I think we can offer mid-range.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">I think we can offer mid-range.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">我觉得可以给中等水平。</div>
+        <div class="vocab-phonetic">🗣️ 爱 think 位 肯 奥佛 米的-瑞恩吉。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 定薪定级</div>
+      </div>
+      <button class="speak-btn" onclick="speak('I think we can offer mid-range.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-101" onclick="toggleInterview(this,101)" data-en="What if the candidate asks for too much?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">What if the candidate asks for too much?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">如果对方要价太高怎么办？</div>
+        <div class="vocab-phonetic">🗣️ 沃特 衣服 得 坎地dei特 阿斯克斯 佛 兔 嘛吃？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 定薪定级</div>
+      </div>
+      <button class="speak-btn" onclick="speak('What if the candidate asks for too much?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-102" onclick="toggleInterview(this,102)" data-en="Our budget range is from X to Y.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Our budget range is from X to Y.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">我们的预算范围是多少到多少。</div>
+        <div class="vocab-phonetic">🗣️ 奥尔 巴吉特 瑞恩吉 伊斯 从 X 兔 Y。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 定薪定级</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Our budget range is from X to Y.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-103" onclick="toggleInterview(this,103)" data-en="Given the limited experience, we can start one level lower with a probation period.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Given the limited experience, we can start one level lower with a probation period.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">考虑到经验不足，可以低一档试用期观察。</div>
+        <div class="vocab-phonetic">🗣️ 给温 得 里米特的 益斯匹瑞恩斯...</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 定薪定级</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Given the limited experience, we can start one level lower with a probation period.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-104" onclick="toggleInterview(this,104)" data-en="How do we set the base-to-commission ratio?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">How do we set the base-to-commission ratio?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">底薪加提成的比例怎么定？</div>
+        <div class="vocab-phonetic">🗣️ 好 度 位 赛特 得 北斯-兔-克米身 瑞秀？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 定薪定级</div>
+      </div>
+      <button class="speak-btn" onclick="speak('How do we set the base-to-commission ratio?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-105" onclick="toggleInterview(this,105)" data-en="If performance is good, how soon can we promote?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">If performance is good, how soon can we promote?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">如果表现好，多久可以升？</div>
+        <div class="vocab-phonetic">🗣️ 衣服 泼佛门斯 伊斯 古的，好 顺 肯 位 普罗莫特？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 定薪定级</div>
+      </div>
+      <button class="speak-btn" onclick="speak('If performance is good, how soon can we promote?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+  </div>
+  <h4 style="color:#555;margin:12px 0 8px;font-size:13px;">3.6 总结决定</h4>
+  <div class="cards-grid">
+    <div class="vocab-card" id="iv-106" onclick="toggleInterview(this,106)" data-en="Alright, let&#39;s go with that decision.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Alright, let's go with that decision.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">好，那我们就这么定了。</div>
+        <div class="vocab-phonetic">🗣️ 奥赖特，来次 勾 位斯 代特 地色身。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 总结</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Alright, let\'s go with that decision.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-107" onclick="toggleInterview(this,107)" data-en="I will send the offer, you inform them of the result.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">I will send the offer, you inform them of the result.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">我来发offer，你来通知面试结果。</div>
+        <div class="vocab-phonetic">🗣️ 爱尔 森的 得 奥佛，又 印佛母 得母 奥夫 得 瑞扎特。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 总结</div>
+      </div>
+      <button class="speak-btn" onclick="speak('I will send the offer, you inform them of the result.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-108" onclick="toggleInterview(this,108)" data-en="Let&#39;s pass on this one.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Let's pass on this one.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">这个人我们pass吧。</div>
+        <div class="vocab-phonetic">🗣️ 来次 帕斯 昂 地斯 万。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 总结</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Let\'s pass on this one.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-109" onclick="toggleInterview(this,109)" data-en="Let&#39;s keep them in the talent pool for future openings.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Let's keep them in the talent pool for future openings.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">放进人才库，以后有合适的再联系。</div>
+        <div class="vocab-phonetic">🗣️ 来次 kip 得母 印 得 太伦特 普尔 佛 非又切 欧喷宁斯。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 总结</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Let\'s keep them in the talent pool for future openings.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-110" onclick="toggleInterview(this,110)" data-en="Of the three candidates today, who is your top pick?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Of the three candidates today, who is your top pick?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">今天面的三个人里，你最想要谁？</div>
+        <div class="vocab-phonetic">🗣️ 奥夫 得 思瑞 坎地dei次 特得，胡斯 约 套普 匹克？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 总结</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Of the three candidates today, who is your top pick?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-111" onclick="toggleInterview(this,111)" data-en="Okay, let&#39;s move quickly on this.">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Okay, let's move quickly on this.</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">好的，那我们赶紧推进。</div>
+        <div class="vocab-phonetic">🗣️ 欧K，来次 木屋 快克里 昂 地斯。</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 总结</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Okay, let\'s move quickly on this.',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+    <div class="vocab-card" id="iv-112" onclick="toggleInterview(this,112)" data-en="Anything else you would like to add?">
+      <span class="flip-icon">👁</span>
+      <div class="vocab-en">Anything else you would like to add?</div>
+      <div class="vocab-hint">点击查看中文+谐音</div>
+      <div class="vocab-reveal">
+        <div class="vocab-cn">你还有什么补充的吗？</div>
+        <div class="vocab-phonetic">🗣️ 爱你sing 诶尔斯 又的 来克 兔 爱的？</div>
+        <div style="margin-top:4px;font-size:11px;color:#1565c0;font-weight:600;">💡 总结</div>
+      </div>
+      <button class="speak-btn" onclick="speak('Anything else you would like to add?',event)">🔈</button>
+      <div class="card-tags">
+        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
+        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
+        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
 // ====== localStorage helpers (must be first) ======
@@ -10359,7 +12267,7 @@ function closeAllQA() {
 }
 
 // ====== Reverse Mode ======
-var reverseModes = {vocab: false, sentence: false, para: false, qa: false};
+var reverseModes = {vocab: false, sentence: false, para: false, qa: false, interview: false};
 
 function toggleReverse(section) {
   reverseModes[section] = !reverseModes[section];
@@ -10659,6 +12567,36 @@ window.addEventListener('DOMContentLoaded', function() {
   updateCounts();
   restoreState();
 });
+
+// ====== Interview Tab ======
+function toggleInterview(el, idx) {
+  var panel = document.getElementById('panel-interview');
+  if (panel && panel.classList.contains('listen-mode')) {
+    var states = ['', 'listen-reveal-en', 'listen-reveal-all'];
+    var cur = el.dataset.listenState ? parseInt(el.dataset.listenState) : 0;
+    if (states[cur]) el.classList.remove(states[cur]);
+    cur = (cur + 1) % 3;
+    el.dataset.listenState = cur;
+    if (states[cur]) el.classList.add(states[cur]);
+    return;
+  }
+  el.classList.toggle('flipped');
+}
+
+// ====== Interview filter ======
+function filterCards(section, query) {
+  var panel = document.getElementById('panel-' + section);
+  if (!panel) return;
+  var cards = panel.querySelectorAll('.vocab-card');
+  var q = query.toLowerCase();
+  cards.forEach(function(card) {
+    var en = (card.getAttribute('data-en') || '').toLowerCase();
+    var cn = card.querySelector('.vocab-cn');
+    var cnText = cn ? cn.textContent.toLowerCase() : '';
+    card.style.display = (en.indexOf(q) >= 0 || cnText.indexOf(q) >= 0) ? '' : 'none';
+  });
+}
+
 </script>
 <div id="qa-container"><div class="section-header"><span class="section-badge">A · DBR数据汇报</span></div>
     <div class="qa-card" id="qa-0">
