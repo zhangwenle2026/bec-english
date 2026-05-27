@@ -8132,7 +8132,19 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
     <button class="bulk-btn" style="background:#f5f7fa;color:#555" onclick="filterByTag('all')">全部显示</button>
     <span class="bulk-count"></span>
   </div>
-  <div id="sentence-container"><div class="section-header"><span class="section-badge">A · 数据汇报</span></div>
+    <div class="interview-toc" id="sentence-toc">
+    <div class="toc-title">📑 目录</div>
+    <div class="toc-pills">
+      <a class="toc-pill" onclick="scrollToSec('sec-sent-a')">A · 数据汇报</a>
+      <a class="toc-pill" onclick="scrollToSec('sec-sent-b')">B · 问题与风险</a>
+      <a class="toc-pill" onclick="scrollToSec('sec-sent-c')">C · 资源申请</a>
+      <a class="toc-pill" onclick="scrollToSec('sec-sent-d')">D · 内部管理</a>
+      <a class="toc-pill" onclick="scrollToSec('sec-sent-e')">E · 回答问题</a>
+      <a class="toc-pill" onclick="scrollToSec('sec-sent-f')">F · 开场与收场</a>
+      <a class="toc-pill" onclick="scrollToSec('sec-sent-g')">G · 追问与确认</a>
+    </div>
+  </div>
+  <div id="sentence-container"><div class="section-header" id="sec-sent-a"><span class="section-badge">A · 数据汇报</span></div>
     <div class="sentence-card" id="sc-0" onclick="toggleSentence(this)">
       <div class="sentence-num">SENTENCE 001</div>
       <div class="sentence-en">Overall, our regional performance is stable this week.</div>
@@ -8372,7 +8384,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
         <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
         <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
       </div>
-    </div><div class="section-header"><span class="section-badge">B · 问题与风险</span></div>
+    </div><div class="section-header" id="sec-sent-b"><span class="section-badge">B · 问题与风险</span></div>
     <div class="sentence-card" id="sc-20" onclick="toggleSentence(this)">
       <div class="sentence-num">SENTENCE 021</div>
       <div class="sentence-en">The main challenge we are facing is the high cancellation rate.</div>
@@ -8552,7 +8564,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
         <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
         <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
       </div>
-    </div><div class="section-header"><span class="section-badge">C · 资源申请</span></div>
+    </div><div class="section-header" id="sec-sent-c"><span class="section-badge">C · 资源申请</span></div>
     <div class="sentence-card" id="sc-35" onclick="toggleSentence(this)">
       <div class="sentence-num">SENTENCE 036</div>
       <div class="sentence-en">We would like to request support from the product team.</div>
@@ -8672,7 +8684,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
         <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
         <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
       </div>
-    </div><div class="section-header"><span class="section-badge">D · 内部管理</span></div>
+    </div><div class="section-header" id="sec-sent-d"><span class="section-badge">D · 内部管理</span></div>
     <div class="sentence-card" id="sc-45" onclick="toggleSentence(this)">
       <div class="sentence-num">SENTENCE 046</div>
       <div class="sentence-en">I have aligned the targets with all city managers.</div>
@@ -8852,7 +8864,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
         <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
         <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
       </div>
-    </div><div class="section-header"><span class="section-badge">E · 回答问题</span></div>
+    </div><div class="section-header" id="sec-sent-e"><span class="section-badge">E · 回答问题</span></div>
     <div class="sentence-card" id="sc-60" onclick="toggleSentence(this)">
       <div class="sentence-num">SENTENCE 061</div>
       <div class="sentence-en">I don't think rain is the main reason, because we did well on mid-tier signing.</div>
@@ -9032,7 +9044,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
         <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
         <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
       </div>
-    </div><div class="section-header"><span class="section-badge">F · 开场与收场</span></div>
+    </div><div class="section-header" id="sec-sent-f"><span class="section-badge">F · 开场与收场</span></div>
     <div class="sentence-card" id="sc-75" onclick="toggleSentence(this)">
       <div class="sentence-num">SENTENCE 076</div>
       <div class="sentence-en">Good morning, everyone. Let's start today's DBR.</div>
@@ -9152,7 +9164,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
         <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
         <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
       </div>
-    </div><div class="section-header"><span class="section-badge">G · 追问与确认</span></div>
+    </div><div class="section-header" id="sec-sent-g"><span class="section-badge">G · 追问与确认</span></div>
     <div class="sentence-card" id="sc-85" onclick="toggleSentence(this)">
       <div class="sentence-num">SENTENCE 086</div>
       <div class="sentence-en">Can you clarify what you mean by that?</div>
@@ -9361,7 +9373,20 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
     <button class="bulk-btn" style="background:#f5f7fa;color:#555" onclick="filterByTag('all')">全部显示</button>
     <span class="bulk-count"></span>
   </div>
-  <div id="para-container"><div class="section-header"><span class="section-badge">A · 区域汇报开场</span></div>
+    <div class="interview-toc" id="para-toc">
+    <div class="toc-title">📑 目录</div>
+    <div class="toc-pills">
+      <a class="toc-pill" onclick="scrollToSec('sec-para-a')">A · 区域汇报开场</a>
+      <a class="toc-pill" onclick="scrollToSec('sec-para-b')">B · 问题说明</a>
+      <a class="toc-pill" onclick="scrollToSec('sec-para-c')">C · 资源申请</a>
+      <a class="toc-pill" onclick="scrollToSec('sec-para-d')">D · 回答追问</a>
+      <a class="toc-pill" onclick="scrollToSec('sec-para-e')">E · 雨季应对</a>
+      <a class="toc-pill" onclick="scrollToSec('sec-para-f')">F · 竞争对手</a>
+      <a class="toc-pill" onclick="scrollToSec('sec-para-g')">G · 激励竞赛</a>
+      <a class="toc-pill" onclick="scrollToSec('sec-para-h')">H · 商户管理</a>
+    </div>
+  </div>
+  <div id="para-container"><div class="section-header" id="sec-para-a"><span class="section-badge">A · 区域汇报开场</span></div>
     <div class="para-card" onclick="togglePara(this)">
       <div class="para-title">标准开场版</div>
       <div class="para-en">Overall, our regional performance is stable this week, and most of our core metrics are improving. This week, total orders reached 13,200 with a week-over-week growth of 6.5%. Compared with our weekly target, we have already achieved 91%. Among all regions, we currently rank second in order volume. The main focus this week remains on top-tier merchant operations and new signing.</div>
@@ -9481,7 +9506,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
         <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
         <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
       </div>
-    </div><div class="section-header"><span class="section-badge">B · 问题说明</span></div>
+    </div><div class="section-header" id="sec-para-b"><span class="section-badge">B · 问题说明</span></div>
     <div class="para-card" onclick="togglePara(this)">
       <div class="para-title">取消率问题</div>
       <div class="para-en">The main issue we are facing is the high cancellation rate, which is currently above our target of 1.5%. The root cause is mainly missing items and delivery delays. We have already launched a cross-functional workstream to address this, involving operations, sales, merchant experience, and training. Our goal is to reduce the cancellation rate below the target by end of this month.</div>
@@ -9601,7 +9626,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
         <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
         <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
       </div>
-    </div><div class="section-header"><span class="section-badge">C · 资源申请</span></div>
+    </div><div class="section-header" id="sec-para-c"><span class="section-badge">C · 资源申请</span></div>
     <div class="para-card" onclick="togglePara(this)">
       <div class="para-title">申请产品团队支持</div>
       <div class="para-en">We would like to formally request support from the product team. The issue we are facing — row-level security on the dashboard — cannot be solved by the operations team alone. We need dedicated technical development resources. Our team will fully cooperate and provide all necessary requirements and testing support. We are requesting this to be prioritized in the next sprint.</div>
@@ -9661,7 +9686,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
         <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
         <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
       </div>
-    </div><div class="section-header"><span class="section-badge">D · 回答追问</span></div>
+    </div><div class="section-header" id="sec-para-d"><span class="section-badge">D · 回答追问</span></div>
     <div class="para-card" onclick="togglePara(this)">
       <div class="para-title">解释零签约</div>
       <div class="para-en">Regarding yesterday's zero top-tier signings, I want to be transparent. We launched a new tracking system for top-tier leads this week and reassigned all leads to new BDs. During this transition, BDs were focused on collecting feedback and qualifying prospects rather than closing deals. I understand zero is not acceptable, but we are on track and I expect results starting today.</div>
@@ -9757,7 +9782,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
         <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
         <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
       </div>
-    </div><div class="section-header"><span class="section-badge">E · 雨季应对</span></div>
+    </div><div class="section-header" id="sec-para-e"><span class="section-badge">E · 雨季应对</span></div>
     <div class="para-card" onclick="togglePara(this)">
       <div class="para-title">雨季策略</div>
       <div class="para-en">The rainy season typically lasts two to three months and can significantly impact field productivity. Our approach is to adapt rather than slow down. We schedule all merchant visits for the morning hours before the rain starts. We also focus on indoor activities — like following up via WhatsApp and phone calls — during heavy rain periods. We do not accept rain as an excuse for missing daily targets.</div>
@@ -9805,7 +9830,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
         <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
         <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
       </div>
-    </div><div class="section-header"><span class="section-badge">F · 竞争对手</span></div>
+    </div><div class="section-header" id="sec-para-f"><span class="section-badge">F · 竞争对手</span></div>
     <div class="para-card" onclick="togglePara(this)">
       <div class="para-title">竞对监控</div>
       <div class="para-en">We need to build our competitive intelligence capability. Every BD should be trained to identify and report competitor activities — new promotions, exclusive deals, and price changes. When we see an abnormal drop in a specific area, our first question should be: is this a merchant issue or a competitor issue? The answer changes our response entirely. Merchant issues can wait; competitor issues need an immediate response.</div>
@@ -9865,7 +9890,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
         <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
         <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
       </div>
-    </div><div class="section-header"><span class="section-badge">G · 激励竞赛</span></div>
+    </div><div class="section-header" id="sec-para-g"><span class="section-badge">G · 激励竞赛</span></div>
     <div class="para-card" onclick="togglePara(this)">
       <div class="para-title">竞赛动员</div>
       <div class="para-en">The incentive competition is designed to align everyone toward the same business goals. The key workstreams are recall, new signing, and deep discount coverage. I want every city manager to communicate the rules clearly to their BDMs and BDs. They need to understand not just what the tasks are, but why we are doing them. When people understand the purpose, they are more motivated to deliver results.</div>
@@ -9913,7 +9938,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
         <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
         <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
       </div>
-    </div><div class="section-header"><span class="section-badge">H · 商户管理</span></div>
+    </div><div class="section-header" id="sec-para-h"><span class="section-badge">H · 商户管理</span></div>
     <div class="para-card" onclick="togglePara(this)">
       <div class="para-title">头部商户维护</div>
       <div class="para-en">Our top merchants drive a disproportionate share of our order volume. Losing even one of them — like Ki Sushi having zero orders yesterday — is a significant impact. Every BDM should know their top five merchants by name and visit them personally at least once a week. If a top merchant shows any sign of decline, we need to respond the same day, not wait for the weekly review.</div>
@@ -9991,7 +10016,18 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
     <button class="bulk-btn" style="background:#f5f7fa;color:#555" onclick="filterByTag('all')">全部显示</button>
     <span class="bulk-count"></span>
   </div>
-  <div id="qa-container"><div class="section-header"><span class="section-badge">A · DBR数据汇报</span></div>
+    <div class="interview-toc" id="qa-toc">
+    <div class="toc-title">📑 目录</div>
+    <div class="toc-pills">
+      <a class="toc-pill" onclick="scrollToSec('sec-qa-a')">A · DBR数据汇报</a>
+      <a class="toc-pill" onclick="scrollToSec('sec-qa-b')">B · 问题解释</a>
+      <a class="toc-pill" onclick="scrollToSec('sec-qa-c')">C · 资源申请</a>
+      <a class="toc-pill" onclick="scrollToSec('sec-qa-d')">D · 竞争对手</a>
+      <a class="toc-pill" onclick="scrollToSec('sec-qa-e')">E · 团队管理</a>
+      <a class="toc-pill" onclick="scrollToSec('sec-qa-f')">F · 激励竞赛</a>
+    </div>
+  </div>
+  <div id="qa-container"><div class="section-header" id="sec-qa-a"><span class="section-badge">A · DBR数据汇报</span></div>
     <div class="qa-card" id="qa-0">
       <div class="qa-question" onclick="toggleQA(this.parentElement)">
         <div class="qa-q-badge">Q</div>
@@ -10036,7 +10072,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
         <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
       </div>
     </div>
-<div class="section-header"><span class="section-badge">B · 问题解释</span></div>
+<div class="section-header" id="sec-qa-b"><span class="section-badge">B · 问题解释</span></div>
     <div class="qa-card" id="qa-2">
       <div class="qa-question" onclick="toggleQA(this.parentElement)">
         <div class="qa-q-badge">Q</div>
@@ -10081,7 +10117,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
         <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
       </div>
     </div>
-<div class="section-header"><span class="section-badge">C · 资源申请</span></div>
+<div class="section-header" id="sec-qa-c"><span class="section-badge">C · 资源申请</span></div>
     <div class="qa-card" id="qa-4">
       <div class="qa-question" onclick="toggleQA(this.parentElement)">
         <div class="qa-q-badge">Q</div>
@@ -10104,7 +10140,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
         <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
       </div>
     </div>
-<div class="section-header"><span class="section-badge">D · 竞争对手</span></div>
+<div class="section-header" id="sec-qa-d"><span class="section-badge">D · 竞争对手</span></div>
     <div class="qa-card" id="qa-5">
       <div class="qa-question" onclick="toggleQA(this.parentElement)">
         <div class="qa-q-badge">Q</div>
@@ -10127,7 +10163,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
         <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
       </div>
     </div>
-<div class="section-header"><span class="section-badge">E · 团队管理</span></div>
+<div class="section-header" id="sec-qa-e"><span class="section-badge">E · 团队管理</span></div>
     <div class="qa-card" id="qa-6">
       <div class="qa-question" onclick="toggleQA(this.parentElement)">
         <div class="qa-q-badge">Q</div>
@@ -10172,7 +10208,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
         <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
       </div>
     </div>
-<div class="section-header"><span class="section-badge">F · 激励竞赛</span></div>
+<div class="section-header" id="sec-qa-f"><span class="section-badge">F · 激励竞赛</span></div>
     <div class="qa-card" id="qa-8">
       <div class="qa-question" onclick="toggleQA(this.parentElement)">
         <div class="qa-q-badge">Q</div>
@@ -12637,7 +12673,7 @@ function filterCards(section, query) {
 }
 
 
-// ====== Interview TOC scroll ======
+// ====== TOC scroll (all tabs) ======
 function scrollToSec(id) {
   var el = document.getElementById(id);
   if (el) {
@@ -12649,234 +12685,6 @@ function scrollToSec(id) {
 }
 
 </script>
-<div id="qa-container"><div class="section-header"><span class="section-badge">A · DBR数据汇报</span></div>
-    <div class="qa-card" id="qa-0">
-      <div class="qa-question" onclick="toggleQA(this.parentElement)">
-        <div class="qa-q-badge">Q</div>
-        <div class="qa-q-text">
-          <div class="qa-q-en">Our GMV today is three point two million reais, which is ninety-two percent of the daily target.</div>
-          <div class="audio-timeline-wrap" onclick="event.stopPropagation()"><button class="speak-btn" onclick="event.stopPropagation();speakWithTimeline('Our GMV today is three point two million reais, which is ninety-two percent of the daily target.',this,this.parentElement.querySelector('.audio-timeline'),this.parentElement.querySelector('.pause-btn'))" title="美式朗读">🔈</button><input class="audio-timeline" type="range" min="0" max="100" value="0" onchange="seekSpeech(this,'Our GMV today is three point two million reais, which is ninety-two percent of the daily target.',this.parentElement.querySelector('.speak-btn'))"><span class="audio-time-label">0:00 / 0:00</span><button class="pause-btn" onclick="event.stopPropagation();togglePause(this)" title="暂停">⏸</button></div>
-          <div class="qa-q-cn">我们今天的GMV是320万雷亚尔，达到日目标的92%。</div>
-        </div>
-        <div class="qa-toggle">▼</div>
-      </div>
-      <div class="qa-answer">
-        <div class="qa-a-badge">A · 参考答案</div>
-        <div class="qa-a-en">We are currently eight percent below target. The main drag is the Zona Norte district, where operating rate dropped to sixty-one percent this morning due to heavy rain. We have activated our rain contingency plan — increasing delivery subsidies and notifying active merchants to prepare extra capacity. We expect to recover to ninety-five percent by end of day.</div>
-        <div class="qa-a-cn">我们目前低于目标8%。主要拖累是北区，今早因大雨运营率降至61%。我们已启动雨天应急预案——增加配送补贴并通知活跃商户准备额外运力。预计今天结束前恢复至95%。</div>
-      </div>
-    
-      <div class="card-tags">
-        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
-        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
-        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
-      </div>
-    </div>
-    <div class="qa-card" id="qa-1">
-      <div class="qa-question" onclick="toggleQA(this.parentElement)">
-        <div class="qa-q-badge">Q</div>
-        <div class="qa-q-text">
-          <div class="qa-q-en">Why did our cancellation rate spike to eight percent yesterday afternoon?</div>
-          <div class="audio-timeline-wrap" onclick="event.stopPropagation()"><button class="speak-btn" onclick="event.stopPropagation();speakWithTimeline('Why did our cancellation rate spike to eight percent yesterday afternoon?',this,this.parentElement.querySelector('.audio-timeline'),this.parentElement.querySelector('.pause-btn'))" title="美式朗读">🔈</button><input class="audio-timeline" type="range" min="0" max="100" value="0" onchange="seekSpeech(this,'Why did our cancellation rate spike to eight percent yesterday afternoon?',this.parentElement.querySelector('.speak-btn'))"><span class="audio-time-label">0:00 / 0:00</span><button class="pause-btn" onclick="event.stopPropagation();togglePause(this)" title="暂停">⏸</button></div>
-          <div class="qa-q-cn">昨天下午我们的取消率为何飙升至8%？</div>
-        </div>
-        <div class="qa-toggle">▼</div>
-      </div>
-      <div class="qa-answer">
-        <div class="qa-a-badge">A · 参考答案</div>
-        <div class="qa-a-en">The spike was caused by a system issue on our end — the order assignment algorithm experienced a thirty-minute delay between 2 PM and 2:30 PM, which caused orders to timeout before being assigned to riders. The tech team has resolved the issue. We are working with the operations team to identify affected merchants and issue compensations. Going forward, we have added a real-time alert for cancellation rate above five percent.</div>
-        <div class="qa-a-cn">飙升是由我们系统问题引起的——下午2点到2点半之间，订单分配算法出现30分钟延迟，导致订单在分配给骑手之前超时。技术团队已解决该问题。我们正在与运营团队合作，确认受影响的商户并发放补偿。今后，我们已添加取消率超过5%的实时预警。</div>
-      </div>
-    
-      <div class="card-tags">
-        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
-        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
-        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
-      </div>
-    </div>
-<div class="section-header"><span class="section-badge">B · 问题解释</span></div>
-    <div class="qa-card" id="qa-2">
-      <div class="qa-question" onclick="toggleQA(this.parentElement)">
-        <div class="qa-q-badge">Q</div>
-        <div class="qa-q-text">
-          <div class="qa-q-en">Why are some of our top merchants not appearing in the lunch project upload list?</div>
-          <div class="audio-timeline-wrap" onclick="event.stopPropagation()"><button class="speak-btn" onclick="event.stopPropagation();speakWithTimeline('Why are some of our top merchants not appearing in the lunch project upload list?',this,this.parentElement.querySelector('.audio-timeline'),this.parentElement.querySelector('.pause-btn'))" title="美式朗读">🔈</button><input class="audio-timeline" type="range" min="0" max="100" value="0" onchange="seekSpeech(this,'Why are some of our top merchants not appearing in the lunch project upload list?',this.parentElement.querySelector('.speak-btn'))"><span class="audio-time-label">0:00 / 0:00</span><button class="pause-btn" onclick="event.stopPropagation();togglePause(this)" title="暂停">⏸</button></div>
-          <div class="qa-q-cn">为什么我们的一些顶级商户没有出现在午餐项目上传名单中？</div>
-        </div>
-        <div class="qa-toggle">▼</div>
-      </div>
-      <div class="qa-answer">
-        <div class="qa-a-badge">A · 参考答案</div>
-        <div class="qa-a-en">The most common reason is that the merchant does not have photos for their promotional items. Without photos, the system does not allow the promotion to be submitted. Before any BD attempts an upload, they must confirm that every promotional item already has a photo uploaded. If the merchant has no photos, the BD needs to help them take and upload photos before they go live.</div>
-        <div class="qa-a-cn">最常见的原因是商户没有促销商品的照片。没有照片，系统不允许提交促销。在任何BD尝试上传之前，必须确认每个促销商品都已上传了照片。如果商户没有照片，BD需要帮助他们拍摄并上传，才能上线。</div>
-      </div>
-    
-      <div class="card-tags">
-        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
-        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
-        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
-      </div>
-    </div>
-    <div class="qa-card" id="qa-3">
-      <div class="qa-question" onclick="toggleQA(this.parentElement)">
-        <div class="qa-q-badge">Q</div>
-        <div class="qa-q-text">
-          <div class="qa-q-en">This data is not apple to apple — how should we interpret the comparison?</div>
-          <div class="audio-timeline-wrap" onclick="event.stopPropagation()"><button class="speak-btn" onclick="event.stopPropagation();speakWithTimeline('This data is not apple to apple — how should we interpret the comparison?',this,this.parentElement.querySelector('.audio-timeline'),this.parentElement.querySelector('.pause-btn'))" title="美式朗读">🔈</button><input class="audio-timeline" type="range" min="0" max="100" value="0" onchange="seekSpeech(this,'This data is not apple to apple — how should we interpret the comparison?',this.parentElement.querySelector('.speak-btn'))"><span class="audio-time-label">0:00 / 0:00</span><button class="pause-btn" onclick="event.stopPropagation();togglePause(this)" title="暂停">⏸</button></div>
-          <div class="qa-q-cn">这个数据不是同口径对比——我们应该如何解读这个比较？</div>
-        </div>
-        <div class="qa-toggle">▼</div>
-      </div>
-      <div class="qa-answer">
-        <div class="qa-a-badge">A · 参考答案</div>
-        <div class="qa-a-en">You are right to flag this. The two numbers come from different measurement windows and different merchant bases. One includes all registered merchants while the other only counts actively operating ones. Before we draw any conclusions, we need to align on the definition. I suggest we always use operating merchants as the baseline for rate calculations, and clearly label what the denominator is in every report.</div>
-        <div class="qa-a-cn">你提出这一点很对。这两个数字来自不同的测量窗口和不同的商户基础。一个包含所有注册商户，而另一个只计算活跃营业的商户。在得出任何结论之前，我们需要统一定义。我建议始终使用营业商户作为比率计算的基准，并在每份报告中清楚标注分母是什么。</div>
-      </div>
-    
-      <div class="card-tags">
-        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
-        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
-        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
-      </div>
-    </div>
-<div class="section-header"><span class="section-badge">C · 资源申请</span></div>
-    <div class="qa-card" id="qa-4">
-      <div class="qa-question" onclick="toggleQA(this.parentElement)">
-        <div class="qa-q-badge">Q</div>
-        <div class="qa-q-text">
-          <div class="qa-q-en">Can we get additional subsidy budget to respond to competitor activity this week?</div>
-          <div class="audio-timeline-wrap" onclick="event.stopPropagation()"><button class="speak-btn" onclick="event.stopPropagation();speakWithTimeline('Can we get additional subsidy budget to respond to competitor activity this week?',this,this.parentElement.querySelector('.audio-timeline'),this.parentElement.querySelector('.pause-btn'))" title="美式朗读">🔈</button><input class="audio-timeline" type="range" min="0" max="100" value="0" onchange="seekSpeech(this,'Can we get additional subsidy budget to respond to competitor activity this week?',this.parentElement.querySelector('.speak-btn'))"><span class="audio-time-label">0:00 / 0:00</span><button class="pause-btn" onclick="event.stopPropagation();togglePause(this)" title="暂停">⏸</button></div>
-          <div class="qa-q-cn">我们能申请额外的补贴预算来应对本周竞争对手的动作吗？</div>
-        </div>
-        <div class="qa-toggle">▼</div>
-      </div>
-      <div class="qa-answer">
-        <div class="qa-a-badge">A · 参考答案</div>
-        <div class="qa-a-en">We have identified this as a critical need and I have submitted a formal budget request to leadership. The ask is for two additional weeks of targeted merchant support in the metropolitan area. Leadership is reviewing it and we expect a response by end of this week. If approved, we will deploy the subsidies starting next Monday and focus on our highest-risk districts first.</div>
-        <div class="qa-a-cn">我们已确认这是紧迫需求，已向管理层提交了正式的预算申请。申请内容是在都市圈增加两周的定向商户支持资金。管理层正在审查，预计本周内给出回复。如果批准，我们将从下周一开始部署补贴，优先聚焦我们风险最高的片区。</div>
-      </div>
-    
-      <div class="card-tags">
-        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
-        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
-        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
-      </div>
-    </div>
-<div class="section-header"><span class="section-badge">D · 竞争对手</span></div>
-    <div class="qa-card" id="qa-5">
-      <div class="qa-question" onclick="toggleQA(this.parentElement)">
-        <div class="qa-q-badge">Q</div>
-        <div class="qa-q-text">
-          <div class="qa-q-en">How are we responding to the competitor's record-breaking week?</div>
-          <div class="audio-timeline-wrap" onclick="event.stopPropagation()"><button class="speak-btn" onclick="event.stopPropagation();speakWithTimeline('How are we responding to the competitor\'s record-breaking week?',this,this.parentElement.querySelector('.audio-timeline'),this.parentElement.querySelector('.pause-btn'))" title="美式朗读">🔈</button><input class="audio-timeline" type="range" min="0" max="100" value="0" onchange="seekSpeech(this,'How are we responding to the competitor\'s record-breaking week?',this.parentElement.querySelector('.speak-btn'))"><span class="audio-time-label">0:00 / 0:00</span><button class="pause-btn" onclick="event.stopPropagation();togglePause(this)" title="暂停">⏸</button></div>
-          <div class="qa-q-cn">我们如何应对竞争对手的破纪录一周？</div>
-        </div>
-        <div class="qa-toggle">▼</div>
-      </div>
-      <div class="qa-answer">
-        <div class="qa-a-badge">A · 参考答案</div>
-        <div class="qa-a-en">We are staying focused on what we can control. The competitor's record is partly inflated because this is their financial year-end — they are spending heavily to hit targets. This pressure will ease after their fiscal year closes. Our strategy is to protect our top merchants, maintain our operating rates, and use this window to sign new merchants who are dissatisfied with competitor service quality.</div>
-        <div class="qa-a-cn">我们保持专注于我们能控制的事情。竞争对手的纪录部分是虚高的，因为这是他们的财年结束——他们在大力投入以完成目标。这种压力在他们财年结束后会缓解。我们的策略是保护我们的头部商户，维持运营率，并利用这个窗口期签约对竞争对手服务质量不满的新商户。</div>
-      </div>
-    
-      <div class="card-tags">
-        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
-        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
-        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
-      </div>
-    </div>
-<div class="section-header"><span class="section-badge">E · 团队管理</span></div>
-    <div class="qa-card" id="qa-6">
-      <div class="qa-question" onclick="toggleQA(this.parentElement)">
-        <div class="qa-q-badge">Q</div>
-        <div class="qa-q-text">
-          <div class="qa-q-en">How do you handle it when a city manager misses their target three weeks in a row?</div>
-          <div class="audio-timeline-wrap" onclick="event.stopPropagation()"><button class="speak-btn" onclick="event.stopPropagation();speakWithTimeline('How do you handle it when a city manager misses their target three weeks in a row?',this,this.parentElement.querySelector('.audio-timeline'),this.parentElement.querySelector('.pause-btn'))" title="美式朗读">🔈</button><input class="audio-timeline" type="range" min="0" max="100" value="0" onchange="seekSpeech(this,'How do you handle it when a city manager misses their target three weeks in a row?',this.parentElement.querySelector('.speak-btn'))"><span class="audio-time-label">0:00 / 0:00</span><button class="pause-btn" onclick="event.stopPropagation();togglePause(this)" title="暂停">⏸</button></div>
-          <div class="qa-q-cn">当一位城市经理连续三周未达目标时，你如何处理？</div>
-        </div>
-        <div class="qa-toggle">▼</div>
-      </div>
-      <div class="qa-answer">
-        <div class="qa-a-badge">A · 参考答案</div>
-        <div class="qa-a-en">First, I have a candid one-on-one conversation to understand what is really happening. Is it the team, the territory, the strategy, or is there a personal issue affecting performance? I expect the city manager to come to that conversation with a clear diagnosis and a concrete improvement plan. If they cannot identify the issue themselves, that is itself a problem. We set a thirty-day improvement milestone and track weekly.</div>
-        <div class="qa-a-cn">首先，我进行坦诚的一对一对话，了解真正发生了什么。是团队、区域、策略问题，还是有个人因素影响了表现？我希望城市经理带着清晰的诊断和具体的改进计划来参加那次对话。如果他们自己无法识别问题，那本身就是一个问题。我们设定30天的改善里程碑，每周追踪。</div>
-      </div>
-    
-      <div class="card-tags">
-        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
-        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
-        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
-      </div>
-    </div>
-    <div class="qa-card" id="qa-7">
-      <div class="qa-question" onclick="toggleQA(this.parentElement)">
-        <div class="qa-q-badge">Q</div>
-        <div class="qa-q-text">
-          <div class="qa-q-en">Even with rain, we still need to keep making progress — how do you motivate the team?</div>
-          <div class="audio-timeline-wrap" onclick="event.stopPropagation()"><button class="speak-btn" onclick="event.stopPropagation();speakWithTimeline('Even with rain, we still need to keep making progress — how do you motivate the team?',this,this.parentElement.querySelector('.audio-timeline'),this.parentElement.querySelector('.pause-btn'))" title="美式朗读">🔈</button><input class="audio-timeline" type="range" min="0" max="100" value="0" onchange="seekSpeech(this,'Even with rain, we still need to keep making progress — how do you motivate the team?',this.parentElement.querySelector('.speak-btn'))"><span class="audio-time-label">0:00 / 0:00</span><button class="pause-btn" onclick="event.stopPropagation();togglePause(this)" title="暂停">⏸</button></div>
-          <div class="qa-q-cn">即使下雨，我们仍需继续前进——你如何激励团队？</div>
-        </div>
-        <div class="qa-toggle">▼</div>
-      </div>
-      <div class="qa-answer">
-        <div class="qa-a-badge">A · 参考答案</div>
-        <div class="qa-a-en">Rain affects our order volume but it does not stop our BD activity. That is an important distinction. BDs can still visit merchants, follow up on pending signings, and train on the product. I remind my team that our competitor BDs are also affected by rain — whoever stays active during difficult conditions gains an advantage. If we stop when it rains, everyone stops. We cannot accept that.</div>
-        <div class="qa-a-cn">雨天影响我们的订单量，但不会阻止我们的BD活动——这是一个重要的区别。BD仍然可以拜访商户、跟进待定签约和产品培训。我提醒我的团队，竞争对手的BD同样受到雨天影响——在困难条件下保持活跃的人会获得优势。如果我们遇到下雨就停，所有人都停了，我们不能接受这一点。</div>
-      </div>
-    
-      <div class="card-tags">
-        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
-        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
-        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
-      </div>
-    </div>
-<div class="section-header"><span class="section-badge">F · 激励竞赛</span></div>
-    <div class="qa-card" id="qa-8">
-      <div class="qa-question" onclick="toggleQA(this.parentElement)">
-        <div class="qa-q-badge">Q</div>
-        <div class="qa-q-text">
-          <div class="qa-q-en">What counts as a successful recall for the incentive competition?</div>
-          <div class="audio-timeline-wrap" onclick="event.stopPropagation()"><button class="speak-btn" onclick="event.stopPropagation();speakWithTimeline('What counts as a successful recall for the incentive competition?',this,this.parentElement.querySelector('.audio-timeline'),this.parentElement.querySelector('.pause-btn'))" title="美式朗读">🔈</button><input class="audio-timeline" type="range" min="0" max="100" value="0" onchange="seekSpeech(this,'What counts as a successful recall for the incentive competition?',this.parentElement.querySelector('.speak-btn'))"><span class="audio-time-label">0:00 / 0:00</span><button class="pause-btn" onclick="event.stopPropagation();togglePause(this)" title="暂停">⏸</button></div>
-          <div class="qa-q-cn">对于激励竞赛，成功召回的标准是什么？</div>
-        </div>
-        <div class="qa-toggle">▼</div>
-      </div>
-      <div class="qa-answer">
-        <div class="qa-a-badge">A · 参考答案</div>
-        <div class="qa-a-en">A successful recall means the merchant has actually operated on our platform — not just been contacted or said they will. Specifically, the merchant must have had at least five operating hours and completed eighty percent of their orders during the operating window. Simply visiting the merchant or getting them to say yes does not count. The system will track their actual operations automatically.</div>
-        <div class="qa-a-cn">成功召回意味着商户实际上已经在我们平台上营业了——不只是被联系过或者说他们会营业。具体来说，商户必须在营业窗口期内有至少5小时的营业时间，并完成了80%的订单。仅仅拜访商户或让他们说是不算数。系统会自动追踪他们的实际营业情况。</div>
-      </div>
-    
-      <div class="card-tags">
-        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
-        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
-        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
-      </div>
-    </div>
-    <div class="qa-card" id="qa-9">
-      <div class="qa-question" onclick="toggleQA(this.parentElement)">
-        <div class="qa-q-badge">Q</div>
-        <div class="qa-q-text">
-          <div class="qa-q-en">If we change the rules all the time, how do we keep people engaged?</div>
-          <div class="audio-timeline-wrap" onclick="event.stopPropagation()"><button class="speak-btn" onclick="event.stopPropagation();speakWithTimeline('If we change the rules all the time, how do we keep people engaged?',this,this.parentElement.querySelector('.audio-timeline'),this.parentElement.querySelector('.pause-btn'))" title="美式朗读">🔈</button><input class="audio-timeline" type="range" min="0" max="100" value="0" onchange="seekSpeech(this,'If we change the rules all the time, how do we keep people engaged?',this.parentElement.querySelector('.speak-btn'))"><span class="audio-time-label">0:00 / 0:00</span><button class="pause-btn" onclick="event.stopPropagation();togglePause(this)" title="暂停">⏸</button></div>
-          <div class="qa-q-cn">如果我们不断改变规则，我们如何保持大家的参与度？</div>
-        </div>
-        <div class="qa-toggle">▼</div>
-      </div>
-      <div class="qa-answer">
-        <div class="qa-a-badge">A · 参考答案</div>
-        <div class="qa-a-en">That is exactly why rule stability matters. When rules change frequently, BDs lose trust in the system and stop trying their best because they think the goalposts will move again. My principle is to announce competition rules at the beginning of the month, lock them in, and not change them mid-cycle. If there is a data issue or an error, we correct it transparently and explain why. Consistency builds engagement.</div>
-        <div class="qa-a-cn">这正是规则稳定性重要的原因。当规则频繁变化时，BD会失去对系统的信任，停止全力以赴，因为他们认为目标又会改变。我的原则是在月初宣布竞赛规则，锁定它们，不在中途更改。如果有数据问题或错误，我们透明地纠正并解释原因。一致性建立参与度。</div>
-      </div>
-    
-      <div class="card-tags">
-        <button class="card-tag tag-star" title="重要" onclick="event.stopPropagation();tagCard(this,'star')">⭐</button>
-        <button class="card-tag tag-check" title="掌握" onclick="event.stopPropagation();tagCard(this,'check')">✅</button>
-        <button class="card-tag tag-delete" title="删除" onclick="event.stopPropagation();tagCard(this,'delete')">✗</button>
-      </div>
-    </div>
-</div>
-</div>
 
 </body>
 </html>
