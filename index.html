@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-  <meta name="version" content="20260528-1117">
+  <meta name="version" content="20260528-1239">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BEC Improvement Plan · 文乐商务英语</title>
 <link rel="manifest" href="manifest.json">
@@ -436,7 +436,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
 
 
 /* Interview TOC navigation */
-.interview-toc{background:#f8f9fa;border-radius:10px;padding:10px 12px;margin:8px 0 16px;border:1px solid #e3f2fd}
+.interview-toc{background:#f8f9fa;border-radius:10px;padding:10px 12px;margin:0 0 16px;border:1px solid #e3f2fd;position:sticky;top:var(--nav-h,52px);z-index:50;box-shadow:0 2px 8px rgba(46,111,186,.10)}
 .toc-title{font-size:12px;color:#888;margin-bottom:6px;font-weight:600}
 .toc-pills{display:flex;flex-wrap:wrap;gap:6px}
 .toc-pill{font-size:11px;padding:4px 10px;border-radius:12px;background:#e3f2fd;color:#1565c0;cursor:pointer;transition:all .2s;user-select:none;text-decoration:none}
@@ -12688,6 +12688,9 @@ function updateCounts() {
 window.addEventListener('DOMContentLoaded', function() {
   updateCounts();
   restoreState();
+  // Sticky TOC: measure nav height and set CSS var
+  var nav = document.getElementById('mainNav');
+  if (nav) document.documentElement.style.setProperty('--nav-h', nav.getBoundingClientRect().height + 'px');
 });
 
 // ====== Interview Tab ======
