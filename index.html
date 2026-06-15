@@ -12217,44 +12217,56 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
 
 <script>
 // SPEECH ENGINE v2
-// ============================================================
-// SPEECH ENGINE v2 — word-highlight + inline player per card
-// ============================================================
 (function(){
 var SE = window.SpeechEngine = {
   rate: 1.0,
-  _cur: null, // {utt, words, containerId, timers:[]}
+  _cur: null,
+  // _cur: {utt, allWords, startIdx, containerId, timers:[], startTime, estMs}
 
-  speak: function(text, containerId, opts) {
+  speak: function(text, containerId, startWordIdx) {
     SE.stop();
     if (!window.speechSynthesis) return;
-    opts = opts || {};
-    var words = text.trim().split(/\s+/);
-    var utt = new SpeechSynthesisUtterance(text);
+    startWordIdx = startWordIdx || 0;
+
+    // Get full word list — prefer DOM data-fulltext for highlight mapping
+    var el = document.getElementById(containerId + '-text');
+    var allWords = el ? (el.dataset.fulltext || text).trim().split(/\s+/) : text.trim().split(/\s+/);
+    var wordsToSpeak = allWords.slice(startWordIdx);
+    var speakText = wordsToSpeak.join(' ');
+
+    var utt = new SpeechSynthesisUtterance(speakText);
     utt.lang = 'en-US';
     utt.rate = SE.rate;
 
-    SE._cur = { utt: utt, words: words, containerId: containerId, timers: [], startTime: Date.now() };
+    var estMs = (wordsToSpeak.length / 140) * 60000 / SE.rate;
 
-    // Estimate total duration
-    var estMs = (words.length / 140) * 60000 / SE.rate;
-    SE._cur.estMs = estMs;
+    SE._cur = {
+      utt: utt,
+      allWords: allWords,
+      startIdx: startWordIdx,
+      containerId: containerId,
+      timers: [],
+      startTime: Date.now(),
+      estMs: estMs
+    };
 
-    // Schedule per-word highlights
-    var msPerWord = estMs / words.length;
-    words.forEach(function(w, wi) {
+    // Schedule per-word highlights (mapped to allWords index)
+    var msPerWord = estMs / wordsToSpeak.length;
+    wordsToSpeak.forEach(function(w, wi) {
+      var absIdx = startWordIdx + wi;
       var t = setTimeout(function() {
-        SE._highlightWord(containerId, wi);
-        SE._updateProgress(containerId, wi / words.length, SE._elapsed());
+        SE._highlightWord(containerId, absIdx);
+        SE._updateProgress(containerId, wi / wordsToSpeak.length, wi * msPerWord / 1000);
       }, wi * msPerWord);
       SE._cur.timers.push(t);
     });
 
     utt.onend = utt.onerror = function() {
       SE._clearTimers();
-      SE._updateProgress(containerId, 1, estMs/1000);
+      SE._updateProgress(containerId, 1, estMs / 1000);
       SE._clearHighlight(containerId);
       SE._updateBtn(containerId, false);
+      SE._cur = null;
     };
 
     SE._updateBtn(containerId, true);
@@ -12274,55 +12286,53 @@ var SE = window.SpeechEngine = {
   },
 
   setRate: function(r, containerId) {
-    SE.rate = r;
-    // If playing same container, restart
-    if (SE._cur && SE._cur.containerId === containerId) {
-      var pct = SE._elapsed() / SE._cur.estMs;
-      var words = SE._cur.words;
-      var startIdx = Math.floor(pct * words.length);
-      var remainingText = words.slice(startIdx).join(' ');
-      SE.stop();
-      SE.speak(remainingText, containerId);
+    var wasPlaying = SE._cur && SE._cur.containerId === containerId;
+    var curIdx = 0;
+    if (wasPlaying) {
+      curIdx = SE._getApproxWordIdx();
     }
+    SE.rate = r;
     SE._updateRateBtns(containerId);
+    if (wasPlaying) {
+      SE.stop();
+      SE.speak(null, containerId, curIdx);
+    }
   },
 
   seekTo: function(pct, containerId) {
-    var words, text;
-    if (SE._cur && SE._cur.containerId === containerId) {
-      words = SE._cur.words;
-    } else {
-      // read from DOM
-      var el = document.getElementById(containerId + '-text');
-      if (!el) return;
-      words = (el.dataset.fulltext || el.textContent).trim().split(/\s+/);
-    }
-    var startIdx = Math.floor(pct * words.length);
-    var remainingText = words.slice(startIdx).join(' ');
+    // Get allWords from DOM
+    var el = document.getElementById(containerId + '-text');
+    if (!el) return;
+    var allWords = (el.dataset.fulltext || el.textContent).trim().split(/\s+/);
+    var startIdx = Math.max(0, Math.floor(pct * allWords.length));
     SE.stop();
-    SE.speak(remainingText, containerId);
+    SE.speak(null, containerId, startIdx);
+  },
+
+  _getApproxWordIdx: function() {
+    if (!SE._cur) return 0;
+    var elapsed = Date.now() - SE._cur.startTime;
+    var wordsSpoken = SE._cur.allWords.length - SE._cur.startIdx;
+    var pct = Math.min(elapsed / SE._cur.estMs, 1);
+    return SE._cur.startIdx + Math.floor(pct * wordsSpoken);
   },
 
   _elapsed: function() {
-    if (!SE._cur) return 0;
-    return Date.now() - SE._cur.startTime;
+    return SE._cur ? Date.now() - SE._cur.startTime : 0;
   },
 
-  _highlightWord: function(containerId, wi) {
+  _highlightWord: function(containerId, absIdx) {
     var container = document.getElementById(containerId + '-text');
     if (!container) return;
-    var spans = container.querySelectorAll('.se-word');
-    spans.forEach(function(s, i) {
-      s.classList.toggle('se-word-active', i === wi);
+    container.querySelectorAll('.se-word').forEach(function(s, i) {
+      s.classList.toggle('se-word-active', i === absIdx);
     });
   },
 
   _clearHighlight: function(containerId) {
     var container = document.getElementById(containerId + '-text');
     if (!container) return;
-    container.querySelectorAll('.se-word').forEach(function(s) {
-      s.classList.remove('se-word-active');
-    });
+    container.querySelectorAll('.se-word').forEach(function(s) { s.classList.remove('se-word-active'); });
   },
 
   _clearTimers: function() {
@@ -12338,12 +12348,18 @@ var SE = window.SpeechEngine = {
     var pct100 = Math.round(pct * 100);
     if (fill) fill.style.width = pct100 + '%';
     if (thumb) thumb.style.left = pct100 + '%';
-    if (time && SE._cur && SE._cur.estMs) {
+    if (time && SE._cur) {
       var tot = SE._cur.estMs / 1000;
       time.textContent = SE._fmt(elapsedSec) + ' / ' + SE._fmt(tot);
     } else if (time) {
       time.textContent = '';
     }
+  },
+
+  _fmt: function(s) {
+    s = Math.max(0, s);
+    var m = Math.floor(s / 60), sec = Math.floor(s % 60);
+    return m + ':' + (sec < 10 ? '0' : '') + sec;
   },
 
   _updateBtn: function(containerId, playing) {
@@ -12361,112 +12377,123 @@ var SE = window.SpeechEngine = {
     });
   },
 
-  _fmt: function(s) {
-    var m = Math.floor(s / 60), sec = Math.floor(s % 60);
-    return m + ':' + (sec < 10 ? '0' : '') + sec;
-  },
-
-  // Build word-span HTML from plain text
   buildWordSpans: function(text, containerId) {
     var words = text.trim().split(/\s+/);
     return '<span id="' + containerId + '-text" class="se-text-wrap" data-fulltext="' + text.replace(/"/g,'&quot;') + '">' +
       words.map(function(w, i) {
-        return '<span class="se-word" data-wi="' + i + '">' + w.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</span>';
+        return '<span class="se-word">' + w.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</span>';
       }).join(' ') +
     '</span>';
   },
 
-  // Build inline player HTML for a given containerId
   buildPlayer: function(containerId, text) {
-    var escapedText = text.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    // text param kept for compat but we now read from DOM
     return '<div class="se-player" id="' + containerId + '-player">' +
-      // Play/stop btn
-      '<button id="' + containerId + '-play-btn" class="se-play-btn" onclick="SpeechEngine._togglePlay(\'' + containerId + '\',\'' + escapedText + '\')" >🔈 朗读</button>' +
-      // Rate
+      '<button id="' + containerId + '-play-btn" class="se-play-btn" onclick="SpeechEngine._togglePlay(\'' + containerId + '\')">🔈 朗读</button>' +
       '<span class="se-rate-group">' +
         '<button id="' + containerId + '-rate-06" class="se-rate-btn" onclick="SpeechEngine.setRate(0.6,\'' + containerId + '\')">慢</button>' +
         '<button id="' + containerId + '-rate-10" class="se-rate-btn se-rate-active" onclick="SpeechEngine.setRate(1.0,\'' + containerId + '\')">正常</button>' +
         '<button id="' + containerId + '-rate-13" class="se-rate-btn" onclick="SpeechEngine.setRate(1.3,\'' + containerId + '\')">快</button>' +
       '</span>' +
-      // Time
       '<span id="' + containerId + '-time" class="se-time"></span>' +
-      // Progress
-      '<div class="se-progress-wrap" id="' + containerId + '-prog" onclick="SpeechEngine._onBarClick(event,\'' + containerId + '\')" onmousedown="SpeechEngine._startDrag(event,\'' + containerId + '\')" ontouchstart="SpeechEngine._startDrag(event,\'' + containerId + '\')">' +
+      '<div class="se-progress-wrap" id="' + containerId + '-prog">' +
         '<div class="se-progress-fill" id="' + containerId + '-prog-fill"></div>' +
-        '<div class="se-progress-thumb" id="' + containerId + '-prog-thumb"></div>' +
+        '<div class="se-progress-thumb" id="' + containerId + '-prog-thumb" onmousedown="SpeechEngine._startDrag(event,\'' + containerId + '\')" ontouchstart="SpeechEngine._startDrag(event,\'' + containerId + '\')"></div>' +
       '</div>' +
     '</div>';
   },
 
-  _togglePlay: function(containerId, text) {
+  _togglePlay: function(containerId) {
     if (SE._cur && SE._cur.containerId === containerId) {
       SE.stop();
     } else {
       SE.stop();
-      SE.speak(text, containerId);
+      SE.speak(null, containerId, 0);
     }
   },
 
-  _onBarClick: function(e, containerId) {
-    var bar = document.getElementById(containerId + '-prog');
-    if (!bar) return;
-    var rect = bar.getBoundingClientRect();
-    var pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-    SE.seekTo(pct, containerId);
-  },
-
+  // Drag only on thumb — no onclick on bar to avoid double-fire
   _startDrag: function(e, containerId) {
     e.preventDefault(); e.stopPropagation();
     var bar = document.getElementById(containerId + '-prog');
     if (!bar) return;
-    function move(ev) {
-      var cx = ev.touches ? ev.touches[0].clientX : ev.clientX;
+    var dragging = true;
+
+    function getBarPct(clientX) {
       var rect = bar.getBoundingClientRect();
-      var pct = Math.max(0, Math.min(1, (cx - rect.left) / rect.width));
-      // visual update only
+      return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    }
+
+    // Pause playback during drag for smooth visual
+    if (SE._cur && SE._cur.containerId === containerId) {
+      window.speechSynthesis.cancel();
+      SE._clearTimers();
+    }
+
+    function move(ev) {
+      if (!dragging) return;
+      var cx = ev.touches ? ev.touches[0].clientX : ev.clientX;
+      var pct = getBarPct(cx);
+      // Visual update only
       var fill = document.getElementById(containerId + '-prog-fill');
       var thumb = document.getElementById(containerId + '-prog-thumb');
       if (fill) fill.style.width = Math.round(pct*100) + '%';
       if (thumb) thumb.style.left = Math.round(pct*100) + '%';
+      // Live word highlight
+      var el = document.getElementById(containerId + '-text');
+      if (el) {
+        var allWords = (el.dataset.fulltext || el.textContent).trim().split(/\s+/);
+        var wi = Math.floor(pct * allWords.length);
+        SE._highlightWord(containerId, wi);
+      }
     }
+
     function up(ev) {
+      dragging = false;
       var cx = ev.changedTouches ? ev.changedTouches[0].clientX : ev.clientX;
-      var rect = bar.getBoundingClientRect();
-      var pct = Math.max(0, Math.min(1, (cx - rect.left) / rect.width));
-      SE.seekTo(pct, containerId);
+      var pct = getBarPct(cx);
+      // Now truly seek and restart from this word
+      var elT = document.getElementById(containerId + '-text');
+      if (elT) {
+        var allWords = (elT.dataset.fulltext || elT.textContent).trim().split(/\s+/);
+        var startIdx = Math.floor(pct * allWords.length);
+        SE._cur = null; // clear so stop() doesn't double-cancel
+        SE.speak(null, containerId, startIdx);
+      }
       document.removeEventListener('mousemove', move);
       document.removeEventListener('mouseup', up);
       document.removeEventListener('touchmove', move);
       document.removeEventListener('touchend', up);
     }
+
     document.addEventListener('mousemove', move);
     document.addEventListener('mouseup', up);
-    document.addEventListener('touchmove', move, {passive:false});
+    document.addEventListener('touchmove', move, {passive: false});
     document.addEventListener('touchend', up);
   }
 };
 
-// Inject global styles
+// Global styles
 var style = document.createElement('style');
 style.textContent = [
-  '.se-word{display:inline;transition:all 0.15s ease;border-radius:3px;padding:0 1px}',
-  '.se-word-active{background:#ffe066;color:#1a1a2e;font-weight:800;font-size:1.18em;box-shadow:0 2px 8px rgba(255,200,0,0.4);padding:0 3px;border-radius:4px}',
+  '.se-word{display:inline;transition:background 0.1s,font-size 0.1s;border-radius:3px;padding:0 1px}',
+  '.se-word-active{background:#ffe066;color:#1a1a2e;font-weight:800;font-size:1.18em;box-shadow:0 2px 8px rgba(255,200,0,0.35);padding:0 3px;border-radius:4px}',
   '.se-player{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px;padding:8px 10px;background:rgba(0,0,0,0.04);border-radius:10px}',
-  '.se-play-btn{background:linear-gradient(135deg,#ff4b4b,#ff8c42);color:#fff;border:none;border-radius:16px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}',
-  '.se-play-btn.se-playing{background:linear-gradient(135deg,#666,#444)}',
-  '.se-rate-group{display:flex;gap:3px}',
+  '.se-play-btn{background:linear-gradient(135deg,#ff4b4b,#ff8c42);color:#fff;border:none;border-radius:16px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}',
+  '.se-play-btn.se-playing{background:linear-gradient(135deg,#555,#333)}',
+  '.se-rate-group{display:flex;gap:3px;flex-shrink:0}',
   '.se-rate-btn{background:rgba(0,0,0,0.07);border:none;border-radius:10px;padding:4px 8px;font-size:11px;font-weight:700;color:#555;cursor:pointer}',
   '.se-rate-btn.se-rate-active{background:linear-gradient(135deg,#ff4b4b,#ff8c42);color:#fff}',
-  '.se-time{font-size:10px;color:#999;min-width:55px;text-align:center}',
-  '.se-progress-wrap{flex:1;min-width:80px;height:6px;background:rgba(0,0,0,0.1);border-radius:6px;cursor:pointer;position:relative;touch-action:none}',
-  '.se-progress-fill{height:100%;background:linear-gradient(90deg,#ff4b4b,#ff8c42);border-radius:6px;width:0%;pointer-events:none}',
-  '.se-progress-thumb{position:absolute;top:50%;left:0%;transform:translate(-50%,-50%);width:14px;height:14px;background:#fff;border:2px solid #ff4b4b;border-radius:50%;pointer-events:none;box-shadow:0 1px 4px rgba(0,0,0,0.2)}',
+  '.se-time{font-size:10px;color:#999;min-width:52px;text-align:center;flex-shrink:0}',
+  '.se-progress-wrap{flex:1;min-width:80px;height:8px;background:rgba(0,0,0,0.1);border-radius:8px;position:relative;touch-action:none;cursor:pointer}',
+  '.se-progress-fill{height:100%;background:linear-gradient(90deg,#ff4b4b,#ff8c42);border-radius:8px;width:0%;pointer-events:none;transition:width 0.08s linear}',
+  '.se-progress-thumb{position:absolute;top:50%;left:0%;transform:translate(-50%,-50%);width:16px;height:16px;background:#fff;border:2.5px solid #ff4b4b;border-radius:50%;cursor:grab;box-shadow:0 1px 5px rgba(0,0,0,0.25);transition:left 0.08s linear}',
+  '.se-progress-thumb:active{cursor:grabbing;transform:translate(-50%,-50%) scale(1.2)}',
   '.se-text-wrap{line-height:2;display:inline}'
 ].join('\n');
 document.head.appendChild(style);
 
 })();
-
 
 // ====== localStorage helpers (must be first) ======
 var BEC_KEY = 'bec_v1';
