@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-  <meta name="version" content="20260616-0001">
+  <meta name="version" content="20260616-0002">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BEC Improvement Plan · 文乐商务英语</title>
 <link rel="manifest" href="manifest.json">
@@ -12216,27 +12216,29 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
 </div>
 
 <script>
-// SPEECH ENGINE v3
+// SPEECH ENGINE v3.1
 // ============================================================
-// SPEECH ENGINE v3 — word-by-word serial playback
-// True seek: change wordIdx, next onend picks it up
-// True pause: stop serial loop, remember position
-// Loop: restart from 0 after last word
+// SPEECH ENGINE v3.1 — chunk-based serial playback
+// Chunks of ~5 words for natural speech flow
+// True seek: jump to chunk containing target word
+// True pause: stop between chunks
+// Loop: restart from chunk 0 after finish
 // ============================================================
 (function(){
+var CHUNK_SIZE = 5; // words per chunk — balances fluency vs seek precision
+
 var SE = window.SpeechEngine = {
   rate: 1.0,
   loop: false,
 
-  // runtime state
-  _words: [],        // full word array for current container
-  _cid: null,        // current containerId
-  _idx: 0,           // current word index
+  _words: [],
+  _chunks: [],      // array of {text, startIdx, endIdx}
+  _cid: null,
+  _chunkIdx: 0,
   _playing: false,
   _paused: false,
-  _progTimer: null,
 
-  speak: function(containerId, startIdx) {
+  speak: function(containerId, startWordIdx) {
     SE.stop();
     if (!window.speechSynthesis) return;
     var el = document.getElementById(containerId + '-text');
@@ -12244,23 +12246,44 @@ var SE = window.SpeechEngine = {
     var fullText = el.dataset.fulltext || el.textContent;
     SE._words = fullText.trim().split(/\s+/);
     SE._cid = containerId;
-    SE._idx = startIdx || 0;
     SE._playing = true;
     SE._paused = false;
+
+    // Build chunks
+    SE._chunks = [];
+    for (var i = 0; i < SE._words.length; i += CHUNK_SIZE) {
+      var end = Math.min(i + CHUNK_SIZE, SE._words.length);
+      SE._chunks.push({
+        text: SE._words.slice(i, end).join(' '),
+        startIdx: i,
+        endIdx: end - 1
+      });
+    }
+
+    // Find which chunk contains startWordIdx
+    startWordIdx = startWordIdx || 0;
+    SE._chunkIdx = 0;
+    for (var c = 0; c < SE._chunks.length; c++) {
+      if (SE._chunks[c].startIdx <= startWordIdx && startWordIdx <= SE._chunks[c].endIdx) {
+        SE._chunkIdx = c;
+        break;
+      }
+    }
+
     SE._updateBtn(containerId, true);
     SE._updateRateBtns(containerId);
-    SE._next();
+    SE._playCurrentChunk();
   },
 
-  _next: function() {
+  _playCurrentChunk: function() {
     if (!SE._playing || SE._paused) return;
-    if (SE._idx >= SE._words.length) {
-      // finished
+    if (SE._chunkIdx >= SE._chunks.length) {
+      // Finished all chunks
       if (SE.loop && SE._cid) {
-        SE._idx = 0;
+        SE._chunkIdx = 0;
         SE._updateProgress(0);
         SE._clearHighlight();
-        setTimeout(function(){ if (SE._playing) SE._next(); }, 350);
+        setTimeout(function() { if (SE._playing && !SE._paused) SE._playCurrentChunk(); }, 400);
       } else {
         SE._playing = false;
         SE._updateBtn(SE._cid, false);
@@ -12270,25 +12293,31 @@ var SE = window.SpeechEngine = {
       return;
     }
 
-    // Highlight current word
-    SE._highlightWord(SE._idx);
-    SE._updateProgress(SE._idx / SE._words.length);
+    var chunk = SE._chunks[SE._chunkIdx];
 
-    var word = SE._words[SE._idx];
-    var utt = new SpeechSynthesisUtterance(word);
+    // Highlight all words in this chunk
+    SE._highlightChunk(chunk.startIdx, chunk.endIdx);
+
+    // Update progress
+    var pct = chunk.startIdx / SE._words.length;
+    SE._updateProgress(pct);
+
+    var utt = new SpeechSynthesisUtterance(chunk.text);
     utt.lang = 'en-US';
     utt.rate = SE.rate;
+
     utt.onend = function() {
       if (!SE._playing || SE._paused) return;
-      SE._idx++;
-      SE._next();
+      SE._chunkIdx++;
+      SE._playCurrentChunk();
     };
     utt.onerror = function() {
       if (!SE._playing || SE._paused) return;
-      SE._idx++;
-      SE._next();
+      SE._chunkIdx++;
+      SE._playCurrentChunk();
     };
-    window.speechSynthesis.cancel(); // clear queue
+
+    window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utt);
   },
 
@@ -12303,7 +12332,9 @@ var SE = window.SpeechEngine = {
     if (!SE._playing || !SE._paused) return;
     SE._paused = false;
     SE._updatePauseBtn();
-    SE._next();
+    // Move to next chunk (current one was interrupted)
+    SE._chunkIdx++;
+    SE._playCurrentChunk();
   },
 
   togglePause: function() {
@@ -12320,27 +12351,31 @@ var SE = window.SpeechEngine = {
       SE._clearHighlight();
     }
     SE._cid = null;
-    SE._idx = 0;
+    SE._chunkIdx = 0;
     SE._words = [];
+    SE._chunks = [];
   },
 
   seekTo: function(pct, containerId) {
     var el = document.getElementById(containerId + '-text');
     if (!el) return;
     var allWords = (el.dataset.fulltext || el.textContent).trim().split(/\s+/);
-    var idx = Math.max(0, Math.min(Math.floor(pct * allWords.length), allWords.length - 1));
+    var targetIdx = Math.max(0, Math.min(Math.floor(pct * allWords.length), allWords.length - 1));
 
     if (SE._playing && SE._cid === containerId) {
-      // already playing this card: just update index, cancel current word, _next() will pick up
-      SE._idx = idx;
-      SE._paused = false;
+      // Already playing: seek within current session
       window.speechSynthesis.cancel();
-      SE._highlightWord(idx);
-      SE._updateProgress(idx / allWords.length);
-      setTimeout(function(){ if (SE._playing) SE._next(); }, 50);
+      SE._paused = false;
+      // Find chunk for targetIdx
+      for (var c = 0; c < SE._chunks.length; c++) {
+        if (SE._chunks[c].startIdx <= targetIdx && targetIdx <= SE._chunks[c].endIdx) {
+          SE._chunkIdx = c;
+          break;
+        }
+      }
+      SE._playCurrentChunk();
     } else {
-      // not playing: start from idx
-      SE.speak(containerId, idx);
+      SE.speak(containerId, targetIdx);
     }
   },
 
@@ -12358,7 +12393,7 @@ var SE = window.SpeechEngine = {
   setRate: function(r, containerId) {
     SE.rate = r;
     SE._updateRateBtns(containerId);
-    // rate takes effect on next word automatically (no restart needed)
+    // Rate takes effect on next chunk naturally
   },
 
   _togglePlay: function(containerId) {
@@ -12372,13 +12407,13 @@ var SE = window.SpeechEngine = {
     }
   },
 
-  // ---- UI helpers ----
-  _highlightWord: function(idx) {
+  // ---- Highlight ----
+  _highlightChunk: function(startIdx, endIdx) {
     if (!SE._cid) return;
     var container = document.getElementById(SE._cid + '-text');
     if (!container) return;
     container.querySelectorAll('.se-word').forEach(function(s, i) {
-      s.classList.toggle('se-word-active', i === idx);
+      s.classList.toggle('se-word-active', i >= startIdx && i <= endIdx);
     });
   },
 
@@ -12443,7 +12478,9 @@ var SE = window.SpeechEngine = {
       '</span>' +
       '<div class="se-progress-wrap" id="' + containerId + '-prog">' +
         '<div class="se-progress-fill" id="' + containerId + '-prog-fill"></div>' +
-        '<div class="se-progress-thumb" id="' + containerId + '-prog-thumb" onmousedown="SpeechEngine._startDrag(event,\'' + containerId + '\')" ontouchstart="SpeechEngine._startDrag(event,\'' + containerId + '\')"></div>' +
+        '<div class="se-progress-thumb" id="' + containerId + '-prog-thumb"' +
+        ' onmousedown="SpeechEngine._startDrag(event,\'' + containerId + '\')"' +
+        ' ontouchstart="SpeechEngine._startDrag(event,\'' + containerId + '\')"></div>' +
       '</div>' +
     '</div>';
   },
@@ -12453,11 +12490,10 @@ var SE = window.SpeechEngine = {
     var bar = document.getElementById(containerId + '-prog');
     if (!bar) return;
 
-    // Pause the serial loop during drag
     var wasPlaying = SE._playing && SE._cid === containerId;
     if (wasPlaying) {
       window.speechSynthesis.cancel();
-      SE._paused = true; // prevent _next() callbacks
+      SE._paused = true;
     }
 
     function getPct(clientX) {
@@ -12472,12 +12508,11 @@ var SE = window.SpeechEngine = {
       var thumb = document.getElementById(containerId + '-prog-thumb');
       if (fill) fill.style.width = Math.round(pct*100) + '%';
       if (thumb) thumb.style.left = Math.round(pct*100) + '%';
-      // live word preview
+      // Preview highlight
       var el = document.getElementById(containerId + '-text');
       if (el) {
         var ws = (el.dataset.fulltext || el.textContent).trim().split(/\s+/);
         var wi = Math.min(Math.floor(pct * ws.length), ws.length - 1);
-        // highlight without changing SE._idx yet
         el.querySelectorAll('.se-word').forEach(function(s,i){ s.classList.toggle('se-word-active', i === wi); });
       }
     }
@@ -12485,21 +12520,12 @@ var SE = window.SpeechEngine = {
     function up(ev) {
       var cx = ev.changedTouches ? ev.changedTouches[0].clientX : ev.clientX;
       var pct = getPct(cx);
-      var el = document.getElementById(containerId + '-text');
-      if (el) {
-        var ws = (el.dataset.fulltext || el.textContent).trim().split(/\s+/);
-        var idx = Math.min(Math.floor(pct * ws.length), ws.length - 1);
-        if (wasPlaying) {
-          // Resume from new position
-          SE._words = ws;
-          SE._cid = containerId;
-          SE._idx = idx;
-          SE._paused = false;
-          SE._next();
-        } else {
-          // Wasn't playing — start from here
-          SE.speak(containerId, idx);
-        }
+      // Seek to this position
+      if (wasPlaying || SE._playing) {
+        SE._paused = false;
+        SE.seekTo(pct, containerId);
+      } else {
+        SE.speak(containerId, Math.floor(pct * SE._words.length));
       }
       document.removeEventListener('mousemove', move);
       document.removeEventListener('mouseup', up);
@@ -12517,8 +12543,8 @@ var SE = window.SpeechEngine = {
 // Styles
 var style = document.createElement('style');
 style.textContent = [
-  '.se-word{display:inline;transition:background 0.05s,font-size 0.05s;border-radius:3px;padding:0 1px}',
-  '.se-word-active{background:#ffe066;color:#1a1a2e;font-weight:800;font-size:1.18em;box-shadow:0 2px 8px rgba(255,200,0,0.35);padding:0 3px;border-radius:4px}',
+  '.se-word{display:inline;transition:background 0.15s;border-radius:3px;padding:0 1px}',
+  '.se-word-active{background:#ffe066;color:#1a1a2e;font-weight:700;box-shadow:0 1px 6px rgba(255,200,0,0.3);padding:0 2px;border-radius:4px}',
   '.se-player{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px;padding:8px 10px;background:rgba(0,0,0,0.04);border-radius:10px}',
   '.se-play-btn{background:linear-gradient(135deg,#ff4b4b,#ff8c42);color:#fff;border:none;border-radius:16px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}',
   '.se-play-btn.se-playing{background:linear-gradient(135deg,#555,#333)}',
