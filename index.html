@@ -12220,15 +12220,14 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
 (function(){
 var SE = window.SpeechEngine = {
   rate: 1.0,
+  loop: false,
   _cur: null,
-  // _cur: {utt, allWords, startIdx, containerId, timers:[], startTime, estMs}
 
   speak: function(text, containerId, startWordIdx) {
     SE.stop();
     if (!window.speechSynthesis) return;
     startWordIdx = startWordIdx || 0;
 
-    // Get full word list — prefer DOM data-fulltext for highlight mapping
     var el = document.getElementById(containerId + '-text');
     var allWords = el ? (el.dataset.fulltext || text).trim().split(/\s+/) : text.trim().split(/\s+/);
     var wordsToSpeak = allWords.slice(startWordIdx);
@@ -12250,7 +12249,6 @@ var SE = window.SpeechEngine = {
       estMs: estMs
     };
 
-    // Schedule per-word highlights (mapped to allWords index)
     var msPerWord = estMs / wordsToSpeak.length;
     wordsToSpeak.forEach(function(w, wi) {
       var absIdx = startWordIdx + wi;
@@ -12263,10 +12261,18 @@ var SE = window.SpeechEngine = {
 
     utt.onend = utt.onerror = function() {
       SE._clearTimers();
-      SE._updateProgress(containerId, 1, estMs / 1000);
       SE._clearHighlight(containerId);
-      SE._updateBtn(containerId, false);
       SE._cur = null;
+      if (SE.loop) {
+        // loop: restart from beginning after short pause
+        setTimeout(function() {
+          SE._updateProgress(containerId, 0, 0);
+          SE.speak(null, containerId, 0);
+        }, 400);
+      } else {
+        SE._updateProgress(containerId, 1, estMs / 1000);
+        SE._updateBtn(containerId, false);
+      }
     };
 
     SE._updateBtn(containerId, true);
@@ -12285,12 +12291,30 @@ var SE = window.SpeechEngine = {
     SE._cur = null;
   },
 
+  toggleLoop: function(containerId) {
+    SE.loop = !SE.loop;
+    // Update all loop buttons (only active one matters visually)
+    document.querySelectorAll('.se-loop-btn').forEach(function(btn) {
+      var isCurrent = btn.id === containerId + '-loop-btn';
+      if (isCurrent) {
+        btn.classList.toggle('se-loop-active', SE.loop);
+        btn.title = SE.loop ? '循环：开启' : '循环：关闭';
+      } else {
+        // deactivate other cards
+        btn.classList.remove('se-loop-active');
+      }
+    });
+    // If enabling loop and not currently playing this card, start playing
+    if (SE.loop && (!SE._cur || SE._cur.containerId !== containerId)) {
+      SE.stop();
+      SE.speak(null, containerId, 0);
+    }
+    // If disabling loop, just let current playback finish naturally
+  },
+
   setRate: function(r, containerId) {
     var wasPlaying = SE._cur && SE._cur.containerId === containerId;
-    var curIdx = 0;
-    if (wasPlaying) {
-      curIdx = SE._getApproxWordIdx();
-    }
+    var curIdx = wasPlaying ? SE._getApproxWordIdx() : 0;
     SE.rate = r;
     SE._updateRateBtns(containerId);
     if (wasPlaying) {
@@ -12300,12 +12324,11 @@ var SE = window.SpeechEngine = {
   },
 
   seekTo: function(pct, containerId) {
-    // Get allWords from DOM
     var el = document.getElementById(containerId + '-text');
     if (!el) return;
     var allWords = (el.dataset.fulltext || el.textContent).trim().split(/\s+/);
     var startIdx = Math.max(0, Math.floor(pct * allWords.length));
-    SE.stop();
+    SE._cur = null;
     SE.speak(null, containerId, startIdx);
   },
 
@@ -12315,10 +12338,6 @@ var SE = window.SpeechEngine = {
     var wordsSpoken = SE._cur.allWords.length - SE._cur.startIdx;
     var pct = Math.min(elapsed / SE._cur.estMs, 1);
     return SE._cur.startIdx + Math.floor(pct * wordsSpoken);
-  },
-
-  _elapsed: function() {
-    return SE._cur ? Date.now() - SE._cur.startTime : 0;
   },
 
   _highlightWord: function(containerId, absIdx) {
@@ -12351,9 +12370,7 @@ var SE = window.SpeechEngine = {
     if (time && SE._cur) {
       var tot = SE._cur.estMs / 1000;
       time.textContent = SE._fmt(elapsedSec) + ' / ' + SE._fmt(tot);
-    } else if (time) {
-      time.textContent = '';
-    }
+    } else if (time) { time.textContent = ''; }
   },
 
   _fmt: function(s) {
@@ -12380,16 +12397,16 @@ var SE = window.SpeechEngine = {
   buildWordSpans: function(text, containerId) {
     var words = text.trim().split(/\s+/);
     return '<span id="' + containerId + '-text" class="se-text-wrap" data-fulltext="' + text.replace(/"/g,'&quot;') + '">' +
-      words.map(function(w, i) {
+      words.map(function(w) {
         return '<span class="se-word">' + w.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</span>';
       }).join(' ') +
     '</span>';
   },
 
   buildPlayer: function(containerId, text) {
-    // text param kept for compat but we now read from DOM
     return '<div class="se-player" id="' + containerId + '-player">' +
       '<button id="' + containerId + '-play-btn" class="se-play-btn" onclick="SpeechEngine._togglePlay(\'' + containerId + '\')">🔈 朗读</button>' +
+      '<button id="' + containerId + '-loop-btn" class="se-loop-btn se-rate-btn" title="循环：关闭" onclick="SpeechEngine.toggleLoop(\'' + containerId + '\')">🔁</button>' +
       '<span class="se-rate-group">' +
         '<button id="' + containerId + '-rate-06" class="se-rate-btn" onclick="SpeechEngine.setRate(0.6,\'' + containerId + '\')">慢</button>' +
         '<button id="' + containerId + '-rate-10" class="se-rate-btn se-rate-active" onclick="SpeechEngine.setRate(1.0,\'' + containerId + '\')">正常</button>' +
@@ -12405,6 +12422,10 @@ var SE = window.SpeechEngine = {
 
   _togglePlay: function(containerId) {
     if (SE._cur && SE._cur.containerId === containerId) {
+      SE.loop = false;
+      // turn off loop btn visually
+      var lb = document.getElementById(containerId + '-loop-btn');
+      if (lb) lb.classList.remove('se-loop-active');
       SE.stop();
     } else {
       SE.stop();
@@ -12412,52 +12433,43 @@ var SE = window.SpeechEngine = {
     }
   },
 
-  // Drag only on thumb — no onclick on bar to avoid double-fire
   _startDrag: function(e, containerId) {
     e.preventDefault(); e.stopPropagation();
     var bar = document.getElementById(containerId + '-prog');
     if (!bar) return;
-    var dragging = true;
 
     function getBarPct(clientX) {
       var rect = bar.getBoundingClientRect();
       return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
     }
 
-    // Pause playback during drag for smooth visual
     if (SE._cur && SE._cur.containerId === containerId) {
       window.speechSynthesis.cancel();
       SE._clearTimers();
     }
 
     function move(ev) {
-      if (!dragging) return;
       var cx = ev.touches ? ev.touches[0].clientX : ev.clientX;
       var pct = getBarPct(cx);
-      // Visual update only
       var fill = document.getElementById(containerId + '-prog-fill');
       var thumb = document.getElementById(containerId + '-prog-thumb');
       if (fill) fill.style.width = Math.round(pct*100) + '%';
       if (thumb) thumb.style.left = Math.round(pct*100) + '%';
-      // Live word highlight
       var el = document.getElementById(containerId + '-text');
       if (el) {
         var allWords = (el.dataset.fulltext || el.textContent).trim().split(/\s+/);
-        var wi = Math.floor(pct * allWords.length);
-        SE._highlightWord(containerId, wi);
+        SE._highlightWord(containerId, Math.floor(pct * allWords.length));
       }
     }
 
     function up(ev) {
-      dragging = false;
       var cx = ev.changedTouches ? ev.changedTouches[0].clientX : ev.clientX;
       var pct = getBarPct(cx);
-      // Now truly seek and restart from this word
-      var elT = document.getElementById(containerId + '-text');
-      if (elT) {
-        var allWords = (elT.dataset.fulltext || elT.textContent).trim().split(/\s+/);
+      var el = document.getElementById(containerId + '-text');
+      if (el) {
+        var allWords = (el.dataset.fulltext || el.textContent).trim().split(/\s+/);
         var startIdx = Math.floor(pct * allWords.length);
-        SE._cur = null; // clear so stop() doesn't double-cancel
+        SE._cur = null;
         SE.speak(null, containerId, startIdx);
       }
       document.removeEventListener('mousemove', move);
@@ -12473,7 +12485,6 @@ var SE = window.SpeechEngine = {
   }
 };
 
-// Global styles
 var style = document.createElement('style');
 style.textContent = [
   '.se-word{display:inline;transition:background 0.1s,font-size 0.1s;border-radius:3px;padding:0 1px}',
@@ -12481,8 +12492,10 @@ style.textContent = [
   '.se-player{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px;padding:8px 10px;background:rgba(0,0,0,0.04);border-radius:10px}',
   '.se-play-btn{background:linear-gradient(135deg,#ff4b4b,#ff8c42);color:#fff;border:none;border-radius:16px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}',
   '.se-play-btn.se-playing{background:linear-gradient(135deg,#555,#333)}',
+  '.se-loop-btn{font-size:14px;padding:4px 8px;line-height:1}',
+  '.se-loop-active{background:linear-gradient(135deg,#22c55e,#16a34a)!important;color:#fff!important;box-shadow:0 0 8px rgba(34,197,94,0.5)}',
   '.se-rate-group{display:flex;gap:3px;flex-shrink:0}',
-  '.se-rate-btn{background:rgba(0,0,0,0.07);border:none;border-radius:10px;padding:4px 8px;font-size:11px;font-weight:700;color:#555;cursor:pointer}',
+  '.se-rate-btn{background:rgba(0,0,0,0.07);border:none;border-radius:10px;padding:4px 8px;font-size:11px;font-weight:700;color:#555;cursor:pointer;flex-shrink:0}',
   '.se-rate-btn.se-rate-active{background:linear-gradient(135deg,#ff4b4b,#ff8c42);color:#fff}',
   '.se-time{font-size:10px;color:#999;min-width:52px;text-align:center;flex-shrink:0}',
   '.se-progress-wrap{flex:1;min-width:80px;height:8px;background:rgba(0,0,0,0.1);border-radius:8px;position:relative;touch-action:none;cursor:pointer}',
