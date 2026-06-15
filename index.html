@@ -12216,203 +12216,231 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
 </div>
 
 <script>
-// SPEECH ENGINE v2
+// SPEECH ENGINE v3
+// ============================================================
+// SPEECH ENGINE v3 — word-by-word serial playback
+// True seek: change wordIdx, next onend picks it up
+// True pause: stop serial loop, remember position
+// Loop: restart from 0 after last word
+// ============================================================
 (function(){
 var SE = window.SpeechEngine = {
   rate: 1.0,
   loop: false,
-  _cur: null,
 
-  speak: function(text, containerId, startWordIdx) {
+  // runtime state
+  _words: [],        // full word array for current container
+  _cid: null,        // current containerId
+  _idx: 0,           // current word index
+  _playing: false,
+  _paused: false,
+  _progTimer: null,
+
+  speak: function(containerId, startIdx) {
     SE.stop();
     if (!window.speechSynthesis) return;
-    startWordIdx = startWordIdx || 0;
-
     var el = document.getElementById(containerId + '-text');
-    var allWords = el ? (el.dataset.fulltext || text).trim().split(/\s+/) : text.trim().split(/\s+/);
-    var wordsToSpeak = allWords.slice(startWordIdx);
-    var speakText = wordsToSpeak.join(' ');
-
-    var utt = new SpeechSynthesisUtterance(speakText);
-    utt.lang = 'en-US';
-    utt.rate = SE.rate;
-
-    var estMs = (wordsToSpeak.length / 140) * 60000 / SE.rate;
-
-    SE._cur = {
-      utt: utt,
-      allWords: allWords,
-      startIdx: startWordIdx,
-      containerId: containerId,
-      timers: [],
-      startTime: Date.now(),
-      estMs: estMs
-    };
-
-    var msPerWord = estMs / wordsToSpeak.length;
-    wordsToSpeak.forEach(function(w, wi) {
-      var absIdx = startWordIdx + wi;
-      var t = setTimeout(function() {
-        SE._highlightWord(containerId, absIdx);
-        SE._updateProgress(containerId, wi / wordsToSpeak.length, wi * msPerWord / 1000);
-      }, wi * msPerWord);
-      SE._cur.timers.push(t);
-    });
-
-    utt.onend = utt.onerror = function() {
-      SE._clearTimers();
-      SE._clearHighlight(containerId);
-      SE._cur = null;
-      if (SE.loop) {
-        // loop: restart from beginning after short pause
-        setTimeout(function() {
-          SE._updateProgress(containerId, 0, 0);
-          SE.speak(null, containerId, 0);
-        }, 400);
-      } else {
-        SE._updateProgress(containerId, 1, estMs / 1000);
-        SE._updateBtn(containerId, false);
-      }
-    };
-
+    if (!el) return;
+    var fullText = el.dataset.fulltext || el.textContent;
+    SE._words = fullText.trim().split(/\s+/);
+    SE._cid = containerId;
+    SE._idx = startIdx || 0;
+    SE._playing = true;
+    SE._paused = false;
     SE._updateBtn(containerId, true);
     SE._updateRateBtns(containerId);
+    SE._next();
+  },
+
+  _next: function() {
+    if (!SE._playing || SE._paused) return;
+    if (SE._idx >= SE._words.length) {
+      // finished
+      if (SE.loop && SE._cid) {
+        SE._idx = 0;
+        SE._updateProgress(0);
+        SE._clearHighlight();
+        setTimeout(function(){ if (SE._playing) SE._next(); }, 350);
+      } else {
+        SE._playing = false;
+        SE._updateBtn(SE._cid, false);
+        SE._updateProgress(1);
+        SE._clearHighlight();
+      }
+      return;
+    }
+
+    // Highlight current word
+    SE._highlightWord(SE._idx);
+    SE._updateProgress(SE._idx / SE._words.length);
+
+    var word = SE._words[SE._idx];
+    var utt = new SpeechSynthesisUtterance(word);
+    utt.lang = 'en-US';
+    utt.rate = SE.rate;
+    utt.onend = function() {
+      if (!SE._playing || SE._paused) return;
+      SE._idx++;
+      SE._next();
+    };
+    utt.onerror = function() {
+      if (!SE._playing || SE._paused) return;
+      SE._idx++;
+      SE._next();
+    };
+    window.speechSynthesis.cancel(); // clear queue
     window.speechSynthesis.speak(utt);
   },
 
-  stop: function() {
-    if (!SE._cur) return;
+  pause: function() {
+    if (!SE._playing || SE._paused) return;
     window.speechSynthesis.cancel();
-    SE._clearTimers();
-    var cid = SE._cur.containerId;
-    SE._clearHighlight(cid);
-    SE._updateBtn(cid, false);
-    SE._updateProgress(cid, 0, 0);
-    SE._cur = null;
+    SE._paused = true;
+    SE._updatePauseBtn();
   },
 
-  toggleLoop: function(containerId) {
-    SE.loop = !SE.loop;
-    // Update all loop buttons (only active one matters visually)
-    document.querySelectorAll('.se-loop-btn').forEach(function(btn) {
-      var isCurrent = btn.id === containerId + '-loop-btn';
-      if (isCurrent) {
-        btn.classList.toggle('se-loop-active', SE.loop);
-        btn.title = SE.loop ? '循环：开启' : '循环：关闭';
-      } else {
-        // deactivate other cards
-        btn.classList.remove('se-loop-active');
-      }
-    });
-    // If enabling loop and not currently playing this card, start playing
-    if (SE.loop && (!SE._cur || SE._cur.containerId !== containerId)) {
-      SE.stop();
-      SE.speak(null, containerId, 0);
-    }
-    // If disabling loop, just let current playback finish naturally
+  resume: function() {
+    if (!SE._playing || !SE._paused) return;
+    SE._paused = false;
+    SE._updatePauseBtn();
+    SE._next();
   },
 
-  setRate: function(r, containerId) {
-    var wasPlaying = SE._cur && SE._cur.containerId === containerId;
-    var curIdx = wasPlaying ? SE._getApproxWordIdx() : 0;
-    SE.rate = r;
-    SE._updateRateBtns(containerId);
-    if (wasPlaying) {
-      SE.stop();
-      SE.speak(null, containerId, curIdx);
+  togglePause: function() {
+    if (SE._paused) SE.resume(); else SE.pause();
+  },
+
+  stop: function() {
+    SE._playing = false;
+    SE._paused = false;
+    window.speechSynthesis.cancel();
+    if (SE._cid) {
+      SE._updateBtn(SE._cid, false);
+      SE._updateProgress(0);
+      SE._clearHighlight();
     }
+    SE._cid = null;
+    SE._idx = 0;
+    SE._words = [];
   },
 
   seekTo: function(pct, containerId) {
     var el = document.getElementById(containerId + '-text');
     if (!el) return;
     var allWords = (el.dataset.fulltext || el.textContent).trim().split(/\s+/);
-    var startIdx = Math.max(0, Math.floor(pct * allWords.length));
-    SE._cur = null;
-    SE.speak(null, containerId, startIdx);
+    var idx = Math.max(0, Math.min(Math.floor(pct * allWords.length), allWords.length - 1));
+
+    if (SE._playing && SE._cid === containerId) {
+      // already playing this card: just update index, cancel current word, _next() will pick up
+      SE._idx = idx;
+      SE._paused = false;
+      window.speechSynthesis.cancel();
+      SE._highlightWord(idx);
+      SE._updateProgress(idx / allWords.length);
+      setTimeout(function(){ if (SE._playing) SE._next(); }, 50);
+    } else {
+      // not playing: start from idx
+      SE.speak(containerId, idx);
+    }
   },
 
-  _getApproxWordIdx: function() {
-    if (!SE._cur) return 0;
-    var elapsed = Date.now() - SE._cur.startTime;
-    var wordsSpoken = SE._cur.allWords.length - SE._cur.startIdx;
-    var pct = Math.min(elapsed / SE._cur.estMs, 1);
-    return SE._cur.startIdx + Math.floor(pct * wordsSpoken);
+  toggleLoop: function(containerId) {
+    SE.loop = !SE.loop;
+    document.querySelectorAll('.se-loop-btn').forEach(function(btn) {
+      btn.classList.toggle('se-loop-active', SE.loop && btn.id === containerId + '-loop-btn');
+    });
+    if (SE.loop && (!SE._playing || SE._cid !== containerId)) {
+      SE.stop();
+      SE.speak(containerId, 0);
+    }
   },
 
-  _highlightWord: function(containerId, absIdx) {
-    var container = document.getElementById(containerId + '-text');
+  setRate: function(r, containerId) {
+    SE.rate = r;
+    SE._updateRateBtns(containerId);
+    // rate takes effect on next word automatically (no restart needed)
+  },
+
+  _togglePlay: function(containerId) {
+    if (SE._playing && SE._cid === containerId) {
+      SE.loop = false;
+      document.querySelectorAll('.se-loop-btn').forEach(function(b){ b.classList.remove('se-loop-active'); });
+      SE.stop();
+    } else {
+      SE.stop();
+      SE.speak(containerId, 0);
+    }
+  },
+
+  // ---- UI helpers ----
+  _highlightWord: function(idx) {
+    if (!SE._cid) return;
+    var container = document.getElementById(SE._cid + '-text');
     if (!container) return;
     container.querySelectorAll('.se-word').forEach(function(s, i) {
-      s.classList.toggle('se-word-active', i === absIdx);
+      s.classList.toggle('se-word-active', i === idx);
     });
   },
 
-  _clearHighlight: function(containerId) {
-    var container = document.getElementById(containerId + '-text');
+  _clearHighlight: function() {
+    if (!SE._cid) return;
+    var container = document.getElementById(SE._cid + '-text');
     if (!container) return;
-    container.querySelectorAll('.se-word').forEach(function(s) { s.classList.remove('se-word-active'); });
+    container.querySelectorAll('.se-word').forEach(function(s){ s.classList.remove('se-word-active'); });
   },
 
-  _clearTimers: function() {
-    if (!SE._cur) return;
-    SE._cur.timers.forEach(clearTimeout);
-    SE._cur.timers = [];
-  },
-
-  _updateProgress: function(containerId, pct, elapsedSec) {
-    var fill = document.getElementById(containerId + '-prog-fill');
-    var thumb = document.getElementById(containerId + '-prog-thumb');
-    var time = document.getElementById(containerId + '-time');
-    var pct100 = Math.round(pct * 100);
+  _updateProgress: function(pct) {
+    if (!SE._cid) return;
+    var fill = document.getElementById(SE._cid + '-prog-fill');
+    var thumb = document.getElementById(SE._cid + '-prog-thumb');
+    var pct100 = Math.round(Math.min(1, Math.max(0, pct)) * 100);
     if (fill) fill.style.width = pct100 + '%';
     if (thumb) thumb.style.left = pct100 + '%';
-    if (time && SE._cur) {
-      var tot = SE._cur.estMs / 1000;
-      time.textContent = SE._fmt(elapsedSec) + ' / ' + SE._fmt(tot);
-    } else if (time) { time.textContent = ''; }
   },
 
-  _fmt: function(s) {
-    s = Math.max(0, s);
-    var m = Math.floor(s / 60), sec = Math.floor(s % 60);
-    return m + ':' + (sec < 10 ? '0' : '') + sec;
-  },
-
-  _updateBtn: function(containerId, playing) {
-    var btn = document.getElementById(containerId + '-play-btn');
+  _updateBtn: function(cid, playing) {
+    var btn = document.getElementById(cid + '-play-btn');
     if (!btn) return;
     btn.textContent = playing ? '⏹ 停止' : '🔈 朗读';
     btn.classList.toggle('se-playing', playing);
+    SE._updatePauseBtn();
   },
 
-  _updateRateBtns: function(containerId) {
-    if (!containerId) return;
+  _updatePauseBtn: function() {
+    if (!SE._cid) return;
+    var btn = document.getElementById(SE._cid + '-pause-btn');
+    if (!btn) return;
+    btn.textContent = SE._paused ? '▶' : '⏸';
+    btn.style.display = SE._playing ? 'inline-block' : 'none';
+  },
+
+  _updateRateBtns: function(cid) {
+    if (!cid) return;
     [0.6, 1.0, 1.3].forEach(function(r) {
-      var btn = document.getElementById(containerId + '-rate-' + r.toString().replace('.',''));
+      var btn = document.getElementById(cid + '-rate-' + r.toString().replace('.',''));
       if (btn) btn.classList.toggle('se-rate-active', SE.rate === r);
     });
   },
 
+  // ---- DOM builders ----
   buildWordSpans: function(text, containerId) {
     var words = text.trim().split(/\s+/);
     return '<span id="' + containerId + '-text" class="se-text-wrap" data-fulltext="' + text.replace(/"/g,'&quot;') + '">' +
       words.map(function(w) {
         return '<span class="se-word">' + w.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</span>';
-      }).join(' ') +
-    '</span>';
+      }).join(' ') + '</span>';
   },
 
-  buildPlayer: function(containerId, text) {
+  buildPlayer: function(containerId) {
     return '<div class="se-player" id="' + containerId + '-player">' +
       '<button id="' + containerId + '-play-btn" class="se-play-btn" onclick="SpeechEngine._togglePlay(\'' + containerId + '\')">🔈 朗读</button>' +
-      '<button id="' + containerId + '-loop-btn" class="se-loop-btn se-rate-btn" title="循环：关闭" onclick="SpeechEngine.toggleLoop(\'' + containerId + '\')">🔁</button>' +
+      '<button id="' + containerId + '-pause-btn" class="se-rate-btn" style="display:none;font-size:13px;padding:4px 10px" onclick="SpeechEngine.togglePause()">⏸</button>' +
+      '<button id="' + containerId + '-loop-btn" class="se-loop-btn se-rate-btn" title="循环" onclick="SpeechEngine.toggleLoop(\'' + containerId + '\')">🔁</button>' +
       '<span class="se-rate-group">' +
         '<button id="' + containerId + '-rate-06" class="se-rate-btn" onclick="SpeechEngine.setRate(0.6,\'' + containerId + '\')">慢</button>' +
         '<button id="' + containerId + '-rate-10" class="se-rate-btn se-rate-active" onclick="SpeechEngine.setRate(1.0,\'' + containerId + '\')">正常</button>' +
         '<button id="' + containerId + '-rate-13" class="se-rate-btn" onclick="SpeechEngine.setRate(1.3,\'' + containerId + '\')">快</button>' +
       '</span>' +
-      '<span id="' + containerId + '-time" class="se-time"></span>' +
       '<div class="se-progress-wrap" id="' + containerId + '-prog">' +
         '<div class="se-progress-fill" id="' + containerId + '-prog-fill"></div>' +
         '<div class="se-progress-thumb" id="' + containerId + '-prog-thumb" onmousedown="SpeechEngine._startDrag(event,\'' + containerId + '\')" ontouchstart="SpeechEngine._startDrag(event,\'' + containerId + '\')"></div>' +
@@ -12420,57 +12448,58 @@ var SE = window.SpeechEngine = {
     '</div>';
   },
 
-  _togglePlay: function(containerId) {
-    if (SE._cur && SE._cur.containerId === containerId) {
-      SE.loop = false;
-      // turn off loop btn visually
-      var lb = document.getElementById(containerId + '-loop-btn');
-      if (lb) lb.classList.remove('se-loop-active');
-      SE.stop();
-    } else {
-      SE.stop();
-      SE.speak(null, containerId, 0);
-    }
-  },
-
   _startDrag: function(e, containerId) {
     e.preventDefault(); e.stopPropagation();
     var bar = document.getElementById(containerId + '-prog');
     if (!bar) return;
 
-    function getBarPct(clientX) {
+    // Pause the serial loop during drag
+    var wasPlaying = SE._playing && SE._cid === containerId;
+    if (wasPlaying) {
+      window.speechSynthesis.cancel();
+      SE._paused = true; // prevent _next() callbacks
+    }
+
+    function getPct(clientX) {
       var rect = bar.getBoundingClientRect();
       return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
     }
 
-    if (SE._cur && SE._cur.containerId === containerId) {
-      window.speechSynthesis.cancel();
-      SE._clearTimers();
-    }
-
     function move(ev) {
       var cx = ev.touches ? ev.touches[0].clientX : ev.clientX;
-      var pct = getBarPct(cx);
+      var pct = getPct(cx);
       var fill = document.getElementById(containerId + '-prog-fill');
       var thumb = document.getElementById(containerId + '-prog-thumb');
       if (fill) fill.style.width = Math.round(pct*100) + '%';
       if (thumb) thumb.style.left = Math.round(pct*100) + '%';
+      // live word preview
       var el = document.getElementById(containerId + '-text');
       if (el) {
-        var allWords = (el.dataset.fulltext || el.textContent).trim().split(/\s+/);
-        SE._highlightWord(containerId, Math.floor(pct * allWords.length));
+        var ws = (el.dataset.fulltext || el.textContent).trim().split(/\s+/);
+        var wi = Math.min(Math.floor(pct * ws.length), ws.length - 1);
+        // highlight without changing SE._idx yet
+        el.querySelectorAll('.se-word').forEach(function(s,i){ s.classList.toggle('se-word-active', i === wi); });
       }
     }
 
     function up(ev) {
       var cx = ev.changedTouches ? ev.changedTouches[0].clientX : ev.clientX;
-      var pct = getBarPct(cx);
+      var pct = getPct(cx);
       var el = document.getElementById(containerId + '-text');
       if (el) {
-        var allWords = (el.dataset.fulltext || el.textContent).trim().split(/\s+/);
-        var startIdx = Math.floor(pct * allWords.length);
-        SE._cur = null;
-        SE.speak(null, containerId, startIdx);
+        var ws = (el.dataset.fulltext || el.textContent).trim().split(/\s+/);
+        var idx = Math.min(Math.floor(pct * ws.length), ws.length - 1);
+        if (wasPlaying) {
+          // Resume from new position
+          SE._words = ws;
+          SE._cid = containerId;
+          SE._idx = idx;
+          SE._paused = false;
+          SE._next();
+        } else {
+          // Wasn't playing — start from here
+          SE.speak(containerId, idx);
+        }
       }
       document.removeEventListener('mousemove', move);
       document.removeEventListener('mouseup', up);
@@ -12480,33 +12509,34 @@ var SE = window.SpeechEngine = {
 
     document.addEventListener('mousemove', move);
     document.addEventListener('mouseup', up);
-    document.addEventListener('touchmove', move, {passive: false});
+    document.addEventListener('touchmove', move, {passive:false});
     document.addEventListener('touchend', up);
   }
 };
 
+// Styles
 var style = document.createElement('style');
 style.textContent = [
-  '.se-word{display:inline;transition:background 0.1s,font-size 0.1s;border-radius:3px;padding:0 1px}',
+  '.se-word{display:inline;transition:background 0.05s,font-size 0.05s;border-radius:3px;padding:0 1px}',
   '.se-word-active{background:#ffe066;color:#1a1a2e;font-weight:800;font-size:1.18em;box-shadow:0 2px 8px rgba(255,200,0,0.35);padding:0 3px;border-radius:4px}',
   '.se-player{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px;padding:8px 10px;background:rgba(0,0,0,0.04);border-radius:10px}',
   '.se-play-btn{background:linear-gradient(135deg,#ff4b4b,#ff8c42);color:#fff;border:none;border-radius:16px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}',
   '.se-play-btn.se-playing{background:linear-gradient(135deg,#555,#333)}',
-  '.se-loop-btn{font-size:14px;padding:4px 8px;line-height:1}',
-  '.se-loop-active{background:linear-gradient(135deg,#22c55e,#16a34a)!important;color:#fff!important;box-shadow:0 0 8px rgba(34,197,94,0.5)}',
+  '.se-loop-btn{font-size:14px!important;padding:4px 9px!important;line-height:1}',
+  '.se-loop-active{background:linear-gradient(135deg,#22c55e,#16a34a)!important;color:#fff!important;box-shadow:0 0 8px rgba(34,197,94,0.5)!important}',
   '.se-rate-group{display:flex;gap:3px;flex-shrink:0}',
   '.se-rate-btn{background:rgba(0,0,0,0.07);border:none;border-radius:10px;padding:4px 8px;font-size:11px;font-weight:700;color:#555;cursor:pointer;flex-shrink:0}',
   '.se-rate-btn.se-rate-active{background:linear-gradient(135deg,#ff4b4b,#ff8c42);color:#fff}',
-  '.se-time{font-size:10px;color:#999;min-width:52px;text-align:center;flex-shrink:0}',
-  '.se-progress-wrap{flex:1;min-width:80px;height:8px;background:rgba(0,0,0,0.1);border-radius:8px;position:relative;touch-action:none;cursor:pointer}',
-  '.se-progress-fill{height:100%;background:linear-gradient(90deg,#ff4b4b,#ff8c42);border-radius:8px;width:0%;pointer-events:none;transition:width 0.08s linear}',
-  '.se-progress-thumb{position:absolute;top:50%;left:0%;transform:translate(-50%,-50%);width:16px;height:16px;background:#fff;border:2.5px solid #ff4b4b;border-radius:50%;cursor:grab;box-shadow:0 1px 5px rgba(0,0,0,0.25);transition:left 0.08s linear}',
-  '.se-progress-thumb:active{cursor:grabbing;transform:translate(-50%,-50%) scale(1.2)}',
+  '.se-progress-wrap{flex:1;min-width:80px;height:8px;background:rgba(0,0,0,0.1);border-radius:8px;position:relative;touch-action:none}',
+  '.se-progress-fill{height:100%;background:linear-gradient(90deg,#ff4b4b,#ff8c42);border-radius:8px;width:0%;pointer-events:none}',
+  '.se-progress-thumb{position:absolute;top:50%;left:0%;transform:translate(-50%,-50%);width:18px;height:18px;background:#fff;border:2.5px solid #ff4b4b;border-radius:50%;cursor:grab;box-shadow:0 1px 5px rgba(0,0,0,0.25)}',
+  '.se-progress-thumb:active{cursor:grabbing;transform:translate(-50%,-50%) scale(1.25)}',
   '.se-text-wrap{line-height:2;display:inline}'
 ].join('\n');
 document.head.appendChild(style);
 
 })();
+
 
 // ====== localStorage helpers (must be first) ======
 var BEC_KEY = 'bec_v1';
