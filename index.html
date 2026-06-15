@@ -472,6 +472,7 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
   <div class="nav-tab" onclick="switchTab('para',this)">📝 段落 <span class="tab-count" id="cnt-para">50</span></div>
   <div class="nav-tab" onclick="switchTab('qa',this)">🎯 问答 <span class="tab-count" id="cnt-qa">10</span></div>
   <div class="nav-tab" onclick="switchTab('interview',this)">🎤 面试 <span class="tab-count" id="cnt-interview">113</span></div>
+  <div class="nav-tab" onclick="switchTab('topic',this)">🗣️ 话题</div>
 </nav>
 
 <div class="content">
@@ -12210,6 +12211,76 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
   </div>
 </div>
 
+<div id="panel-topic" class="tab-panel">
+  <div style="padding:16px 16px 100px">
+
+    <div style="margin-bottom:20px;padding:14px 16px;background:#e8f4fd;border-radius:12px;border-left:4px solid #1976d2;font-size:13px;color:#1565c0;line-height:1.7">
+      🗣️ <strong>话题练习</strong>：每个话题包含中文参考和英文正式版，点击 🔈 听发音，练习流利表达。
+    </div>
+
+    <!-- Topic 1 -->
+    <div style="background:#fff;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,0.08);padding:18px;margin-bottom:16px">
+      <div style="font-size:11px;color:#999;margin-bottom:6px">📅 June 15, 2026</div>
+      <div style="font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:12px">BDM Selection — Topic 1: Leonardo Francisco</div>
+      <div style="font-size:13px;line-height:1.85;color:#888;margin-bottom:12px;padding:10px 12px;background:#fff5f5;border-radius:10px;border-left:3px solid #ff4b4b">Leonardo非常优秀，也很全面。他具备较强的业务能力和综合素质。但是考虑到他刚刚回到东北部地区发展，我认为他可能更适合在东北部地区担任BDM。我会和Paulo进一步沟通，了解他是否希望Leonardo加入他的团队。</div>
+      <div id="topic-bec-1" style="font-size:14px;line-height:1.85;color:#1a1a2e;font-weight:500">Leonardo is a very strong and well-rounded candidate. He has solid business skills and a broad range of capabilities. However, since he recently returned to the Northeast region, I believe he may be a better fit for a BDM role there. I will discuss with Paulo whether he would like Leonardo to join his team.</div>
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+        <button onclick="speakBecTopic('topic-bec-1')" style="background:linear-gradient(135deg,#ff4b4b,#ff8c42);color:#fff;border:none;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer">🔈 朗读英文</button>
+        <button onclick="copyBecTopic('topic-bec-1')" style="background:#fff;color:#ff4b4b;border:2px solid #ffcdd2;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer">📋 复制</button>
+      </div>
+    </div>
+
+    <!-- Topic 2 -->
+    <div style="background:#fff;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,0.08);padding:18px;margin-bottom:16px">
+      <div style="font-size:11px;color:#999;margin-bottom:6px">📅 June 15, 2026</div>
+      <div style="font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:12px">BDM Selection — Topic 2: Cristiane da Silva</div>
+      <div style="font-size:13px;line-height:1.85;color:#888;margin-bottom:12px;padding:10px 12px;background:#fff5f5;border-radius:10px;border-left:3px solid #ff4b4b">Cristiane拥有非常好的客户关系和卓越的业绩表现。她获得过很多荣誉，是一位杰出的业绩贡献者，同时也是客户关系维护方面的优秀代表。不过，我认为她在数据分析方面还有提升空间。同时，她没有很好地总结和沉淀自己的成功方法。因此，我担心未来作为BDM，她对BD团队的辅导和培养能力可能会相对较弱。</div>
+      <div id="topic-bec-2" style="font-size:14px;line-height:1.85;color:#1a1a2e;font-weight:500">Cristiane has excellent client relationships and outstanding performance. She has received many awards and recognitions. She is a strong contributor to business results and an excellent relationship builder. However, I believe she still has room to improve in data analysis. In addition, she has not clearly demonstrated a structured methodology that can be transferred to others. Therefore, I am concerned that her ability to coach and develop BDs may be relatively limited in the future.</div>
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+        <button onclick="speakBecTopic('topic-bec-2')" style="background:linear-gradient(135deg,#ff4b4b,#ff8c42);color:#fff;border:none;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer">🔈 朗读英文</button>
+        <button onclick="copyBecTopic('topic-bec-2')" style="background:#fff;color:#ff4b4b;border:2px solid #ffcdd2;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer">📋 复制</button>
+      </div>
+    </div>
+
+    <!-- Topic 3 -->
+    <div style="background:#fff;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,0.08);padding:18px;margin-bottom:16px">
+      <div style="font-size:11px;color:#999;margin-bottom:6px">📅 June 15, 2026</div>
+      <div style="font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:12px">BDM Selection — Topic 3: Fernando Oliveira</div>
+      <div style="font-size:13px;line-height:1.85;color:#888;margin-bottom:12px;padding:10px 12px;background:#fff5f5;border-radius:10px;border-left:3px solid #ff4b4b">Fernando拥有Ifood的工作经验和背景，这使他非常适合面对激烈的市场竞争。他展现出了很强的业务能力和激情。不过，我认为他在管理方面的思考还不够充分。同时，他也没有很好地展示个人成绩和成果。因此，我认为他还有一些方面需要进一步提升。</div>
+      <div id="topic-bec-3" style="font-size:14px;line-height:1.85;color:#1a1a2e;font-weight:500">Fernando brings valuable experience from Ifood, which makes him well prepared for a highly competitive market. He has strong business capabilities and great passion. However, I believe he has demonstrated less management thinking compared with other candidates. In addition, he did not clearly showcase his personal achievements and impact. I believe there is still room for further development before stepping into a BDM role.</div>
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+        <button onclick="speakBecTopic('topic-bec-3')" style="background:linear-gradient(135deg,#ff4b4b,#ff8c42);color:#fff;border:none;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer">🔈 朗读英文</button>
+        <button onclick="copyBecTopic('topic-bec-3')" style="background:#fff;color:#ff4b4b;border:2px solid #ffcdd2;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer">📋 复制</button>
+      </div>
+    </div>
+
+    <!-- Topic 4 -->
+    <div style="background:#fff;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,0.08);padding:18px;margin-bottom:16px">
+      <div style="font-size:11px;color:#999;margin-bottom:6px">📅 June 15, 2026</div>
+      <div style="font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:12px">BDM Selection — Topic 4: Lucas Ferreira</div>
+      <div style="font-size:13px;line-height:1.85;color:#888;margin-bottom:12px;padding:10px 12px;background:#fff5f5;border-radius:10px;border-left:3px solid #ff4b4b">在四位候选人中，Lucas展现出了最强的可复制方法论。他将"Found KP"从个人验证成功推广到团队规模化执行，这是四个人中最接近BDM思维方式的表现。同时，他的数据质量也是四位候选人中最高的，分析逻辑清晰，执行路径明确。不过，他的展示更多聚焦于个人表现，缺少团队建设、市场洞察以及跨团队协作等方面的视角。</div>
+      <div id="topic-bec-4" style="font-size:14px;line-height:1.85;color:#1a1a2e;font-weight:500">Among the four candidates, Lucas demonstrated the strongest replicable methodology. He scaled the "Found KP" approach from personal validation to team-wide execution, which is the closest demonstration of BDM thinking among all four candidates. He also showed exceptional data quality, with clear analysis and a strong execution framework. However, his presentation was more focused on individual performance. I would like to see more perspectives on team development, market strategy, and cross-functional collaboration.</div>
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+        <button onclick="speakBecTopic('topic-bec-4')" style="background:linear-gradient(135deg,#ff4b4b,#ff8c42);color:#fff;border:none;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer">🔈 朗读英文</button>
+        <button onclick="copyBecTopic('topic-bec-4')" style="background:#fff;color:#ff4b4b;border:2px solid #ffcdd2;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer">📋 复制</button>
+      </div>
+    </div>
+
+    <!-- Overall -->
+    <div style="background:#fff;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,0.08);padding:18px;margin-bottom:16px">
+      <div style="font-size:11px;color:#999;margin-bottom:6px">📅 June 15, 2026</div>
+      <div style="font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:12px">BDM Selection — Overall Recommendation</div>
+      <div style="font-size:13px;line-height:1.85;color:#888;margin-bottom:12px;padding:10px 12px;background:#fff5f5;border-radius:10px;border-left:3px solid #ff4b4b">如果从BDM的角度进行评估，我认为Lucas目前是最接近目标画像的候选人。他展现出了较强的方法论、规模化思维以及数据驱动能力。Leonardo是一位非常全面且成熟的候选人，但需要结合区域需求进一步考虑。Cristiane在客户关系和业绩方面表现突出，但需要进一步提升数据分析和团队辅导能力。Fernando拥有很强的竞争意识和业务能力，但还需要加强管理思维和成果展示。总体来看，四位候选人都有成为优秀BDM的潜力。</div>
+      <div id="topic-bec-5" style="font-size:14px;line-height:1.85;color:#1a1a2e;font-weight:500">From a BDM perspective, I believe Lucas is currently the closest match to the profile we are looking for. His methodology, scalability, and data-driven mindset clearly stand out. Leonardo is a very mature and well-rounded candidate, but his next opportunity may depend on regional needs. Cristiane stands out in client relationship management and performance, but she would benefit from stronger data analysis and coaching capabilities. Fernando brings strong competitive experience and business skills, but he still needs to further develop his management perspective and demonstrate greater impact. Overall, all four candidates have strong potential to become successful BDMs in the future.</div>
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+        <button onclick="speakBecTopic('topic-bec-5')" style="background:linear-gradient(135deg,#ff4b4b,#ff8c42);color:#fff;border:none;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer">🔈 朗读英文</button>
+        <button onclick="copyBecTopic('topic-bec-5')" style="background:#fff;color:#ff4b4b;border:2px solid #ffcdd2;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer">📋 复制</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 
 <script>
 // ====== localStorage helpers (must be first) ======
@@ -12735,6 +12806,31 @@ function scrollToSec(id) {
   }
 }
 
+
+// ====== BEC Topic Tab ======
+function speakBecTopic(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var text = el.innerText || el.textContent;
+  var utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'en-US';
+  utt.rate = 0.9;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utt);
+}
+function copyBecTopic(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var text = el.innerText || el.textContent;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function() { alert('已复制到剪贴板！'); });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); alert('已复制到剪贴板！');
+  }
+}
 </script>
 
 </body>
