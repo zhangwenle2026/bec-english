@@ -12283,6 +12283,283 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
 
 
 <script>
+// SPEECH ENGINE
+// ============================================================
+// UNIFIED SPEECH ENGINE — inject into both apps
+// Features: rate control (0.6/0.9/1.3), progress bar (draggable sim),
+//           pause/resume, stop, floating player bar
+// ============================================================
+
+(function() {
+
+var SE = window.SpeechEngine = {
+  utt: null,
+  text: '',
+  rate: 0.9,
+  playing: false,
+  paused: false,
+  startTime: 0,
+  estDuration: 0,
+  progressInterval: null,
+  activeBtn: null,
+
+  // ---- Public API ----
+  speak: function(text, btn) {
+    if (!window.speechSynthesis) return;
+    SE.stop();
+    SE.text = text;
+    SE.activeBtn = btn || null;
+    SE._doSpeak();
+    SE._showBar();
+  },
+
+  stop: function() {
+    window.speechSynthesis.cancel();
+    SE.playing = false;
+    SE.paused = false;
+    SE._clearProgress();
+    SE._resetBtn();
+    SE._updateBarState();
+  },
+
+  togglePause: function() {
+    if (!SE.playing) return;
+    if (SE.paused) {
+      window.speechSynthesis.resume();
+      SE.paused = false;
+      SE._startProgress();
+    } else {
+      window.speechSynthesis.pause();
+      SE.paused = true;
+      SE._clearProgress();
+    }
+    SE._updateBarState();
+  },
+
+  setRate: function(r) {
+    SE.rate = r;
+    var wasPlaying = SE.playing && !SE.paused;
+    if (SE.playing) {
+      SE.stop();
+      if (wasPlaying) SE._doSpeak();
+    }
+    SE._updateRateBtns();
+  },
+
+  seek: function(pct) {
+    // Web Speech API doesn't support true seek; restart from approx position
+    if (!SE.text) return;
+    var words = SE.text.trim().split(/\s+/);
+    var startWord = Math.floor(words.length * pct);
+    SE.stop();
+    SE.text = words.slice(startWord).join(' ');
+    SE._doSpeak();
+  },
+
+  // ---- Internal ----
+  _doSpeak: function() {
+    SE.utt = new SpeechSynthesisUtterance(SE.text);
+    SE.utt.lang = 'en-US';
+    SE.utt.rate = SE.rate;
+    SE.playing = true;
+    SE.paused = false;
+    SE.startTime = Date.now();
+    // estimate duration: avg ~140 words/min at rate 1.0
+    var words = SE.text.trim().split(/\s+/).length;
+    SE.estDuration = (words / 140) * 60000 / SE.rate;
+    SE.utt.onend = SE.utt.onerror = function() {
+      SE.playing = false;
+      SE.paused = false;
+      SE._clearProgress();
+      SE._resetBtn();
+      SE._updateBarState();
+      SE._setProgress(1);
+      setTimeout(function(){ SE._setProgress(0); }, 600);
+    };
+    window.speechSynthesis.speak(SE.utt);
+    SE._startProgress();
+    SE._updateBarState();
+  },
+
+  _startProgress: function() {
+    SE._clearProgress();
+    SE.progressInterval = setInterval(function() {
+      if (!SE.playing || SE.paused) return;
+      var elapsed = Date.now() - SE.startTime;
+      var pct = Math.min(elapsed / SE.estDuration, 0.99);
+      SE._setProgress(pct);
+    }, 100);
+  },
+
+  _clearProgress: function() {
+    if (SE.progressInterval) { clearInterval(SE.progressInterval); SE.progressInterval = null; }
+  },
+
+  _setProgress: function(pct) {
+    var bar = document.getElementById('se-progress-fill');
+    var thumb = document.getElementById('se-progress-thumb');
+    var pct100 = Math.round(pct * 100);
+    if (bar) bar.style.width = pct100 + '%';
+    if (thumb) thumb.style.left = pct100 + '%';
+    var timeEl = document.getElementById('se-time');
+    if (timeEl && SE.estDuration) {
+      var elapsed = pct * SE.estDuration / 1000;
+      var total = SE.estDuration / 1000;
+      timeEl.textContent = SE._fmt(elapsed) + ' / ' + SE._fmt(total);
+    }
+  },
+
+  _fmt: function(s) {
+    var m = Math.floor(s / 60);
+    var sec = Math.floor(s % 60);
+    return m + ':' + (sec < 10 ? '0' : '') + sec;
+  },
+
+  _resetBtn: function() {
+    if (SE.activeBtn) {
+      SE.activeBtn.classList.remove('speaking');
+      SE.activeBtn = null;
+    }
+  },
+
+  _updateBarState: function() {
+    var bar = document.getElementById('se-player-bar');
+    if (!bar) return;
+    var pauseBtn = document.getElementById('se-pause-btn');
+    var stopBtn = document.getElementById('se-stop-btn');
+    if (SE.playing) {
+      bar.style.transform = 'translateY(0)';
+      bar.style.opacity = '1';
+    } else {
+      setTimeout(function(){
+        bar.style.transform = 'translateY(100%)';
+        bar.style.opacity = '0';
+      }, 1200);
+    }
+    if (pauseBtn) pauseBtn.textContent = SE.paused ? '▶' : '⏸';
+    // highlight active rate btn
+    SE._updateRateBtns();
+    // update text preview
+    var preview = document.getElementById('se-text-preview');
+    if (preview && SE.text) {
+      preview.textContent = SE.text.length > 50 ? SE.text.substring(0, 50) + '…' : SE.text;
+    }
+  },
+
+  _updateRateBtns: function() {
+    var rates = [0.6, 0.9, 1.3];
+    rates.forEach(function(r) {
+      var btn = document.getElementById('se-rate-' + r.toString().replace('.',''));
+      if (btn) btn.classList.toggle('active', SE.rate === r);
+    });
+  },
+
+  _showBar: function() {
+    var bar = document.getElementById('se-player-bar');
+    if (bar) { bar.style.transform = 'translateY(0)'; bar.style.opacity = '1'; }
+  },
+
+  // ---- Inject bar DOM ----
+  init: function() {
+    if (document.getElementById('se-player-bar')) return;
+    var html = '<div id="se-player-bar" style="'+
+      'position:fixed;bottom:0;left:0;right:0;z-index:9999;'+
+      'background:linear-gradient(135deg,#1a1a2e,#16213e);'+
+      'color:#fff;padding:10px 16px 14px;'+
+      'box-shadow:0 -4px 20px rgba(0,0,0,0.3);'+
+      'transform:translateY(100%);opacity:0;'+
+      'transition:transform 0.3s ease,opacity 0.3s ease;'+
+      'font-family:Nunito,sans-serif;'+
+      '">' +
+      // Text preview
+      '<div id="se-text-preview" style="font-size:11px;color:#aaa;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>' +
+      // Progress bar
+      '<div id="se-progress-wrap" style="position:relative;height:4px;background:rgba(255,255,255,0.15);border-radius:4px;margin-bottom:10px;cursor:pointer" onclick="SpeechEngine._onSeek(event)">' +
+        '<div id="se-progress-fill" style="height:100%;background:linear-gradient(90deg,#ff4b4b,#ff8c42);border-radius:4px;width:0%;transition:width 0.1s linear"></div>' +
+        '<div id="se-progress-thumb" style="position:absolute;top:50%;left:0%;transform:translate(-50%,-50%);width:12px;height:12px;background:#fff;border-radius:50%;box-shadow:0 0 4px rgba(0,0,0,0.3);cursor:grab;transition:left 0.1s linear" onmousedown="SpeechEngine._startDrag(event)" ontouchstart="SpeechEngine._startDrag(event)"></div>' +
+      '</div>' +
+      // Controls row
+      '<div style="display:flex;align-items:center;gap:8px">' +
+        // Pause/Resume
+        '<button id="se-pause-btn" onclick="SpeechEngine.togglePause()" style="'+
+          'background:rgba(255,255,255,0.15);border:none;color:#fff;border-radius:50%;'+
+          'width:32px;height:32px;font-size:14px;cursor:pointer;flex-shrink:0'+
+        '">⏸</button>' +
+        // Stop
+        '<button id="se-stop-btn" onclick="SpeechEngine.stop()" style="'+
+          'background:rgba(255,255,255,0.1);border:none;color:#fff;border-radius:50%;'+
+          'width:32px;height:32px;font-size:14px;cursor:pointer;flex-shrink:0'+
+        '">⏹</button>' +
+        // Spacer
+        '<div style="flex:1"></div>' +
+        // Time
+        '<div id="se-time" style="font-size:11px;color:#aaa;min-width:60px;text-align:center">0:00 / 0:00</div>' +
+        // Rate buttons
+        '<button id="se-rate-06" onclick="SpeechEngine.setRate(0.6)" style="'+
+          'background:rgba(255,255,255,0.1);border:none;color:#ccc;border-radius:12px;'+
+          'padding:4px 9px;font-size:11px;cursor:pointer;font-weight:700'+
+        '">0.6×</button>' +
+        '<button id="se-rate-09" onclick="SpeechEngine.setRate(0.9)" style="'+
+          'background:rgba(255,255,255,0.1);border:none;color:#ccc;border-radius:12px;'+
+          'padding:4px 9px;font-size:11px;cursor:pointer;font-weight:700'+
+        '">0.9×</button>' +
+        '<button id="se-rate-13" onclick="SpeechEngine.setRate(1.3)" style="'+
+          'background:rgba(255,255,255,0.1);border:none;color:#ccc;border-radius:12px;'+
+          'padding:4px 9px;font-size:11px;cursor:pointer;font-weight:700'+
+        '">1.3×</button>' +
+      '</div>' +
+    '</div>';
+    // active rate style
+    var style = document.createElement('style');
+    style.textContent = '#se-player-bar button.active{background:linear-gradient(135deg,#ff4b4b,#ff8c42)!important;color:#fff!important;}';
+    document.head.appendChild(style);
+    var div = document.createElement('div');
+    div.innerHTML = html;
+    document.body.appendChild(div.firstChild);
+    SE._updateRateBtns();
+  },
+
+  _onSeek: function(e) {
+    var wrap = document.getElementById('se-progress-wrap');
+    if (!wrap) return;
+    var rect = wrap.getBoundingClientRect();
+    var pct = (e.clientX - rect.left) / rect.width;
+    pct = Math.max(0, Math.min(1, pct));
+    SE.seek(pct);
+  },
+
+  _startDrag: function(e) {
+    e.preventDefault();
+    var wrap = document.getElementById('se-progress-wrap');
+    function onMove(ev) {
+      var clientX = ev.touches ? ev.touches[0].clientX : ev.clientX;
+      var rect = wrap.getBoundingClientRect();
+      var pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      SE._setProgress(pct);
+    }
+    function onUp(ev) {
+      var clientX = ev.changedTouches ? ev.changedTouches[0].clientX : ev.clientX;
+      var rect = wrap.getBoundingClientRect();
+      var pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      SE.seek(pct);
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+      document.removeEventListener('touchmove', onMove);
+      document.removeEventListener('touchend', onUp);
+    }
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+    document.addEventListener('touchmove', onMove, {passive:false});
+    document.addEventListener('touchend', onUp);
+  }
+};
+
+document.addEventListener('DOMContentLoaded', function() { SE.init(); });
+if (document.readyState !== 'loading') SE.init();
+
+})();
+
+
 // ====== localStorage helpers (must be first) ======
 var BEC_KEY = 'bec_v1';
 function lsLoad(key, def) { try { var v = localStorage.getItem(BEC_KEY + '_' + key); return v ? JSON.parse(v) : def; } catch(e) { return def; } }
@@ -12290,13 +12567,7 @@ function lsSave(key, val) { try { localStorage.setItem(BEC_KEY + '_' + key, JSON
 
 // ====== Text-to-Speech ======
 function speak(text, btn) {
-  if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  if (_timelineInterval) { clearInterval(_timelineInterval); _timelineInterval = null; }
-  var u = new SpeechSynthesisUtterance(text);
-  u.lang = 'en-US'; u.rate = 0.9;
-  if (btn) { btn.style.transform='scale(1.3)'; setTimeout(function(){btn.style.transform='';},400); }
-  window.speechSynthesis.speak(u);
+  SpeechEngine.speak(text, btn);
 }
 
 // ====== Tab Switch ======
@@ -12811,12 +13082,7 @@ function scrollToSec(id) {
 function speakBecTopic(id) {
   var el = document.getElementById(id);
   if (!el) return;
-  var text = el.innerText || el.textContent;
-  var utt = new SpeechSynthesisUtterance(text);
-  utt.lang = 'en-US';
-  utt.rate = 0.9;
-  window.speechSynthesis.cancel();
-  window.speechSynthesis.speak(utt);
+  SpeechEngine.speak(el.innerText || el.textContent);
 }
 function copyBecTopic(id) {
   var el = document.getElementById(id);
