@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-  <meta name="version" content="20260616-0002">
+  <meta name="version" content="20260616-0003">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BEC Improvement Plan · 文乐商务英语</title>
 <link rel="manifest" href="manifest.json">
@@ -12216,115 +12216,140 @@ body{font-family:'Noto Sans SC','Montserrat',sans-serif;background:#eef5fc;color
 </div>
 
 <script>
-// SPEECH ENGINE v3.1
+// SPEECH ENGINE v3.2
 // ============================================================
-// SPEECH ENGINE v3.1 — chunk-based serial playback
-// Chunks of ~5 words for natural speech flow
-// True seek: jump to chunk containing target word
-// True pause: stop between chunks
-// Loop: restart from chunk 0 after finish
+// SPEECH ENGINE v3.2 — full-text utterance with boundary tracking
+// Natural: entire text in one speak() call
+// Seek: cancel + re-speak from target word onward
+// Pause: cancel + remember word position, resume from there
 // ============================================================
 (function(){
-var CHUNK_SIZE = 5; // words per chunk — balances fluency vs seek precision
-
 var SE = window.SpeechEngine = {
   rate: 1.0,
   loop: false,
 
   _words: [],
-  _chunks: [],      // array of {text, startIdx, endIdx}
   _cid: null,
-  _chunkIdx: 0,
+  _wordIdx: 0,       // current word index (tracked via boundary/timer)
   _playing: false,
   _paused: false,
+  _pausedAtIdx: 0,
+  _utt: null,
+  _timerHandle: null,
 
   speak: function(containerId, startWordIdx) {
     SE.stop();
     if (!window.speechSynthesis) return;
     var el = document.getElementById(containerId + '-text');
     if (!el) return;
-    var fullText = el.dataset.fulltext || el.textContent;
-    SE._words = fullText.trim().split(/\s+/);
+    var fullText = (el.dataset.fulltext || el.textContent).trim();
+    SE._words = fullText.split(/\s+/);
     SE._cid = containerId;
     SE._playing = true;
     SE._paused = false;
-
-    // Build chunks
-    SE._chunks = [];
-    for (var i = 0; i < SE._words.length; i += CHUNK_SIZE) {
-      var end = Math.min(i + CHUNK_SIZE, SE._words.length);
-      SE._chunks.push({
-        text: SE._words.slice(i, end).join(' '),
-        startIdx: i,
-        endIdx: end - 1
-      });
-    }
-
-    // Find which chunk contains startWordIdx
     startWordIdx = startWordIdx || 0;
-    SE._chunkIdx = 0;
-    for (var c = 0; c < SE._chunks.length; c++) {
-      if (SE._chunks[c].startIdx <= startWordIdx && startWordIdx <= SE._chunks[c].endIdx) {
-        SE._chunkIdx = c;
-        break;
-      }
-    }
+    SE._wordIdx = startWordIdx;
 
     SE._updateBtn(containerId, true);
     SE._updateRateBtns(containerId);
-    SE._playCurrentChunk();
+    SE._speakFrom(startWordIdx);
   },
 
-  _playCurrentChunk: function() {
-    if (!SE._playing || SE._paused) return;
-    if (SE._chunkIdx >= SE._chunks.length) {
-      // Finished all chunks
-      if (SE.loop && SE._cid) {
-        SE._chunkIdx = 0;
-        SE._updateProgress(0);
-        SE._clearHighlight();
-        setTimeout(function() { if (SE._playing && !SE._paused) SE._playCurrentChunk(); }, 400);
-      } else {
-        SE._playing = false;
-        SE._updateBtn(SE._cid, false);
-        SE._updateProgress(1);
-        SE._clearHighlight();
-      }
+  _speakFrom: function(fromIdx) {
+    if (!SE._playing) return;
+    window.speechSynthesis.cancel();
+    if (SE._timerHandle) { clearInterval(SE._timerHandle); SE._timerHandle = null; }
+
+    var textToSpeak = SE._words.slice(fromIdx).join(' ');
+    if (!textToSpeak) {
+      SE._onFinish();
       return;
     }
 
-    var chunk = SE._chunks[SE._chunkIdx];
-
-    // Highlight all words in this chunk
-    SE._highlightChunk(chunk.startIdx, chunk.endIdx);
-
-    // Update progress
-    var pct = chunk.startIdx / SE._words.length;
-    SE._updateProgress(pct);
-
-    var utt = new SpeechSynthesisUtterance(chunk.text);
+    var utt = new SpeechSynthesisUtterance(textToSpeak);
     utt.lang = 'en-US';
     utt.rate = SE.rate;
+    SE._utt = utt;
+    SE._wordIdx = fromIdx;
+
+    // Use boundary event for accurate word tracking
+    var wordsInSegment = SE._words.length - fromIdx;
+    var boundarySupported = false;
+
+    utt.onboundary = function(e) {
+      if (e.name === 'word' && SE._playing && !SE._paused) {
+        boundarySupported = true;
+        // charIndex is relative to textToSpeak
+        // Count words by splitting up to charIndex
+        var spoken = textToSpeak.substring(0, e.charIndex);
+        var wordCount = spoken ? spoken.trim().split(/\s+/).length : 0;
+        SE._wordIdx = fromIdx + wordCount;
+        SE._highlightWord(SE._wordIdx);
+        SE._updateProgress(SE._wordIdx / SE._words.length);
+      }
+    };
+
+    // Fallback timer-based tracking if boundary not supported
+    utt.onstart = function() {
+      if (!boundarySupported) {
+        var estMs = (wordsInSegment / 150) * 60000 / SE.rate;
+        var msPerWord = estMs / wordsInSegment;
+        var startTime = Date.now();
+        SE._timerHandle = setInterval(function() {
+          if (!SE._playing || SE._paused || boundarySupported) {
+            clearInterval(SE._timerHandle); SE._timerHandle = null;
+            return;
+          }
+          var elapsed = Date.now() - startTime;
+          var wi = Math.min(fromIdx + Math.floor(elapsed / msPerWord), SE._words.length - 1);
+          if (wi !== SE._wordIdx) {
+            SE._wordIdx = wi;
+            SE._highlightWord(wi);
+            SE._updateProgress(wi / SE._words.length);
+          }
+        }, 100);
+      }
+    };
 
     utt.onend = function() {
+      if (SE._timerHandle) { clearInterval(SE._timerHandle); SE._timerHandle = null; }
       if (!SE._playing || SE._paused) return;
-      SE._chunkIdx++;
-      SE._playCurrentChunk();
-    };
-    utt.onerror = function() {
-      if (!SE._playing || SE._paused) return;
-      SE._chunkIdx++;
-      SE._playCurrentChunk();
+      SE._onFinish();
     };
 
-    window.speechSynthesis.cancel();
+    utt.onerror = function(e) {
+      if (SE._timerHandle) { clearInterval(SE._timerHandle); SE._timerHandle = null; }
+      if (e.error === 'canceled' || e.error === 'interrupted') return;
+      if (!SE._playing || SE._paused) return;
+      SE._onFinish();
+    };
+
     window.speechSynthesis.speak(utt);
+  },
+
+  _onFinish: function() {
+    if (SE.loop && SE._cid) {
+      SE._wordIdx = 0;
+      SE._updateProgress(0);
+      SE._clearHighlight();
+      setTimeout(function() {
+        if (SE._playing && !SE._paused) SE._speakFrom(0);
+      }, 400);
+    } else {
+      SE._playing = false;
+      SE._updateBtn(SE._cid, false);
+      SE._updateProgress(1);
+      SE._clearHighlight();
+      SE._utt = null;
+    }
   },
 
   pause: function() {
     if (!SE._playing || SE._paused) return;
-    window.speechSynthesis.cancel();
     SE._paused = true;
+    SE._pausedAtIdx = SE._wordIdx;
+    window.speechSynthesis.cancel();
+    if (SE._timerHandle) { clearInterval(SE._timerHandle); SE._timerHandle = null; }
     SE._updatePauseBtn();
   },
 
@@ -12332,9 +12357,7 @@ var SE = window.SpeechEngine = {
     if (!SE._playing || !SE._paused) return;
     SE._paused = false;
     SE._updatePauseBtn();
-    // Move to next chunk (current one was interrupted)
-    SE._chunkIdx++;
-    SE._playCurrentChunk();
+    SE._speakFrom(SE._pausedAtIdx);
   },
 
   togglePause: function() {
@@ -12345,15 +12368,16 @@ var SE = window.SpeechEngine = {
     SE._playing = false;
     SE._paused = false;
     window.speechSynthesis.cancel();
+    if (SE._timerHandle) { clearInterval(SE._timerHandle); SE._timerHandle = null; }
     if (SE._cid) {
       SE._updateBtn(SE._cid, false);
       SE._updateProgress(0);
       SE._clearHighlight();
     }
     SE._cid = null;
-    SE._chunkIdx = 0;
+    SE._wordIdx = 0;
     SE._words = [];
-    SE._chunks = [];
+    SE._utt = null;
   },
 
   seekTo: function(pct, containerId) {
@@ -12363,17 +12387,11 @@ var SE = window.SpeechEngine = {
     var targetIdx = Math.max(0, Math.min(Math.floor(pct * allWords.length), allWords.length - 1));
 
     if (SE._playing && SE._cid === containerId) {
-      // Already playing: seek within current session
       window.speechSynthesis.cancel();
+      if (SE._timerHandle) { clearInterval(SE._timerHandle); SE._timerHandle = null; }
       SE._paused = false;
-      // Find chunk for targetIdx
-      for (var c = 0; c < SE._chunks.length; c++) {
-        if (SE._chunks[c].startIdx <= targetIdx && targetIdx <= SE._chunks[c].endIdx) {
-          SE._chunkIdx = c;
-          break;
-        }
-      }
-      SE._playCurrentChunk();
+      SE._wordIdx = targetIdx;
+      SE._speakFrom(targetIdx);
     } else {
       SE.speak(containerId, targetIdx);
     }
@@ -12393,7 +12411,13 @@ var SE = window.SpeechEngine = {
   setRate: function(r, containerId) {
     SE.rate = r;
     SE._updateRateBtns(containerId);
-    // Rate takes effect on next chunk naturally
+    if (SE._playing && SE._cid === containerId && !SE._paused) {
+      // Restart from current word with new rate
+      var curIdx = SE._wordIdx;
+      window.speechSynthesis.cancel();
+      if (SE._timerHandle) { clearInterval(SE._timerHandle); SE._timerHandle = null; }
+      SE._speakFrom(curIdx);
+    }
   },
 
   _togglePlay: function(containerId) {
@@ -12407,13 +12431,13 @@ var SE = window.SpeechEngine = {
     }
   },
 
-  // ---- Highlight ----
-  _highlightChunk: function(startIdx, endIdx) {
+  // ---- UI ----
+  _highlightWord: function(idx) {
     if (!SE._cid) return;
     var container = document.getElementById(SE._cid + '-text');
     if (!container) return;
     container.querySelectorAll('.se-word').forEach(function(s, i) {
-      s.classList.toggle('se-word-active', i >= startIdx && i <= endIdx);
+      s.classList.toggle('se-word-active', i === idx);
     });
   },
 
@@ -12493,6 +12517,7 @@ var SE = window.SpeechEngine = {
     var wasPlaying = SE._playing && SE._cid === containerId;
     if (wasPlaying) {
       window.speechSynthesis.cancel();
+      if (SE._timerHandle) { clearInterval(SE._timerHandle); SE._timerHandle = null; }
       SE._paused = true;
     }
 
@@ -12508,7 +12533,6 @@ var SE = window.SpeechEngine = {
       var thumb = document.getElementById(containerId + '-prog-thumb');
       if (fill) fill.style.width = Math.round(pct*100) + '%';
       if (thumb) thumb.style.left = Math.round(pct*100) + '%';
-      // Preview highlight
       var el = document.getElementById(containerId + '-text');
       if (el) {
         var ws = (el.dataset.fulltext || el.textContent).trim().split(/\s+/);
@@ -12520,13 +12544,8 @@ var SE = window.SpeechEngine = {
     function up(ev) {
       var cx = ev.changedTouches ? ev.changedTouches[0].clientX : ev.clientX;
       var pct = getPct(cx);
-      // Seek to this position
-      if (wasPlaying || SE._playing) {
-        SE._paused = false;
-        SE.seekTo(pct, containerId);
-      } else {
-        SE.speak(containerId, Math.floor(pct * SE._words.length));
-      }
+      SE._paused = false;
+      SE.seekTo(pct, containerId);
       document.removeEventListener('mousemove', move);
       document.removeEventListener('mouseup', up);
       document.removeEventListener('touchmove', move);
