@@ -18,6 +18,11 @@
 .sp-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));border-radius:8px;width:0;pointer-events:none;transition:width .1s}
 .sp-thumb{width:18px;height:18px;background:#fff;border:3px solid var(--blue);border-radius:50%;position:absolute;top:50%;transform:translate(-50%,-50%);left:0;cursor:grab;touch-action:none}
 .sp-time{font-size:11px;color:var(--muted);min-width:28px;text-align:center}
+
+/* Word highlight during playback */
+.sp-word{display:inline;transition:all .15s ease;border-radius:3px;padding:0 1px}
+.sp-word.active{color:var(--blue);background:#dbeafe;font-size:1.18em;font-weight:800;padding:1px 3px;border-radius:4px;box-shadow:0 1px 4px rgba(20,105,216,.18)}
+.sp-word.spoken{color:var(--ink);opacity:.55}
 </style></head><body>
 <header class="hero"><div class="wrap"><div class="eyebrow">Meeting English</div><h1>Meeting English Mastery</h1><p>200 Words · 50 Phrases · 20 Paragraphs</p><div class="source">Based on real DBR &amp; management meetings</div></div></header>
 <nav class="nav"><button class="active" data-tab="today">今日 Today</button><button data-tab="vocab">词汇 Vocabulary</button><button data-tab="phrases">短句 Phrases</button><button data-tab="practice">段落 Practice</button></nav>
@@ -96,6 +101,7 @@ const SP = {
         const wc = spoken ? spoken.trim().split(/\s+/).length : 0;
         SP._wordIdx = fromIdx + wc;
         SP._uiProgress(SP._wordIdx / total);
+        SP._highlight(SP._wordIdx);
       };
 
       utt.onstart = () => {
@@ -116,7 +122,7 @@ const SP = {
             if (!SP._playing || SP._paused || boundary) { clearInterval(SP._timer); return; }
             const elapsed = Date.now() - SP._startTime;
             const wi = Math.min(fromIdx + Math.floor(elapsed / msPerWord), total - 1);
-            if (wi !== SP._wordIdx) { SP._wordIdx = wi; SP._uiProgress(wi / total); }
+            if (wi !== SP._wordIdx) { SP._wordIdx = wi; SP._uiProgress(wi / total); SP._highlight(wi); }
           }, 80);
         }
       };
@@ -160,7 +166,7 @@ const SP = {
     SP._paused = false;
     speechSynthesis.cancel();
     SP._clearTimers();
-    if (SP._cid) SP._uiProgress(0);
+    if (SP._cid) { SP._uiProgress(0); SP._clearHighlight(); }
     SP._ui('stop');
     SP._cid = null;
     SP._words = [];
@@ -191,6 +197,15 @@ const SP = {
   _finish() {
     SP._playing = false;
     SP._uiProgress(1);
+    // Mark all words as spoken, then fade out
+    const cid = SP._cid;
+    if (cid) {
+      const wrap = document.getElementById('sp-words-' + cid);
+      if (wrap) wrap.querySelectorAll('.sp-word').forEach(s => { s.classList.remove('active'); s.classList.add('spoken'); });
+      setTimeout(() => {
+        if (wrap) wrap.querySelectorAll('.sp-word').forEach(s => s.classList.remove('spoken'));
+      }, 1500);
+    }
     SP._ui('stop');
     SP._cid = null;
   },
@@ -198,6 +213,37 @@ const SP = {
   _clearTimers() {
     if (SP._timer) { clearInterval(SP._timer); SP._timer = null; }
     if (SP._keepAlive) { clearInterval(SP._keepAlive); SP._keepAlive = null; }
+  },
+
+  _highlight(wordIdx) {
+    const cid = SP._cid;
+    if (!cid) return;
+    const wrap = document.getElementById('sp-words-' + cid);
+    if (!wrap) return;
+    const spans = wrap.querySelectorAll('.sp-word');
+    spans.forEach((s, i) => {
+      s.classList.remove('active');
+      if (i < wordIdx) s.classList.add('spoken');
+      else s.classList.remove('spoken');
+      if (i === wordIdx) {
+        s.classList.add('active');
+        // Scroll into view if needed
+        const rect = s.getBoundingClientRect();
+        if (rect.bottom > window.innerHeight - 80 || rect.top < 80) {
+          s.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+      }
+    });
+  },
+
+  _clearHighlight() {
+    const cid = SP._cid;
+    if (!cid) return;
+    const wrap = document.getElementById('sp-words-' + cid);
+    if (!wrap) return;
+    wrap.querySelectorAll('.sp-word').forEach(s => {
+      s.classList.remove('active', 'spoken');
+    });
   },
 
   _ui(state) {
@@ -293,11 +339,12 @@ function speak(text,btn){
   }
 }
 function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function wordSpans(text,cid){return '<span class="sp-words" id="sp-words-'+cid+'">'+text.trim().split(/\s+/).map((w,i)=>'<span class="sp-word" data-i="'+i+'">'+esc(w)+'</span>').join(' ')+'</span>'}
 function buttons(type,x,text){return `<div class="card-actions"><button class="icon" onclick="event.stopPropagation();speak(${JSON.stringify(text)},this)" aria-label="播放">🔊</button><span class="grow"></span><button class="icon ${fav(type,x.id)?'on':''}" onclick="event.stopPropagation();toggle('fav:${type}',${x.id})">${fav(type,x.id)?'★':'☆'}</button><button class="icon ${mastered(type,x.id)?'on':''}" onclick="event.stopPropagation();toggle('mastered:${type}',${x.id})">${mastered(type,x.id)?'✓ 已掌握':'✓ 掌握'}</button></div>`}
 function playerButtons(type,x,text,cid){return SP.html(cid,text)+`<div class="card-actions"><span class="grow"></span><button class="icon ${fav(type,x.id)?'on':''}" onclick="event.stopPropagation();toggle('fav:${type}',${x.id})">${fav(type,x.id)?'★':'☆'}</button><button class="icon ${mastered(type,x.id)?'on':''}" onclick="event.stopPropagation();toggle('mastered:${type}',${x.id})">${mastered(type,x.id)?'✓ 已掌握':'✓ 掌握'}</button></div>`}
 function vocabCard(x){return `<article class="card vocab" onclick="this.classList.toggle('show')"><div class="item-head"><div><div class="word">${x.star?'⭐ ':''}${esc(x.word)}</div><div class="ipa">${esc(x.ipa)}</div></div><span class="badge">${esc(x.category)}</span></div><div class="details"><p><b>中文：</b>${esc(x.cn)}</p><p><b>近义/同类：</b>${esc(x.similar)}</p><p><b>中文谐音：</b>${esc(x.phonetic)}</p></div>${buttons('v',x,x.word)}</article>`}
-function phraseCard(x){let cid='p'+x.id;return `<article class="card"><div class="scene">${esc(x.scene)}</div><div class="phrase-en">${esc(x.en)}</div><div class="phrase-cn">${esc(x.cn)}</div>${playerButtons('p',x,x.en,cid)}</article>`}
-function paraCard(x){let en=state.mode!=='cn',cn=state.mode!=='en';let cid='r'+x.id;return `<article class="card"><div class="scene">${esc(x.scene)}</div><div class="word" style="font-size:16px">${x.id}. ${esc(x.title)}</div>${en?`<div class="para-en">${esc(x.en)}</div>`:''}${cn?`<div class="para-cn">${esc(x.cn)}</div>`:''}${playerButtons('r',x,x.en,cid)}</article>`}
+function phraseCard(x){let cid='p'+x.id;return `<article class="card"><div class="scene">${esc(x.scene)}</div><div class="phrase-en">${wordSpans(x.en,cid)}</div><div class="phrase-cn">${esc(x.cn)}</div>${playerButtons('p',x,x.en,cid)}</article>`}
+function paraCard(x){let en=state.mode!=='cn',cn=state.mode!=='en';let cid='r'+x.id;return `<article class="card"><div class="scene">${esc(x.scene)}</div><div class="word" style="font-size:16px">${x.id}. ${esc(x.title)}</div>${en?`<div class="para-en">${wordSpans(x.en,cid)}</div>`:''}${cn?`<div class="para-cn">${esc(x.cn)}</div>`:''}${playerButtons('r',x,x.en,cid)}</article>`}
 function filterItems(arr,type){let q=state.search.toLowerCase();return arr.filter(x=>(!state.favorites||fav(type,x.id))&&(!q||JSON.stringify(x).toLowerCase().includes(q)))}
 function today(){let stars=D.vocabulary.filter(x=>x.star), words=[...stars,...D.vocabulary.filter(x=>!x.star)].slice(0,10),phr=D.phrases.slice(0,5),par=D.paragraphs[0];let wm=words.filter(x=>mastered('v',x.id)).length,pm=phr.filter(x=>mastered('p',x.id)).length,rm=mastered('r',par.id)?1:0;let pct=Math.round((wm+pm+rm)/16*100);return `<div class="card"><div class="section-title">Today / 今日必学</div><div class="today-grid"><div class="card metric"><b>${wm}/10</b><span>词汇</span></div><div class="card metric"><b>${pm}/5</b><span>短句</span></div><div class="card metric"><b>${rm}/1</b><span>段落</span></div></div><div class="progress"><i style="width:${pct}%"></i></div><div class="meta">今日完成度 ${pct}% · 优先精选高频词</div><div class="actions" style="margin-top:13px"><button class="btn" onclick="startStudy()">开始今日学习</button><button class="btn secondary" onclick="state.favorites=!state.favorites;render()">${state.favorites?'显示全部':'只看收藏'}</button><button class="btn ghost" onclick="resetProgress()">重置进度</button></div></div><h2 class="section-title">今日内容</h2><div class="list">${words.slice(0,3).map(vocabCard).join('')}</div><div class="card"><div class="scene">今日短句</div>${phr.slice(0,2).map(phraseCard).join('')}</div>`}
 function vocabulary(){let cats=['All',...new Set(D.vocabulary.map(x=>x.category))], arr=filterItems(D.vocabulary.filter(x=>(state.vcat==='All'||x.category===state.vcat)&&(!state.star||x.star)),'v');return `<h2 class="section-title">Vocabulary <span class="meta">${arr.length}/200</span></h2><input class="search" placeholder="搜索英文、中文、近义词…" oninput="state.search=this.value;render()" value="${esc(state.search)}"><div class="filters">${cats.map(c=>`<button class="filter ${state.vcat===c?'active':''}" onclick="state.vcat=${JSON.stringify(c)};render()">${esc(c)}</button>`).join('')}</div><div class="actions"><button class="filter ${state.star?'active':''}" onclick="state.star=!state.star;render()">⭐ 必学</button><button class="filter ${state.favorites?'active':''}" onclick="state.favorites=!state.favorites;render()">★ 收藏</button></div><p class="meta">单词卡默认仅显示英文与 IPA；点击卡片显示答案。</p><div class="list">${arr.map(vocabCard).join('')||'<div class="empty">没有匹配的词汇</div>'}</div>`}
