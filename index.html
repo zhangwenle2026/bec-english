@@ -1,12 +1,13 @@
 <!doctype html>
 <html lang="zh-CN"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#08264b"><meta name="version" content="20260809-final">
+<meta name="theme-color" content="#08264b"><meta name="version" content="20260810-progress">
 <title>Meeting English Mastery</title><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
-:root{--navy:#08264b;--blue:#1469d8;--teal:#08a6a6;--ink:#13233a;--muted:#64748b;--line:#dbe5f0;--paper:#f5f8fc;--card:#fff;--gold:#ec9c18}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif}.hero{background:linear-gradient(135deg,#061e3e,#0c3970);color:white;padding:26px 18px 30px}.wrap{max-width:880px;margin:auto}.eyebrow{color:#57e0d4;font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}.hero h1{font-size:29px;line-height:1.2;margin:7px 0}.hero p{margin:4px 0;color:#d5e7fa}.source{font-size:12px;color:#a8c9eb;margin-top:10px}.nav{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);display:flex;overflow:auto}.nav button{border:0;background:transparent;color:var(--muted);padding:13px 16px;white-space:nowrap;font-weight:700;font-size:13px}.nav button.active{color:var(--blue);box-shadow:inset 0 -3px var(--blue)}main{padding:18px}.panel{display:none}.panel.active{display:block}.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:16px;margin-bottom:12px;box-shadow:0 2px 7px #0b31510a}.today-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.metric{padding:13px 8px;text-align:center}.metric b{display:block;font-size:19px;color:var(--blue)}.metric span{font-size:12px;color:var(--muted)}.progress{height:9px;border-radius:9px;background:#e5edf5;overflow:hidden;margin:12px 0}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));width:0;transition:.25s}.btn,.icon{border:0;border-radius:9px;padding:10px 13px;background:var(--blue);color:#fff;font-weight:700;cursor:pointer}.btn.secondary{background:#e8f1ff;color:#0752af}.btn.ghost{background:#fff;color:var(--blue);border:1px solid #bed5f5}.actions{display:flex;gap:8px;flex-wrap:wrap}.section-title{font-size:19px;margin:2px 0 11px}.filters{display:flex;gap:7px;overflow:auto;padding-bottom:10px}.filter{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:99px;padding:7px 11px;white-space:nowrap;font-size:12px;font-weight:700}.filter.active{background:#e7f1ff;color:var(--blue);border-color:#9bc4fa}.search{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;font:inherit;margin-bottom:10px}.item-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.word{font-size:20px;font-weight:800;line-height:1.25}.ipa,.meta{color:var(--muted);font-size:12px}.badge{font-size:11px;background:#fff4d8;color:#a76600;border-radius:99px;padding:3px 7px;white-space:nowrap}.details{display:none;border-top:1px dashed var(--line);margin-top:10px;padding-top:10px}.show .details{display:block}.details p{margin:4px 0}.card-actions{display:flex;align-items:center;gap:8px;margin-top:12px}.icon{padding:7px 9px;background:#edf5ff;color:#0961bc}.icon.on{background:#d4f5ef;color:#087a76}.grow{flex:1}.phrase-en,.para-en{font-weight:650;line-height:1.65}.phrase-cn,.para-cn{color:#41536d;margin-top:7px}.scene{font-size:12px;color:var(--teal);font-weight:700;margin-bottom:7px}.mode{display:flex;gap:6px;margin-bottom:11px}.mode button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 9px;color:var(--muted);font-weight:700;font-size:12px}.mode button.active{color:var(--blue);background:#eaf3ff}.empty{text-align:center;color:var(--muted);padding:28px}.study{position:fixed;inset:0;background:#f5f8fc;z-index:10;padding:20px;overflow:auto;display:none}.study.open{display:block}.study .card{max-width:650px;margin:30px auto}.study-top{max-width:650px;margin:auto;display:flex;justify-content:space-between}.study-title{color:var(--muted);font-size:13px}.study-word{font-size:28px;font-weight:800;margin-top:20px}.footer{text-align:center;color:#8091a7;font-size:12px;padding:20px}@media(min-width:650px){.hero{padding:42px}.hero h1{font-size:36px}main{padding:26px}.list{display:grid;grid-template-columns:1fr 1fr;gap:12px}.list .card{margin:0}.para-list{display:block}.today-grid{max-width:500px}}
-
-/* Speech Player */
+:root{--navy:#08264b;--blue:#1469d8;--teal:#08a6a6;--ink:#13233a;--muted:#64748b;--line:#dbe5f0;--paper:#f5f8fc;--card:#fff;--gold:#ec9c18;--green:#10b981;--green-bg:#ecfdf5;--green-border:#6ee7b7}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif}.hero{background:linear-gradient(135deg,#061e3e,#0c3970);color:white;padding:26px 18px 30px}.wrap{max-width:880px;margin:auto}.eyebrow{color:#57e0d4;font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}.hero h1{font-size:29px;line-height:1.2;margin:7px 0}.hero p{margin:4px 0;color:#d5e7fa}.source{font-size:12px;color:#a8c9eb;margin-top:10px}.nav{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);display:flex;overflow:auto}.nav button{border:0;background:transparent;color:var(--muted);padding:13px 16px;white-space:nowrap;font-weight:700;font-size:13px}.nav button.active{color:var(--blue);box-shadow:inset 0 -3px var(--blue)}main{padding:18px}.panel{display:none}.panel.active{display:block}.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:16px;margin-bottom:12px;box-shadow:0 2px 7px #0b31510a}.card.mastered-card{border-left:4px solid var(--green-border);background:var(--green-bg)}.today-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.metric{padding:13px 8px;text-align:center}.metric b{display:block;font-size:19px;color:var(--blue)}.metric span{font-size:12px;color:var(--muted)}.progress{height:9px;border-radius:9px;background:#e5edf5;overflow:hidden;margin:12px 0}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));width:0;transition:.25s}.btn,.icon{border:0;border-radius:9px;padding:10px 13px;background:var(--blue);color:#fff;font-weight:700;cursor:pointer}.btn.secondary{background:#e8f1ff;color:#0752af}.btn.ghost{background:#fff;color:var(--blue);border:1px solid #bed5f5}.actions{display:flex;gap:8px;flex-wrap:wrap}.section-title{font-size:19px;margin:2px 0 11px}.filters{display:flex;gap:7px;overflow:auto;padding-bottom:10px}.filter{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:99px;padding:7px 11px;white-space:nowrap;font-size:12px;font-weight:700}.filter.active{background:#e7f1ff;color:var(--blue);border-color:#9bc4fa}.filter.green-active{background:#d1fae5;color:#047857;border-color:var(--green-border)}.search{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;font:inherit;margin-bottom:10px}.item-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.word{font-size:20px;font-weight:800;line-height:1.25}.ipa,.meta{color:var(--muted);font-size:12px}.badge{font-size:11px;background:#fff4d8;color:#a76600;border-radius:99px;padding:3px 7px;white-space:nowrap}.details{display:none;border-top:1px dashed var(--line);margin-top:10px;padding-top:10px}.show .details{display:block}.details p{margin:4px 0}.card-actions{display:flex;align-items:center;gap:8px;margin-top:12px}.icon{padding:7px 9px;background:#edf5ff;color:#0961bc}.icon.on{background:#d4f5ef;color:#087a76}.grow{flex:1}.phrase-en,.para-en{font-weight:650;line-height:1.65}.phrase-cn,.para-cn{color:#41536d;margin-top:7px}.scene{font-size:12px;color:var(--teal);font-weight:700;margin-bottom:7px}.mode{display:flex;gap:6px;margin-bottom:11px}.mode button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 9px;color:var(--muted);font-weight:700;font-size:12px}.mode button.active{color:var(--blue);background:#eaf3ff}.empty{text-align:center;color:var(--muted);padding:28px}.study{position:fixed;inset:0;background:#f5f8fc;z-index:10;padding:20px;overflow:auto;display:none}.study.open{display:block}.study .card{max-width:650px;margin:30px auto}.study-top{max-width:650px;margin:auto;display:flex;justify-content:space-between}.study-title{color:var(--muted);font-size:13px}.study-word{font-size:28px;font-weight:800;margin-top:20px}.footer{text-align:center;color:#8091a7;font-size:12px;padding:20px}
+.seq{color:var(--muted);font-size:13px;font-weight:700;margin-right:4px}
+.tp{background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border:1px solid var(--green-border);border-radius:12px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px}.tp-icon{font-size:24px}.tp-info{flex:1}.tp-label{font-size:13px;color:var(--muted);font-weight:600}.tp-nums{font-size:18px;font-weight:800;color:var(--green)}.tp-bar{height:7px;border-radius:7px;background:#d1fae5;overflow:hidden;margin-top:6px}.tp-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--teal));transition:.25s}
+@media(min-width:650px){.hero{padding:42px}.hero h1{font-size:36px}main{padding:26px}.list{display:grid;grid-template-columns:1fr 1fr;gap:12px}.list .card{margin:0}.para-list{display:block}.today-grid{max-width:500px}}
 .sp{background:#f0f4fa;border-radius:10px;padding:10px 12px;margin-top:10px}
 .sp-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .sp-btn{border:0;border-radius:8px;padding:7px 12px;font-size:13px;font-weight:700;cursor:pointer;background:var(--blue);color:#fff}
@@ -18,8 +19,6 @@
 .sp-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));border-radius:8px;width:0;pointer-events:none;transition:width .1s}
 .sp-thumb{width:18px;height:18px;background:#fff;border:3px solid var(--blue);border-radius:50%;position:absolute;top:50%;transform:translate(-50%,-50%);left:0;cursor:grab;touch-action:none}
 .sp-time{font-size:11px;color:var(--muted);min-width:28px;text-align:center}
-
-/* Word highlight during playback */
 .sp-word{display:inline;transition:all .15s ease;border-radius:3px;padding:0 1px}
 .sp-word.active{color:var(--blue);background:#dbeafe;font-size:1.18em;font-weight:800;padding:1px 3px;border-radius:4px;box-shadow:0 1px 4px rgba(20,105,216,.18)}
 .sp-word.spoken{color:var(--ink);opacity:.55}
@@ -28,335 +27,112 @@
 <nav class="nav"><button class="active" data-tab="today">今日 Today</button><button data-tab="vocab">词汇 Vocabulary</button><button data-tab="phrases">短句 Phrases</button><button data-tab="practice">段落 Practice</button></nav>
 <main class="wrap"><section id="today" class="panel active"></section><section id="vocab" class="panel"></section><section id="phrases" class="panel"></section><section id="practice" class="panel"></section></main><div id="study" class="study"></div><footer class="footer">Meeting English Mastery · Progress is stored on this device</footer>
 <script>
-const state={tab:'today',vcat:'All',pscene:'All',search:'',star:false,favorites:false,mode:'both'};let D;
+const state={tab:'today',vcat:'All',pscene:'All',search:'',star:false,favorites:false,unmastered:false,mode:'both'};let D;
 const key=(n)=>'meetingEnglish:'+n;const get=n=>new Set(JSON.parse(localStorage.getItem(key(n))||'[]'));const set=(n,v)=>localStorage.setItem(key(n),JSON.stringify([...v]));
 function mastered(type,id){return get('mastered:'+type).has(id)} function fav(type,id){return get('fav:'+type).has(id)}
 function toggle(n,id){let s=get(n);s.has(id)?s.delete(id):s.add(id);set(n,s);render()}
 
-/* ===== SpeechPlayer Engine ===== */
-const SP = {
-  voice: null,
-  rate: 1.0,
-  _playing: false,
-  _paused: false,
-  _cid: null,
-  _words: [],
-  _wordIdx: 0,
-  _timer: null,
-  _keepAlive: null,
-  _startTime: 0,
-  _isIOS: /iPad|iPhone|iPod/.test(navigator.userAgent),
-
-  init() {
-    if (!window.speechSynthesis) return;
-    const load = () => {
-      const v = speechSynthesis.getVoices();
-      SP.voice = v.find(x => x.lang === 'en-US' && x.localService)
-        || v.find(x => x.lang.startsWith('en')) || v[0] || null;
-    };
-    load();
-    if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = load;
-  },
-
-  play(cid) {
-    if (SP._playing && SP._cid === cid) { SP.stop(); return; }
-    SP.stop();
-    if (!window.speechSynthesis) return;
-    const el = document.getElementById('sp-text-' + cid);
-    if (!el) return;
-    const text = el.dataset.text;
-    if (!text) return;
-    SP._words = text.split(/\s+/);
-    SP._cid = cid;
-    SP._playing = true;
-    SP._paused = false;
-    SP._wordIdx = 0;
-    SP._ui('play');
-    SP._speak(0);
-  },
-
-  _speak(fromIdx) {
-    if (!SP._playing) return;
-    speechSynthesis.cancel();
-    SP._clearTimers();
-
-    const text = SP._words.slice(fromIdx).join(' ');
-    if (!text) { SP._finish(); return; }
-
-    setTimeout(() => {
-      if (!SP._playing) return;
-      const utt = new SpeechSynthesisUtterance(text);
-      utt.lang = 'en-US';
-      utt.rate = SP.rate;
-      if (SP.voice) utt.voice = SP.voice;
-
-      const total = SP._words.length;
-      const seg = total - fromIdx;
-      let boundary = false;
-
-      utt.onboundary = (e) => {
-        if (e.name !== 'word' || !SP._playing || SP._paused) return;
-        boundary = true;
-        const spoken = text.substring(0, e.charIndex);
-        const wc = spoken ? spoken.trim().split(/\s+/).length : 0;
-        SP._wordIdx = fromIdx + wc;
-        SP._uiProgress(SP._wordIdx / total);
-        SP._highlight(SP._wordIdx);
-      };
-
-      utt.onstart = () => {
-        // Chrome workaround: pause/resume every 10s
-        if (!SP._isIOS) {
-          SP._keepAlive = setInterval(() => {
-            if (SP._playing && !SP._paused) {
-              speechSynthesis.pause(); speechSynthesis.resume();
-            }
-          }, 10000);
-        }
-        // Fallback timer for browsers without boundary events
-        if (!boundary) {
-          const dur = (seg / 2.5) * 1000 / SP.rate; // ~2.5 words/sec
-          const msPerWord = dur / seg;
-          SP._startTime = Date.now();
-          SP._timer = setInterval(() => {
-            if (!SP._playing || SP._paused || boundary) { clearInterval(SP._timer); return; }
-            const elapsed = Date.now() - SP._startTime;
-            const wi = Math.min(fromIdx + Math.floor(elapsed / msPerWord), total - 1);
-            if (wi !== SP._wordIdx) { SP._wordIdx = wi; SP._uiProgress(wi / total); SP._highlight(wi); }
-          }, 80);
-        }
-      };
-
-      utt.onend = () => {
-        SP._clearTimers();
-        if (!SP._playing || SP._paused) return;
-        SP._finish();
-      };
-      utt.onerror = (e) => {
-        SP._clearTimers();
-        if (e.error === 'canceled' || e.error === 'interrupted') return;
-        SP._finish();
-      };
-
-      speechSynthesis.speak(utt);
-    }, 50);
-  },
-
-  pause() {
-    if (!SP._playing || SP._paused) return;
-    SP._paused = true;
-    speechSynthesis.cancel();
-    SP._clearTimers();
-    SP._ui('pause');
-  },
-
-  resume() {
-    if (!SP._playing || !SP._paused) return;
-    SP._paused = false;
-    SP._ui('play');
-    SP._speak(SP._wordIdx);
-  },
-
-  togglePause() {
-    SP._paused ? SP.resume() : SP.pause();
-  },
-
-  stop() {
-    SP._playing = false;
-    SP._paused = false;
-    speechSynthesis.cancel();
-    SP._clearTimers();
-    if (SP._cid) { SP._uiProgress(0); SP._clearHighlight(); }
-    SP._ui('stop');
-    SP._cid = null;
-    SP._words = [];
-    SP._wordIdx = 0;
-  },
-
-  seek(pct, cid) {
-    if (!SP._playing || SP._cid !== cid) { SP.play(cid); return; }
-    const total = SP._words.length;
-    SP._wordIdx = Math.max(0, Math.min(Math.floor(pct * total), total - 1));
-    SP._paused = false;
-    SP._uiProgress(pct);
-    SP._ui('play');
-    SP._speak(SP._wordIdx);
-  },
-
-  setRate(r) {
-    SP.rate = r;
-    document.querySelectorAll('.sp-rate').forEach(b => b.classList.toggle('active', parseFloat(b.dataset.rate) === r));
-    if (SP._playing && !SP._paused) {
-      const wi = SP._wordIdx;
-      speechSynthesis.cancel();
-      SP._clearTimers();
-      SP._speak(wi);
-    }
-  },
-
-  _finish() {
-    SP._playing = false;
-    SP._uiProgress(1);
-    // Mark all words as spoken, then fade out
-    const cid = SP._cid;
-    if (cid) {
-      const wrap = document.getElementById('sp-words-' + cid);
-      if (wrap) wrap.querySelectorAll('.sp-word').forEach(s => { s.classList.remove('active'); s.classList.add('spoken'); });
-      setTimeout(() => {
-        if (wrap) wrap.querySelectorAll('.sp-word').forEach(s => s.classList.remove('spoken'));
-      }, 1500);
-    }
-    SP._ui('stop');
-    SP._cid = null;
-  },
-
-  _clearTimers() {
-    if (SP._timer) { clearInterval(SP._timer); SP._timer = null; }
-    if (SP._keepAlive) { clearInterval(SP._keepAlive); SP._keepAlive = null; }
-  },
-
-  _highlight(wordIdx) {
-    const cid = SP._cid;
-    if (!cid) return;
-    const wrap = document.getElementById('sp-words-' + cid);
-    if (!wrap) return;
-    const spans = wrap.querySelectorAll('.sp-word');
-    spans.forEach((s, i) => {
-      s.classList.remove('active');
-      if (i < wordIdx) s.classList.add('spoken');
-      else s.classList.remove('spoken');
-      if (i === wordIdx) {
-        s.classList.add('active');
-        // Scroll into view if needed
-        const rect = s.getBoundingClientRect();
-        if (rect.bottom > window.innerHeight - 80 || rect.top < 80) {
-          s.scrollIntoView({behavior:'smooth', block:'center'});
-        }
-      }
-    });
-  },
-
-  _clearHighlight() {
-    const cid = SP._cid;
-    if (!cid) return;
-    const wrap = document.getElementById('sp-words-' + cid);
-    if (!wrap) return;
-    wrap.querySelectorAll('.sp-word').forEach(s => {
-      s.classList.remove('active', 'spoken');
-    });
-  },
-
-  _ui(state) {
-    const cid = SP._cid;
-    if (!cid) return;
-    const playBtn = document.getElementById('sp-play-' + cid);
-    const pauseBtn = document.getElementById('sp-pause-' + cid);
-    if (playBtn) {
-      if (state === 'play') { playBtn.textContent = '⏹ 停止'; playBtn.classList.add('on'); }
-      else { playBtn.textContent = '▶ 朗读'; playBtn.classList.remove('on'); }
-    }
-    if (pauseBtn) {
-      pauseBtn.style.display = state === 'play' ? '' : 'none';
-      pauseBtn.textContent = SP._paused ? '▶' : '⏸';
-      pauseBtn.className = 'sp-btn' + (SP._paused ? '' : ' pause');
-    }
-  },
-
-  _uiProgress(pct) {
-    const cid = SP._cid;
-    if (!cid) return;
-    const p = Math.round(Math.max(0, Math.min(1, pct)) * 100);
-    const fill = document.getElementById('sp-fill-' + cid);
-    const thumb = document.getElementById('sp-thumb-' + cid);
-    if (fill) fill.style.width = p + '%';
-    if (thumb) thumb.style.left = p + '%';
-  },
-
-  startDrag(e, cid) {
-    e.preventDefault();
-    const bar = document.getElementById('sp-track-' + cid);
-    if (!bar) return;
-    if (!SP._playing || SP._cid !== cid) SP.play(cid);
-    speechSynthesis.cancel(); SP._clearTimers(); SP._paused = true;
-
-    const getPct = (cx) => {
-      const r = bar.getBoundingClientRect();
-      return Math.max(0, Math.min(1, (cx - r.left) / r.width));
-    };
-    const move = (ev) => {
-      const cx = ev.touches ? ev.touches[0].clientX : ev.clientX;
-      const pct = getPct(cx);
-      SP._uiProgress(pct);
-    };
-    const up = (ev) => {
-      const cx = ev.changedTouches ? ev.changedTouches[0].clientX : ev.clientX;
-      SP.seek(getPct(cx), cid);
-      document.removeEventListener('mousemove', move);
-      document.removeEventListener('mouseup', up);
-      document.removeEventListener('touchmove', move);
-      document.removeEventListener('touchend', up);
-    };
-    document.addEventListener('mousemove', move);
-    document.addEventListener('mouseup', up);
-    document.addEventListener('touchmove', move, {passive: false});
-    document.addEventListener('touchend', up);
-  },
-
-  // Build player HTML for a card
-  html(cid, text) {
-    return '<div class="sp" id="sp-' + cid + '">' +
-      '<span id="sp-text-' + cid + '" style="display:none" data-text="' + text.replace(/"/g, '&quot;') + '"></span>' +
-      '<div class="sp-bar">' +
-        '<button id="sp-play-' + cid + '" class="sp-btn" onclick="event.stopPropagation();SP.play(\'' + cid + '\')">▶ 朗读</button>' +
-        '<button id="sp-pause-' + cid + '" class="sp-btn" style="display:none" onclick="event.stopPropagation();SP.togglePause()">⏸</button>' +
-        '<button class="sp-rate' + (SP.rate===0.6?' active':'') + '" data-rate="0.6" onclick="event.stopPropagation();SP.setRate(0.6)">慢</button>' +
-        '<button class="sp-rate' + (SP.rate===1.0?' active':'') + '" data-rate="1" onclick="event.stopPropagation();SP.setRate(1.0)">正常</button>' +
-        '<button class="sp-rate' + (SP.rate===1.3?' active':'') + '" data-rate="1.3" onclick="event.stopPropagation();SP.setRate(1.3)">快</button>' +
-        '<div class="sp-track" id="sp-track-' + cid + '" onmousedown="SP.startDrag(event,\'' + cid + '\')" ontouchstart="SP.startDrag(event,\'' + cid + '\')">' +
-          '<div class="sp-fill" id="sp-fill-' + cid + '"></div>' +
-          '<div class="sp-thumb" id="sp-thumb-' + cid + '" onmousedown="SP.startDrag(event,\'' + cid + '\')" ontouchstart="SP.startDrag(event,\'' + cid + '\')"></div>' +
-        '</div>' +
-      '</div>' +
-    '</div>';
-  }
+const SP={voice:null,rate:1.0,_playing:false,_paused:false,_cid:null,_words:[],_wordIdx:0,_timer:null,_keepAlive:null,_startTime:0,_isIOS:/iPad|iPhone|iPod/.test(navigator.userAgent),
+init(){if(!window.speechSynthesis)return;const load=()=>{const v=speechSynthesis.getVoices();SP.voice=v.find(x=>x.lang==='en-US'&&x.localService)||v.find(x=>x.lang.startsWith('en'))||v[0]||null};load();if(speechSynthesis.onvoiceschanged!==undefined)speechSynthesis.onvoiceschanged=load},
+play(cid){if(SP._playing&&SP._cid===cid){SP.stop();return}SP.stop();if(!window.speechSynthesis)return;const el=document.getElementById('sp-text-'+cid);if(!el)return;const text=el.dataset.text;if(!text)return;SP._words=text.split(/\s+/);SP._cid=cid;SP._playing=true;SP._paused=false;SP._wordIdx=0;SP._ui('play');SP._speak(0)},
+_speak(fromIdx){if(!SP._playing)return;speechSynthesis.cancel();SP._clearTimers();const text=SP._words.slice(fromIdx).join(' ');if(!text){SP._finish();return}setTimeout(()=>{if(!SP._playing)return;const utt=new SpeechSynthesisUtterance(text);utt.lang='en-US';utt.rate=SP.rate;if(SP.voice)utt.voice=SP.voice;const total=SP._words.length;const seg=total-fromIdx;let boundary=false;utt.onboundary=(e)=>{if(e.name!=='word'||!SP._playing||SP._paused)return;boundary=true;const spoken=text.substring(0,e.charIndex);const wc=spoken?spoken.trim().split(/\s+/).length:0;SP._wordIdx=fromIdx+wc;SP._uiProgress(SP._wordIdx/total);SP._highlight(SP._wordIdx)};utt.onstart=()=>{if(!SP._isIOS){SP._keepAlive=setInterval(()=>{if(SP._playing&&!SP._paused){speechSynthesis.pause();speechSynthesis.resume()}},10000)}if(!boundary){const dur=(seg/2.5)*1000/SP.rate;const msPerWord=dur/seg;SP._startTime=Date.now();SP._timer=setInterval(()=>{if(!SP._playing||SP._paused||boundary){clearInterval(SP._timer);return}const elapsed=Date.now()-SP._startTime;const wi=Math.min(fromIdx+Math.floor(elapsed/msPerWord),total-1);if(wi!==SP._wordIdx){SP._wordIdx=wi;SP._uiProgress(wi/total);SP._highlight(wi)}},80)}};utt.onend=()=>{SP._clearTimers();if(!SP._playing||SP._paused)return;SP._finish()};utt.onerror=(e)=>{SP._clearTimers();if(e.error==='canceled'||e.error==='interrupted')return;SP._finish()};speechSynthesis.speak(utt)},50)},
+pause(){if(!SP._playing||SP._paused)return;SP._paused=true;speechSynthesis.cancel();SP._clearTimers();SP._ui('pause')},
+resume(){if(!SP._playing||!SP._paused)return;SP._paused=false;SP._ui('play');SP._speak(SP._wordIdx)},
+togglePause(){SP._paused?SP.resume():SP.pause()},
+stop(){SP._playing=false;SP._paused=false;speechSynthesis.cancel();SP._clearTimers();if(SP._cid){SP._uiProgress(0);SP._clearHighlight()}SP._ui('stop');SP._cid=null;SP._words=[];SP._wordIdx=0},
+seek(pct,cid){if(!SP._playing||SP._cid!==cid){SP.play(cid);return}const total=SP._words.length;SP._wordIdx=Math.max(0,Math.min(Math.floor(pct*total),total-1));SP._paused=false;SP._uiProgress(pct);SP._ui('play');SP._speak(SP._wordIdx)},
+setRate(r){SP.rate=r;document.querySelectorAll('.sp-rate').forEach(b=>b.classList.toggle('active',parseFloat(b.dataset.rate)===r));if(SP._playing&&!SP._paused){const wi=SP._wordIdx;speechSynthesis.cancel();SP._clearTimers();SP._speak(wi)}},
+_finish(){SP._playing=false;SP._uiProgress(1);const cid=SP._cid;if(cid){const wrap=document.getElementById('sp-words-'+cid);if(wrap)wrap.querySelectorAll('.sp-word').forEach(s=>{s.classList.remove('active');s.classList.add('spoken')});setTimeout(()=>{if(wrap)wrap.querySelectorAll('.sp-word').forEach(s=>s.classList.remove('spoken'))},1500)}SP._ui('stop');SP._cid=null},
+_clearTimers(){if(SP._timer){clearInterval(SP._timer);SP._timer=null}if(SP._keepAlive){clearInterval(SP._keepAlive);SP._keepAlive=null}},
+_highlight(wordIdx){const cid=SP._cid;if(!cid)return;const wrap=document.getElementById('sp-words-'+cid);if(!wrap)return;const spans=wrap.querySelectorAll('.sp-word');spans.forEach((s,i)=>{s.classList.remove('active');if(i<wordIdx)s.classList.add('spoken');else s.classList.remove('spoken');if(i===wordIdx){s.classList.add('active');const rect=s.getBoundingClientRect();if(rect.bottom>window.innerHeight-80||rect.top<80){s.scrollIntoView({behavior:'smooth',block:'center'})}}})},
+_clearHighlight(){const cid=SP._cid;if(!cid)return;const wrap=document.getElementById('sp-words-'+cid);if(!wrap)return;wrap.querySelectorAll('.sp-word').forEach(s=>{s.classList.remove('active','spoken')})},
+_ui(st){const cid=SP._cid;if(!cid)return;const playBtn=document.getElementById('sp-play-'+cid);const pauseBtn=document.getElementById('sp-pause-'+cid);if(playBtn){if(st==='play'){playBtn.textContent='⏹ 停止';playBtn.classList.add('on')}else{playBtn.textContent='▶ 朗读';playBtn.classList.remove('on')}}if(pauseBtn){pauseBtn.style.display=st==='play'?'':'none';pauseBtn.textContent=SP._paused?'▶':'⏸';pauseBtn.className='sp-btn'+(SP._paused?'':' pause')}},
+_uiProgress(pct){const cid=SP._cid;if(!cid)return;const p=Math.round(Math.max(0,Math.min(1,pct))*100);const fill=document.getElementById('sp-fill-'+cid);const thumb=document.getElementById('sp-thumb-'+cid);if(fill)fill.style.width=p+'%';if(thumb)thumb.style.left=p+'%'},
+startDrag(e,cid){e.preventDefault();const bar=document.getElementById('sp-track-'+cid);if(!bar)return;if(!SP._playing||SP._cid!==cid)SP.play(cid);speechSynthesis.cancel();SP._clearTimers();SP._paused=true;const getPct=(cx)=>{const r=bar.getBoundingClientRect();return Math.max(0,Math.min(1,(cx-r.left)/r.width))};const move=(ev)=>{const cx=ev.touches?ev.touches[0].clientX:ev.clientX;SP._uiProgress(getPct(cx))};const up=(ev)=>{const cx=ev.changedTouches?ev.changedTouches[0].clientX:ev.clientX;SP.seek(getPct(cx),cid);document.removeEventListener('mousemove',move);document.removeEventListener('mouseup',up);document.removeEventListener('touchmove',move);document.removeEventListener('touchend',up)};document.addEventListener('mousemove',move);document.addEventListener('mouseup',up);document.addEventListener('touchmove',move,{passive:false});document.addEventListener('touchend',up)},
+html(cid,text){return '<div class="sp" id="sp-'+cid+'"><span id="sp-text-'+cid+'" style="display:none" data-text="'+text.replace(/"/g,'&quot;')+'"></span><div class="sp-bar"><button id="sp-play-'+cid+'" class="sp-btn" onclick="event.stopPropagation();SP.play(\''+cid+'\')">▶ 朗读</button><button id="sp-pause-'+cid+'" class="sp-btn" style="display:none" onclick="event.stopPropagation();SP.togglePause()">⏸</button><button class="sp-rate'+(SP.rate===0.6?' active':'')+'" data-rate="0.6" onclick="event.stopPropagation();SP.setRate(0.6)">慢</button><button class="sp-rate'+(SP.rate===1.0?' active':'')+'" data-rate="1" onclick="event.stopPropagation();SP.setRate(1.0)">正常</button><button class="sp-rate'+(SP.rate===1.3?' active':'')+'" data-rate="1.3" onclick="event.stopPropagation();SP.setRate(1.3)">快</button><div class="sp-track" id="sp-track-'+cid+'" onmousedown="SP.startDrag(event,\''+cid+'\')" ontouchstart="SP.startDrag(event,\''+cid+'\')"><div class="sp-fill" id="sp-fill-'+cid+'"></div><div class="sp-thumb" id="sp-thumb-'+cid+'" onmousedown="SP.startDrag(event,\''+cid+'\')" ontouchstart="SP.startDrag(event,\''+cid+'\')"></div></div></div></div>'}
 };
 SP.init();
 
-// Simple speak for vocab word clicks (just plays the word, no player needed)
-function speak(text,btn){
-  if(!window.speechSynthesis)return;
-  // Reset SP state without double cancel
-  SP._playing=false;SP._paused=false;SP._clearTimers();
-  if(SP._cid){SP._uiProgress(0);SP._clearHighlight();SP._ui('stop');SP._cid=null;}
-  speechSynthesis.cancel();
-  // iOS requires user-gesture-initiated utterance, no async gap
-  const u=new SpeechSynthesisUtterance(text);
-  u.lang='en-US';u.rate=SP.rate;
-  if(SP.voice)u.voice=SP.voice;
-  if(btn){btn.style.transform='scale(1.2)';btn.style.color='var(--teal)';u.onend=u.onerror=()=>{btn.style.transform='';btn.style.color=''};}
-  // Chrome needs a tiny delay after cancel, iOS needs it synchronous from gesture
-  if(SP._isIOS){
-    speechSynthesis.speak(u);
-  } else {
-    setTimeout(()=>speechSynthesis.speak(u),30);
-  }
-}
+function speak(text,btn){if(!window.speechSynthesis)return;SP._playing=false;SP._paused=false;SP._clearTimers();if(SP._cid){SP._uiProgress(0);SP._clearHighlight();SP._ui('stop');SP._cid=null}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=SP.rate;if(SP.voice)u.voice=SP.voice;if(btn){btn.style.transform='scale(1.2)';btn.style.color='var(--teal)';u.onend=u.onerror=()=>{btn.style.transform='';btn.style.color=''}}if(SP._isIOS){speechSynthesis.speak(u)}else{setTimeout(()=>speechSynthesis.speak(u),30)}}
 function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function wordSpans(text,cid){return '<span class="sp-words" id="sp-words-'+cid+'">'+text.trim().split(/\s+/).map((w,i)=>'<span class="sp-word" data-i="'+i+'">'+esc(w)+'</span>').join(' ')+'</span>'}
 function buttons(type,x,text){return `<div class="card-actions"><button class="icon" data-text="${esc(text)}" onclick="event.stopPropagation();speak(this.dataset.text,this)" aria-label="播放">🔊</button><span class="grow"></span><button class="icon ${fav(type,x.id)?'on':''}" onclick="event.stopPropagation();toggle('fav:${type}',${x.id})">${fav(type,x.id)?'★':'☆'}</button><button class="icon ${mastered(type,x.id)?'on':''}" onclick="event.stopPropagation();toggle('mastered:${type}',${x.id})">${mastered(type,x.id)?'✓ 已掌握':'✓ 掌握'}</button></div>`}
 function playerButtons(type,x,text,cid){return SP.html(cid,text)+`<div class="card-actions"><span class="grow"></span><button class="icon ${fav(type,x.id)?'on':''}" onclick="event.stopPropagation();toggle('fav:${type}',${x.id})">${fav(type,x.id)?'★':'☆'}</button><button class="icon ${mastered(type,x.id)?'on':''}" onclick="event.stopPropagation();toggle('mastered:${type}',${x.id})">${mastered(type,x.id)?'✓ 已掌握':'✓ 掌握'}</button></div>`}
-function vocabCard(x){return `<article class="card vocab" onclick="this.classList.toggle('show')"><div class="item-head"><div><div class="word">${x.star?'⭐ ':''}${esc(x.word)}</div><div class="ipa">${esc(x.ipa)}</div></div><span class="badge">${esc(x.category)}</span></div><div class="details"><p><b>中文：</b>${esc(x.cn)}</p><p><b>近义/同类：</b>${esc(x.similar)}</p><p><b>中文谐音：</b>${esc(x.phonetic)}</p></div>${buttons('v',x,x.word)}</article>`}
-function phraseCard(x){let cid='p'+x.id;return `<article class="card"><div class="scene">${esc(x.scene)}</div><div class="phrase-en">${wordSpans(x.en,cid)}</div><div class="phrase-cn">${esc(x.cn)}</div>${playerButtons('p',x,x.en,cid)}</article>`}
-function paraCard(x){let en=state.mode!=='cn',cn=state.mode!=='en';let cid='r'+x.id;return `<article class="card"><div class="scene">${esc(x.scene)}</div><div class="word" style="font-size:16px">${x.id}. ${esc(x.title)}</div>${en?`<div class="para-en">${wordSpans(x.en,cid)}</div>`:''}${cn?`<div class="para-cn">${esc(x.cn)}</div>`:''}${playerButtons('r',x,x.en,cid)}</article>`}
-function filterItems(arr,type){let q=state.search.toLowerCase();return arr.filter(x=>(!state.favorites||fav(type,x.id))&&(!q||JSON.stringify(x).toLowerCase().includes(q)))}
-function today(){let stars=D.vocabulary.filter(x=>x.star), words=[...stars,...D.vocabulary.filter(x=>!x.star)].slice(0,10),phr=D.phrases.slice(0,5),par=D.paragraphs[0];let wm=words.filter(x=>mastered('v',x.id)).length,pm=phr.filter(x=>mastered('p',x.id)).length,rm=mastered('r',par.id)?1:0;let pct=Math.round((wm+pm+rm)/16*100);return `<div class="card"><div class="section-title">Today / 今日必学</div><div class="today-grid"><div class="card metric"><b>${wm}/10</b><span>词汇</span></div><div class="card metric"><b>${pm}/5</b><span>短句</span></div><div class="card metric"><b>${rm}/1</b><span>段落</span></div></div><div class="progress"><i style="width:${pct}%"></i></div><div class="meta">今日完成度 ${pct}% · 优先精选高频词</div><div class="actions" style="margin-top:13px"><button class="btn" onclick="startStudy()">开始今日学习</button><button class="btn secondary" onclick="state.favorites=!state.favorites;render()">${state.favorites?'显示全部':'只看收藏'}</button><button class="btn ghost" onclick="resetProgress()">重置进度</button></div></div><h2 class="section-title">今日内容</h2><div class="list">${words.slice(0,3).map(vocabCard).join('')}</div><div class="card"><div class="scene">今日短句</div>${phr.slice(0,2).map(phraseCard).join('')}</div>`}
-function vocabulary(){let cats=['All',...new Set(D.vocabulary.map(x=>x.category))], arr=filterItems(D.vocabulary.filter(x=>(state.vcat==='All'||x.category===state.vcat)&&(!state.star||x.star)),'v');return `<h2 class="section-title">Vocabulary <span class="meta">${arr.length}/200</span></h2><input class="search" placeholder="搜索英文、中文、近义词…" oninput="state.search=this.value;render()" value="${esc(state.search)}"><div class="filters">${cats.map(c=>`<button class="filter ${state.vcat===c?'active':''}" onclick="state.vcat=${JSON.stringify(c)};render()">${esc(c)}</button>`).join('')}</div><div class="actions"><button class="filter ${state.star?'active':''}" onclick="state.star=!state.star;render()">⭐ 必学</button><button class="filter ${state.favorites?'active':''}" onclick="state.favorites=!state.favorites;render()">★ 收藏</button></div><p class="meta">单词卡默认仅显示英文与 IPA；点击卡片显示答案。</p><div class="list">${arr.map(vocabCard).join('')||'<div class="empty">没有匹配的词汇</div>'}</div>`}
-function phrases(){let scenes=['All',...new Set(D.phrases.map(x=>x.scene))],arr=filterItems(D.phrases.filter(x=>state.pscene==='All'||x.scene===state.pscene),'p');return `<h2 class="section-title">Phrases <span class="meta">${arr.length}/50</span></h2><input class="search" placeholder="搜索短句、翻译或场景…" oninput="state.search=this.value;render()" value="${esc(state.search)}"><div class="filters">${scenes.map(c=>`<button class="filter ${state.pscene===c?'active':''}" onclick="state.pscene=${JSON.stringify(c)};render()">${esc(c)}</button>`).join('')}</div><button class="filter ${state.favorites?'active':''}" onclick="state.favorites=!state.favorites;render()">★ 只看收藏</button><div class="para-list">${arr.map(phraseCard).join('')||'<div class="empty">没有匹配的短句</div>'}</div>`}
-function practice(){let arr=filterItems(D.paragraphs,'r');return `<h2 class="section-title">Practice <span class="meta">${arr.length}/20</span></h2><div class="mode">${[['en','English'],['cn','中文'],['both','双语']].map(x=>`<button class="${state.mode===x[0]?'active':''}" onclick="state.mode='${x[0]}';render()">${x[1]}</button>`).join('')}<button class="filter ${state.favorites?'active':''}" onclick="state.favorites=!state.favorites;render()">★ 收藏</button></div><div class="para-list">${arr.map(paraCard).join('')||'<div class="empty">没有收藏的段落</div>'}</div>`}
+
+function vocabCard(x,idx){const mc=mastered('v',x.id);return `<article class="card vocab${mc?' mastered-card':''}" onclick="this.classList.toggle('show')"><div class="item-head"><div><div class="word"><span class="seq">#${idx}</span>${x.star?'⭐ ':''}${esc(x.word)}</div><div class="ipa">${esc(x.ipa)}</div></div><span class="badge">${esc(x.category)}</span></div><div class="details"><p><b>中文：</b>${esc(x.cn)}</p><p><b>近义/同类：</b>${esc(x.similar)}</p><p><b>中文谐音：</b>${esc(x.phonetic)}</p></div>${buttons('v',x,x.word)}</article>`}
+
+function phraseCard(x,idx){let cid='p'+x.id;const mc=mastered('p',x.id);return `<article class="card${mc?' mastered-card':''}"><div class="item-head"><div><div class="scene"><span class="seq">#${idx}</span>${esc(x.scene)}</div></div></div><div class="phrase-en">${wordSpans(x.en,cid)}</div><div class="phrase-cn">${esc(x.cn)}</div>${playerButtons('p',x,x.en,cid)}</article>`}
+
+function paraCard(x){let en=state.mode!=='cn',cn=state.mode!=='en';let cid='r'+x.id;const mc=mastered('r',x.id);return `<article class="card${mc?' mastered-card':''}"><div class="scene">${esc(x.scene)}</div><div class="word" style="font-size:16px">#${x.id}. ${esc(x.title)}</div>${en?`<div class="para-en">${wordSpans(x.en,cid)}</div>`:''}${cn?`<div class="para-cn">${esc(x.cn)}</div>`:''}${playerButtons('r',x,x.en,cid)}</article>`}
+
+function filterItems(arr,type){let q=state.search.toLowerCase();return arr.filter(x=>(!state.favorites||fav(type,x.id))&&(!state.unmastered||!mastered(type,x.id))&&(!q||JSON.stringify(x).toLowerCase().includes(q)))}
+
+function progressBar(type, arr) {
+  const m = get('mastered:'+type);
+  const count = arr.filter(x => m.has(x.id)).length;
+  const total = arr.length;
+  const pct = total > 0 ? Math.round(count / total * 100) : 0;
+  const label = type === 'v' ? '词汇' : type === 'p' ? '短句' : '段落';
+  return `<div class="tp"><div class="tp-icon">${pct>=100?'🎉':'📊'}</div><div class="tp-info"><div class="tp-label">${label}掌握进度</div><div class="tp-nums">${count} / ${total} <span style="font-size:13px;color:var(--muted);font-weight:400">(${pct}%)</span></div><div class="tp-bar"><i style="width:${pct}%"></i></div></div></div>`;
+}
+
+function today(){
+  const vm=get('mastered:v'),pm=get('mastered:p'),rm=get('mastered:r');
+  const vTotal=D.vocabulary.length, pTotal=D.phrases.length, rTotal=D.paragraphs.length;
+  const vCount=D.vocabulary.filter(x=>vm.has(x.id)).length;
+  const pCount=D.phrases.filter(x=>pm.has(x.id)).length;
+  const rCount=D.paragraphs.filter(x=>rm.has(x.id)).length;
+  const allCount=vCount+pCount+rCount, allTotal=vTotal+pTotal+rTotal;
+  const allPct=allTotal>0?Math.round(allCount/allTotal*100):0;
+
+  let stars=D.vocabulary.filter(x=>x.star), words=[...stars,...D.vocabulary.filter(x=>!x.star)].slice(0,10),phr=D.phrases.slice(0,5),par=D.paragraphs[0];
+  let wm=words.filter(x=>vm.has(x.id)).length,ppm=phr.filter(x=>pm.has(x.id)).length,rrm=rm.has(par.id)?1:0;
+  let pct=Math.round((wm+ppm+rrm)/16*100);
+
+  return `<div class="tp"><div class="tp-icon">${allPct>=100?'🏆':'📈'}</div><div class="tp-info"><div class="tp-label">总体掌握进度</div><div class="tp-nums">${allCount} / ${allTotal} <span style="font-size:13px;color:var(--muted);font-weight:400">(${allPct}%)</span></div><div class="tp-bar"><i style="width:${allPct}%"></i></div></div></div>`+
+  `<div class="today-grid"><div class="card metric"><b>${vCount}/${vTotal}</b><span>词汇</span></div><div class="card metric"><b>${pCount}/${pTotal}</b><span>短句</span></div><div class="card metric"><b>${rCount}/${rTotal}</b><span>段落</span></div></div>`+
+  `<div class="card" style="margin-top:14px"><div class="section-title">Today / 今日必学</div><div class="today-grid"><div class="card metric"><b>${wm}/10</b><span>今日词汇</span></div><div class="card metric"><b>${ppm}/5</b><span>今日短句</span></div><div class="card metric"><b>${rrm}/1</b><span>今日段落</span></div></div><div class="progress"><i style="width:${pct}%"></i></div><div class="meta">今日完成度 ${pct}%</div><div class="actions" style="margin-top:13px"><button class="btn" onclick="startStudy()">开始今日学习</button><button class="btn secondary" onclick="state.favorites=!state.favorites;render()">${state.favorites?'显示全部':'只看收藏'}</button><button class="btn ghost" onclick="resetProgress()">重置进度</button></div></div><h2 class="section-title" style="margin-top:16px">今日内容</h2><div class="list">${words.slice(0,3).map((x,i)=>vocabCard(x,x.id)).join('')}</div><div class="card"><div class="scene">今日短句</div>${phr.slice(0,2).map((x,i)=>phraseCard(x,x.id)).join('')}</div>`
+}
+
+function vocabulary(){
+  let cats=['All',...new Set(D.vocabulary.map(x=>x.category))];
+  let arr=filterItems(D.vocabulary.filter(x=>(state.vcat==='All'||x.category===state.vcat)&&(!state.star||x.star)),'v');
+  const mc=get('mastered:v');
+  const masteredCount=arr.filter(x=>mc.has(x.id)).length;
+  return progressBar('v', D.vocabulary)+
+  `<h2 class="section-title">Vocabulary <span class="meta">${arr.length}/200 · 已掌握 ${masteredCount}</span></h2>`+
+  `<input class="search" placeholder="搜索英文、中文、近义词…" oninput="state.search=this.value;render()" value="${esc(state.search)}">`+
+  `<div class="filters">${cats.map(c=>`<button class="filter ${state.vcat===c?'active':''}" onclick="state.vcat=${JSON.stringify(c)};render()">${esc(c)}</button>`).join('')}</div>`+
+  `<div class="actions"><button class="filter ${state.star?'active':''}" onclick="state.star=!state.star;render()">⭐ 必学</button><button class="filter ${state.favorites?'active':''}" onclick="state.favorites=!state.favorites;render()">★ 收藏</button><button class="filter ${state.unmastered?'green-active':''}" onclick="state.unmastered=!state.unmastered;render()">📝 未掌握</button></div>`+
+  `<p class="meta">单词卡默认仅显示英文与 IPA；点击卡片显示答案。</p>`+
+  `<div class="list">${arr.map((x,i)=>vocabCard(x,x.id)).join('')||'<div class="empty">没有匹配的词汇</div>'}</div>`
+}
+
+function phrases(){
+  let scenes=['All',...new Set(D.phrases.map(x=>x.scene))];
+  let arr=filterItems(D.phrases.filter(x=>state.pscene==='All'||x.scene===state.pscene),'p');
+  const mc=get('mastered:p');
+  const masteredCount=arr.filter(x=>mc.has(x.id)).length;
+  return progressBar('p', D.phrases)+
+  `<h2 class="section-title">Phrases <span class="meta">${arr.length}/50 · 已掌握 ${masteredCount}</span></h2>`+
+  `<input class="search" placeholder="搜索短句、翻译或场景…" oninput="state.search=this.value;render()" value="${esc(state.search)}">`+
+  `<div class="filters">${scenes.map(c=>`<button class="filter ${state.pscene===c?'active':''}" onclick="state.pscene=${JSON.stringify(c)};render()">${esc(c)}</button>`).join('')}</div>`+
+  `<div class="actions"><button class="filter ${state.favorites?'active':''}" onclick="state.favorites=!state.favorites;render()">★ 只看收藏</button><button class="filter ${state.unmastered?'green-active':''}" onclick="state.unmastered=!state.unmastered;render()">📝 未掌握</button></div>`+
+  `<div class="para-list">${arr.map((x,i)=>phraseCard(x,x.id)).join('')||'<div class="empty">没有匹配的短句</div>'}</div>`
+}
+
+function practice(){
+  let arr=filterItems(D.paragraphs,'r');
+  return progressBar('r', D.paragraphs)+
+  `<h2 class="section-title">Practice <span class="meta">${arr.length}/20</span></h2>`+
+  `<div class="mode">${[['en','English'],['cn','中文'],['both','双语']].map(x=>`<button class="${state.mode===x[0]?'active':''}" onclick="state.mode='${x[0]}';render()">${x[1]}</button>`).join('')}<button class="filter ${state.favorites?'active':''}" onclick="state.favorites=!state.favorites;render()">★ 收藏</button><button class="filter ${state.unmastered?'green-active':''}" onclick="state.unmastered=!state.unmastered;render()">📝 未掌握</button></div>`+
+  `<div class="para-list">${arr.map(paraCard).join('')||'<div class="empty">没有匹配的段落</div>'}</div>`
+}
+
 function render(){document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===state.tab));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===state.tab));document.querySelector('#today').innerHTML=today();document.querySelector('#vocab').innerHTML=vocabulary();document.querySelector('#phrases').innerHTML=phrases();document.querySelector('#practice').innerHTML=practice()}
-document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{state.tab=b.dataset.tab;state.search='';render();scrollTo(0,0)});
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{state.tab=b.dataset.tab;state.search='';state.unmastered=false;render();scrollTo(0,0)});
 function startStudy(){let items=[...D.vocabulary.filter(x=>x.star).slice(0,10).map(x=>['v',x]),...D.phrases.slice(0,5).map(x=>['p',x]),['r',D.paragraphs[0]]],i=0,box=document.querySelector('#study');function next(){SP.stop();let [t,x]=items[i];let title=t==='v'?'词汇':t==='p'?'短句':'段落';let en=x.word||x.en;let cid='study'+i;let isWord=t==='v';box.innerHTML=`<div class="study-top"><button class="btn ghost" onclick="SP.stop();document.querySelector('#study').classList.remove('open')">关闭</button><span class="study-title">${i+1}/${items.length} · ${title}</span></div><div class="card"><div class="scene">连续学习</div>${isWord?`<div class="study-word">${esc(en)}</div>`:`<div class="para-en" style="font-size:17px;line-height:1.8">${wordSpans(en,cid)}</div>`}${x.ipa?`<div class="ipa">${esc(x.ipa)}</div>`:''}<div class="details" style="display:block"><p>${esc(x.cn||'')}</p>${x.similar?`<p class="meta">${esc(x.similar)} · ${esc(x.phonetic)}</p>`:''}</div>${isWord?buttons(t,x,en):playerButtons(t,x,en,cid)}<div class="actions">${isWord?`<button class="btn" onclick="speak(this.dataset.text,this)" data-text="${esc(en)}">🔈 播放</button>`:''}<button class="btn secondary" onclick="SP.stop();if(${i}<${items.length-1}){window._next()}else{document.querySelector('#study').classList.remove('open');render()}">${i===items.length-1?'完成今日学习':'下一项'}</button></div></div>`}window._next=()=>{i++;next()};box.classList.add('open');next()}
 function resetProgress(){if(confirm('清除本设备上的掌握进度？')){['mastered:v','mastered:p','mastered:r'].forEach(x=>localStorage.removeItem(key(x)));render()}}
-fetch('data.json?v=20260809b').then(r=>r.json()).then(x=>{D=x;render()}).catch(()=>document.querySelector('#today').innerHTML='<div class="empty">学习数据加载失败，请刷新重试。</div>');
+fetch('data.json?v=20260810a').then(r=>r.json()).then(x=>{D=x;render()}).catch(()=>document.querySelector('#today').innerHTML='<div class="empty">学习数据加载失败，请刷新重试。</div>');
 if('serviceWorker'in navigator)navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister()));
 </script></body></html>
